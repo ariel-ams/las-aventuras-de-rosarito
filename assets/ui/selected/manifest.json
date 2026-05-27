@@ -1,0 +1,242 @@
+[
+  {
+    "key": "button_arrow_right",
+    "path": "assets/ui/selected/button_arrow_right.png",
+    "size": [
+      202,
+      201
+    ]
+  },
+  {
+    "key": "button_audio",
+    "path": "assets/ui/selected/button_audio.png",
+    "size": [
+      182,
+      194
+    ]
+  },
+  {
+    "key": "button_long_purple",
+    "path": "assets/ui/selected/button_long_purple.png",
+    "size": [
+      343,
+      124
+    ]
+  },
+  {
+    "key": "score_star_panel",
+    "path": "assets/ui/selected/score_star_panel.png",
+    "size": [
+      294,
+      169
+    ]
+  },
+  {
+    "key": "book_open_frame",
+    "path": "assets/ui/selected/book_open_frame.png",
+    "size": [
+      410,
+      240
+    ]
+  },
+  {
+    "key": "card_arch_filled",
+    "path": "assets/ui/selected/card_arch_filled.png",
+    "size": [
+      214,
+      190
+    ]
+  },
+  {
+    "key": "panel_task_floral",
+    "path": "assets/ui/selected/panel_task_floral.png",
+    "size": [
+      325,
+      140
+    ]
+  },
+  {
+    "key": "speech_large_cream",
+    "path": "assets/ui/selected/speech_large_cream.png",
+    "size": [
+      365,
+      171
+    ]
+  },
+  {
+    "key": "speech_large_lilac",
+    "path": "assets/ui/selected/speech_large_lilac.png",
+    "size": [
+      373,
+      175
+    ]
+  },
+  {
+    "key": "label_long_cream",
+    "path": "assets/ui/selected/label_long_cream.png",
+    "size": [
+      484,
+      95
+    ]
+  },
+  {
+    "key": "panel_floral_wide",
+    "path": "assets/ui/selected/panel_floral_wide.png",
+    "size": [
+      266,
+      124
+    ]
+  },
+  {
+    "key": "icon_bag",
+    "path": "assets/ui/selected/icon_bag.png",
+    "size": [
+      168,
+      146
+    ]
+  },
+  {
+    "key": "icon_bell",
+    "path": "assets/ui/selected/icon_bell.png",
+    "size": [
+      142,
+      142
+    ]
+  },
+  {
+    "key": "icon_blackboard",
+    "path": "assets/ui/selected/icon_blackboard.png",
+    "size": [
+      186,
+      146
+    ]
+  },
+  {
+    "key": "icon_book",
+    "path": "assets/ui/selected/icon_book.png",
+    "size": [
+      187,
+      153
+    ]
+  },
+  {
+    "key": "icon_chalk",
+    "path": "assets/ui/selected/icon_chalk.png",
+    "size": [
+      125,
+      111
+    ]
+  },
+  {
+    "key": "icon_check",
+    "path": "assets/ui/selected/icon_check.png",
+    "size": [
+      129,
+      128
+    ]
+  },
+  {
+    "key": "icon_flower",
+    "path": "assets/ui/selected/icon_flower.png",
+    "size": [
+      139,
+      135
+    ]
+  },
+  {
+    "key": "icon_heart",
+    "path": "assets/ui/selected/icon_heart.png",
+    "size": [
+      107,
+      118
+    ]
+  },
+  {
+    "key": "icon_home",
+    "path": "assets/ui/selected/icon_home.png",
+    "size": [
+      152,
+      144
+    ]
+  },
+  {
+    "key": "icon_puzzle",
+    "path": "assets/ui/selected/icon_puzzle.png",
+    "size": [
+      132,
+      148
+    ]
+  },
+  {
+    "key": "icon_question",
+    "path": "assets/ui/selected/icon_question.png",
+    "size": [
+      136,
+      148
+    ]
+  },
+  {
+    "key": "icon_quill",
+    "path": "assets/ui/selected/icon_quill.png",
+    "size": [
+      133,
+      152
+    ]
+  },
+  {
+    "key": "icon_restart",
+    "path": "assets/ui/selected/icon_restart.png",
+    "size": [
+      129,
+      127
+    ]
+  },
+  {
+    "key": "icon_sparkles",
+    "path": "assets/ui/selected/icon_sparkles.png",
+    "size": [
+      146,
+      152
+    ]
+  },
+  {
+    "key": "icon_star",
+    "path": "assets/ui/selected/icon_star.png",
+    "size": [
+      130,
+      134
+    ]
+  },
+  {
+    "key": "icon_tap",
+    "path": "assets/ui/selected/icon_tap.png",
+    "size": [
+      124,
+      150
+    ]
+  },
+  {
+    "key": "icon_x",
+    "path": "assets/ui/selected/icon_x.png",
+    "size": [
+      136,
+      128
+    ]
+  },
+  {
+    "key": "flower_corner_right",
+    "path": "assets/ui/selected/flower_corner_right.png",
+    "size": [
+      178,
+      190
+    ]
+  },
+  {
+    "key": "grass_large",
+    "path": "assets/ui/selected/grass_large.png",
+    "size": [
+      238,
+      154
+    ]
+  }
+]

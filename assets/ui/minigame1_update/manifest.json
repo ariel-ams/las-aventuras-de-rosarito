@@ -1,0 +1,1007 @@
+[
+  {
+    "name": "minigame1_update_01",
+    "path": "assets/ui/minigame1_update/minigame1_update_01.png",
+    "box": [
+      63,
+      33,
+      289,
+      213
+    ],
+    "size": [
+      226,
+      180
+    ],
+    "area": 9478
+  },
+  {
+    "name": "minigame1_update_02",
+    "path": "assets/ui/minigame1_update/minigame1_update_02.png",
+    "box": [
+      1033,
+      34,
+      1259,
+      213
+    ],
+    "size": [
+      226,
+      179
+    ],
+    "area": 9531
+  },
+  {
+    "name": "minigame1_update_03",
+    "path": "assets/ui/minigame1_update/minigame1_update_03.png",
+    "box": [
+      619,
+      78,
+      714,
+      168
+    ],
+    "size": [
+      95,
+      90
+    ],
+    "area": 3900
+  },
+  {
+    "name": "minigame1_update_04",
+    "path": "assets/ui/minigame1_update/minigame1_update_04.png",
+    "box": [
+      292,
+      93,
+      622,
+      163
+    ],
+    "size": [
+      330,
+      70
+    ],
+    "area": 4538
+  },
+  {
+    "name": "minigame1_update_05",
+    "path": "assets/ui/minigame1_update/minigame1_update_05.png",
+    "box": [
+      711,
+      94,
+      1034,
+      164
+    ],
+    "size": [
+      323,
+      70
+    ],
+    "area": 4606
+  },
+  {
+    "name": "minigame1_update_06",
+    "path": "assets/ui/minigame1_update/minigame1_update_06.png",
+    "box": [
+      1290,
+      209,
+      1370,
+      295
+    ],
+    "size": [
+      80,
+      86
+    ],
+    "area": 1585
+  },
+  {
+    "name": "minigame1_update_07",
+    "path": "assets/ui/minigame1_update/minigame1_update_07.png",
+    "box": [
+      205,
+      213,
+      1109,
+      371
+    ],
+    "size": [
+      904,
+      158
+    ],
+    "area": 122826
+  },
+  {
+    "name": "minigame1_update_08",
+    "path": "assets/ui/minigame1_update/minigame1_update_08.png",
+    "box": [
+      1254,
+      264,
+      1322,
+      339
+    ],
+    "size": [
+      68,
+      75
+    ],
+    "area": 1098
+  },
+  {
+    "name": "minigame1_update_09",
+    "path": "assets/ui/minigame1_update/minigame1_update_09.png",
+    "box": [
+      1307,
+      299,
+      1377,
+      369
+    ],
+    "size": [
+      70,
+      70
+    ],
+    "area": 1078
+  },
+  {
+    "name": "minigame1_update_10",
+    "path": "assets/ui/minigame1_update/minigame1_update_10.png",
+    "box": [
+      68,
+      374,
+      1218,
+      912
+    ],
+    "size": [
+      1150,
+      538
+    ],
+    "area": 572701
+  },
+  {
+    "name": "minigame1_update_11",
+    "path": "assets/ui/minigame1_update/minigame1_update_11.png",
+    "box": [
+      1285,
+      413,
+      1367,
+      497
+    ],
+    "size": [
+      82,
+      84
+    ],
+    "area": 2694
+  },
+  {
+    "name": "minigame1_update_12",
+    "path": "assets/ui/minigame1_update/minigame1_update_12.png",
+    "box": [
+      1274,
+      530,
+      1381,
+      642
+    ],
+    "size": [
+      107,
+      112
+    ],
+    "area": 3434
+  },
+  {
+    "name": "minigame1_update_13",
+    "path": "assets/ui/minigame1_update/minigame1_update_13.png",
+    "box": [
+      1282,
+      672,
+      1377,
+      769
+    ],
+    "size": [
+      95,
+      97
+    ],
+    "area": 3970
+  },
+  {
+    "name": "minigame1_update_14",
+    "path": "assets/ui/minigame1_update/minigame1_update_14.png",
+    "box": [
+      1278,
+      807,
+      1373,
+      1014
+    ],
+    "size": [
+      95,
+      207
+    ],
+    "area": 6809
+  },
+  {
+    "name": "minigame1_update_15",
+    "path": "assets/ui/minigame1_update/minigame1_update_15.png",
+    "box": [
+      263,
+      914,
+      1029,
+      1062
+    ],
+    "size": [
+      766,
+      148
+    ],
+    "area": 96386
+  },
+  {
+    "name": "minigame1_update2_01",
+    "path": "assets/ui/minigame1_update/minigame1_update2_01.png",
+    "box": [
+      693,
+      71,
+      757,
+      132
+    ],
+    "size": [
+      64,
+      61
+    ],
+    "area": 1468
+  },
+  {
+    "name": "minigame1_update2_02",
+    "path": "assets/ui/minigame1_update/minigame1_update2_02.png",
+    "box": [
+      235,
+      115,
+      1216,
+      424
+    ],
+    "size": [
+      981,
+      309
+    ],
+    "area": 268530
+  },
+  {
+    "name": "minigame1_update2_03",
+    "path": "assets/ui/minigame1_update/minigame1_update2_03.png",
+    "box": [
+      723,
+      418,
+      1129,
+      596
+    ],
+    "size": [
+      406,
+      178
+    ],
+    "area": 58732
+  },
+  {
+    "name": "minigame1_update2_04",
+    "path": "assets/ui/minigame1_update/minigame1_update2_04.png",
+    "box": [
+      285,
+      421,
+      729,
+      597
+    ],
+    "size": [
+      444,
+      176
+    ],
+    "area": 61138
+  },
+  {
+    "name": "minigame1_update2_05",
+    "path": "assets/ui/minigame1_update/minigame1_update2_05.png",
+    "box": [
+      735,
+      596,
+      1128,
+      779
+    ],
+    "size": [
+      393,
+      183
+    ],
+    "area": 58696
+  },
+  {
+    "name": "minigame1_update2_06",
+    "path": "assets/ui/minigame1_update/minigame1_update2_06.png",
+    "box": [
+      284,
+      597,
+      713,
+      779
+    ],
+    "size": [
+      429,
+      182
+    ],
+    "area": 61008
+  },
+  {
+    "name": "minigame1_update2_07",
+    "path": "assets/ui/minigame1_update/minigame1_update2_07.png",
+    "box": [
+      255,
+      770,
+      1181,
+      946
+    ],
+    "size": [
+      926,
+      176
+    ],
+    "area": 122990
+  },
+  {
+    "name": "minigame1_update2_08",
+    "path": "assets/ui/minigame1_update/minigame1_update2_08.png",
+    "box": [
+      690,
+      956,
+      735,
+      1040
+    ],
+    "size": [
+      45,
+      84
+    ],
+    "area": 1296
+  },
+  {
+    "name": "minigame1_update2_09",
+    "path": "assets/ui/minigame1_update/minigame1_update2_09.png",
+    "box": [
+      281,
+      970,
+      359,
+      1044
+    ],
+    "size": [
+      78,
+      74
+    ],
+    "area": 2535
+  },
+  {
+    "name": "minigame1_update2_10",
+    "path": "assets/ui/minigame1_update/minigame1_update2_10.png",
+    "box": [
+      957,
+      983,
+      1023,
+      1044
+    ],
+    "size": [
+      66,
+      61
+    ],
+    "area": 1615
+  },
+  {
+    "name": "minigame1_update2_11",
+    "path": "assets/ui/minigame1_update/minigame1_update2_11.png",
+    "box": [
+      819,
+      993,
+      962,
+      1046
+    ],
+    "size": [
+      143,
+      53
+    ],
+    "area": 1528
+  },
+  {
+    "name": "minigame1_update2_12",
+    "path": "assets/ui/minigame1_update/minigame1_update2_12.png",
+    "box": [
+      1018,
+      993,
+      1160,
+      1046
+    ],
+    "size": [
+      142,
+      53
+    ],
+    "area": 1567
+  },
+  {
+    "name": "minigame1_update3_01",
+    "path": "assets/ui/minigame1_update/minigame1_update3_01.png",
+    "box": [
+      1062,
+      25,
+      1436,
+      463
+    ],
+    "size": [
+      374,
+      438
+    ],
+    "area": 41198
+  },
+  {
+    "name": "minigame1_update3_02",
+    "path": "assets/ui/minigame1_update/minigame1_update3_02.png",
+    "box": [
+      36,
+      28,
+      258,
+      250
+    ],
+    "size": [
+      222,
+      222
+    ],
+    "area": 27027
+  },
+  {
+    "name": "minigame1_update3_03",
+    "path": "assets/ui/minigame1_update/minigame1_update3_03.png",
+    "box": [
+      552,
+      28,
+      762,
+      250
+    ],
+    "size": [
+      210,
+      222
+    ],
+    "area": 24875
+  },
+  {
+    "name": "minigame1_update3_04",
+    "path": "assets/ui/minigame1_update/minigame1_update3_04.png",
+    "box": [
+      301,
+      29,
+      514,
+      247
+    ],
+    "size": [
+      213,
+      218
+    ],
+    "area": 25340
+  },
+  {
+    "name": "minigame1_update3_05",
+    "path": "assets/ui/minigame1_update/minigame1_update3_05.png",
+    "box": [
+      796,
+      29,
+      1008,
+      246
+    ],
+    "size": [
+      212,
+      217
+    ],
+    "area": 25129
+  },
+  {
+    "name": "minigame1_update3_06",
+    "path": "assets/ui/minigame1_update/minigame1_update3_06.png",
+    "box": [
+      323,
+      259,
+      675,
+      1032
+    ],
+    "size": [
+      352,
+      773
+    ],
+    "area": 167218
+  },
+  {
+    "name": "minigame1_update3_07",
+    "path": "assets/ui/minigame1_update/minigame1_update3_07.png",
+    "box": [
+      35,
+      287,
+      260,
+      514
+    ],
+    "size": [
+      225,
+      227
+    ],
+    "area": 34717
+  },
+  {
+    "name": "minigame1_update3_08",
+    "path": "assets/ui/minigame1_update/minigame1_update3_08.png",
+    "box": [
+      876,
+      572,
+      1436,
+      1059
+    ],
+    "size": [
+      560,
+      487
+    ],
+    "area": 67864
+  },
+  {
+    "name": "minigame1_update4_01",
+    "path": "assets/ui/minigame1_update/minigame1_update4_01.png",
+    "box": [
+      90,
+      53,
+      665,
+      149
+    ],
+    "size": [
+      575,
+      96
+    ],
+    "area": 11120
+  },
+  {
+    "name": "minigame1_update4_02",
+    "path": "assets/ui/minigame1_update/minigame1_update4_02.png",
+    "box": [
+      823,
+      53,
+      1360,
+      148
+    ],
+    "size": [
+      537,
+      95
+    ],
+    "area": 10582
+  },
+  {
+    "name": "minigame1_update4_03",
+    "path": "assets/ui/minigame1_update/minigame1_update4_03.png",
+    "box": [
+      685,
+      59,
+      799,
+      164
+    ],
+    "size": [
+      114,
+      105
+    ],
+    "area": 5932
+  },
+  {
+    "name": "minigame1_update4_04",
+    "path": "assets/ui/minigame1_update/minigame1_update4_04.png",
+    "box": [
+      588,
+      256,
+      849,
+      496
+    ],
+    "size": [
+      261,
+      240
+    ],
+    "area": 31180
+  },
+  {
+    "name": "minigame1_update4_05",
+    "path": "assets/ui/minigame1_update/minigame1_update4_05.png",
+    "box": [
+      340,
+      274,
+      516,
+      496
+    ],
+    "size": [
+      176,
+      222
+    ],
+    "area": 11653
+  },
+  {
+    "name": "minigame1_update4_06",
+    "path": "assets/ui/minigame1_update/minigame1_update4_06.png",
+    "box": [
+      72,
+      297,
+      297,
+      494
+    ],
+    "size": [
+      225,
+      197
+    ],
+    "area": 20557
+  },
+  {
+    "name": "minigame1_update4_07",
+    "path": "assets/ui/minigame1_update/minigame1_update4_07.png",
+    "box": [
+      883,
+      313,
+      1117,
+      495
+    ],
+    "size": [
+      234,
+      182
+    ],
+    "area": 17779
+  },
+  {
+    "name": "minigame1_update4_08",
+    "path": "assets/ui/minigame1_update/minigame1_update4_08.png",
+    "box": [
+      1157,
+      313,
+      1368,
+      485
+    ],
+    "size": [
+      211,
+      172
+    ],
+    "area": 14464
+  },
+  {
+    "name": "minigame1_update4_09",
+    "path": "assets/ui/minigame1_update/minigame1_update4_09.png",
+    "box": [
+      413,
+      381,
+      549,
+      489
+    ],
+    "size": [
+      136,
+      108
+    ],
+    "area": 4451
+  },
+  {
+    "name": "minigame1_update4_10",
+    "path": "assets/ui/minigame1_update/minigame1_update4_10.png",
+    "box": [
+      1167,
+      520,
+      1270,
+      640
+    ],
+    "size": [
+      103,
+      120
+    ],
+    "area": 3462
+  },
+  {
+    "name": "minigame1_update4_11",
+    "path": "assets/ui/minigame1_update/minigame1_update4_11.png",
+    "box": [
+      1044,
+      521,
+      1125,
+      636
+    ],
+    "size": [
+      81,
+      115
+    ],
+    "area": 2254
+  },
+  {
+    "name": "minigame1_update4_12",
+    "path": "assets/ui/minigame1_update/minigame1_update4_12.png",
+    "box": [
+      113,
+      532,
+      215,
+      635
+    ],
+    "size": [
+      102,
+      103
+    ],
+    "area": 5149
+  },
+  {
+    "name": "minigame1_update4_13",
+    "path": "assets/ui/minigame1_update/minigame1_update4_13.png",
+    "box": [
+      903,
+      533,
+      1003,
+      635
+    ],
+    "size": [
+      100,
+      102
+    ],
+    "area": 3549
+  },
+  {
+    "name": "minigame1_update4_14",
+    "path": "assets/ui/minigame1_update/minigame1_update4_14.png",
+    "box": [
+      624,
+      534,
+      726,
+      635
+    ],
+    "size": [
+      102,
+      101
+    ],
+    "area": 4621
+  },
+  {
+    "name": "minigame1_update4_15",
+    "path": "assets/ui/minigame1_update/minigame1_update4_15.png",
+    "box": [
+      778,
+      535,
+      860,
+      634
+    ],
+    "size": [
+      82,
+      99
+    ],
+    "area": 2457
+  },
+  {
+    "name": "minigame1_update4_16",
+    "path": "assets/ui/minigame1_update/minigame1_update4_16.png",
+    "box": [
+      282,
+      536,
+      405,
+      644
+    ],
+    "size": [
+      123,
+      108
+    ],
+    "area": 6530
+  },
+  {
+    "name": "minigame1_update4_17",
+    "path": "assets/ui/minigame1_update/minigame1_update4_17.png",
+    "box": [
+      463,
+      536,
+      574,
+      640
+    ],
+    "size": [
+      111,
+      104
+    ],
+    "area": 5703
+  },
+  {
+    "name": "minigame1_update4_18",
+    "path": "assets/ui/minigame1_update/minigame1_update4_18.png",
+    "box": [
+      715,
+      661,
+      818,
+      817
+    ],
+    "size": [
+      103,
+      156
+    ],
+    "area": 5109
+  },
+  {
+    "name": "minigame1_update4_19",
+    "path": "assets/ui/minigame1_update/minigame1_update4_19.png",
+    "box": [
+      1072,
+      664,
+      1145,
+      751
+    ],
+    "size": [
+      73,
+      87
+    ],
+    "area": 1169
+  },
+  {
+    "name": "minigame1_update4_20",
+    "path": "assets/ui/minigame1_update/minigame1_update4_20.png",
+    "box": [
+      417,
+      671,
+      533,
+      807
+    ],
+    "size": [
+      116,
+      136
+    ],
+    "area": 5279
+  },
+  {
+    "name": "minigame1_update4_21",
+    "path": "assets/ui/minigame1_update/minigame1_update4_21.png",
+    "box": [
+      108,
+      672,
+      218,
+      806
+    ],
+    "size": [
+      110,
+      134
+    ],
+    "area": 4908
+  },
+  {
+    "name": "minigame1_update4_22",
+    "path": "assets/ui/minigame1_update/minigame1_update4_22.png",
+    "box": [
+      869,
+      672,
+      943,
+      758
+    ],
+    "size": [
+      74,
+      86
+    ],
+    "area": 1184
+  },
+  {
+    "name": "minigame1_update4_23",
+    "path": "assets/ui/minigame1_update/minigame1_update4_23.png",
+    "box": [
+      257,
+      674,
+      379,
+      814
+    ],
+    "size": [
+      122,
+      140
+    ],
+    "area": 6049
+  },
+  {
+    "name": "minigame1_update4_24",
+    "path": "assets/ui/minigame1_update/minigame1_update4_24.png",
+    "box": [
+      567,
+      679,
+      694,
+      807
+    ],
+    "size": [
+      127,
+      128
+    ],
+    "area": 4564
+  },
+  {
+    "name": "minigame1_update4_25",
+    "path": "assets/ui/minigame1_update/minigame1_update4_25.png",
+    "box": [
+      1275,
+      687,
+      1344,
+      764
+    ],
+    "size": [
+      69,
+      77
+    ],
+    "area": 1023
+  },
+  {
+    "name": "minigame1_update4_26",
+    "path": "assets/ui/minigame1_update/minigame1_update4_26.png",
+    "box": [
+      950,
+      712,
+      1042,
+      814
+    ],
+    "size": [
+      92,
+      102
+    ],
+    "area": 1931
+  },
+  {
+    "name": "minigame1_update4_27",
+    "path": "assets/ui/minigame1_update/minigame1_update4_27.png",
+    "box": [
+      58,
+      840,
+      259,
+      1023
+    ],
+    "size": [
+      201,
+      183
+    ],
+    "area": 12625
+  },
+  {
+    "name": "minigame1_update4_28",
+    "path": "assets/ui/minigame1_update/minigame1_update4_28.png",
+    "box": [
+      1188,
+      845,
+      1384,
+      1025
+    ],
+    "size": [
+      196,
+      180
+    ],
+    "area": 11170
+  },
+  {
+    "name": "minigame1_update4_29",
+    "path": "assets/ui/minigame1_update/minigame1_update4_29.png",
+    "box": [
+      372,
+      864,
+      506,
+      991
+    ],
+    "size": [
+      134,
+      127
+    ],
+    "area": 7350
+  },
+  {
+    "name": "minigame1_update4_30",
+    "path": "assets/ui/minigame1_update/minigame1_update4_30.png",
+    "box": [
+      791,
+      865,
+      951,
+      1028
+    ],
+    "size": [
+      160,
+      163
+    ],
+    "area": 9633
+  },
+  {
+    "name": "minigame1_update4_31",
+    "path": "assets/ui/minigame1_update/minigame1_update4_31.png",
+    "box": [
+      585,
+      882,
+      718,
+      1014
+    ],
+    "size": [
+      133,
+      132
+    ],
+    "area": 7453
+  },
+  {
+    "name": "minigame1_update4_32",
+    "path": "assets/ui/minigame1_update/minigame1_update4_32.png",
+    "box": [
+      983,
+      888,
+      1069,
+      1010
+    ],
+    "size": [
+      86,
+      122
+    ],
+    "area": 3237
+  }
+]

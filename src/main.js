@@ -1,24 +1,6 @@
-const WIDTH = 1180;
-const HEIGHT = 760;
-
-const COLORS = {
-  ink: 0x3e2b22,
-  paper: 0xfff4dc,
-  violet: 0x77559a,
-  berry: 0xa54762,
-  green: 0x6c9b77,
-  teal: 0x3f817a,
-  gold: 0xf0bd4e,
-  clay: 0xb8784a,
-  cream: 0xfff8e9,
-  softBlue: 0x8ab7c6,
-};
-
-const LAYOUT = {
-  book: { x: WIDTH / 2, y: HEIGHT / 2, width: WIDTH, height: HEIGHT },
-  pageTurn: { x: WIDTH / 2 + 20, y: 378, scale: 2.04, frameDelay: 105 },
-  rosarito: { x: 1010, y: 458, scale: 0.38 },
-};
+const { WIDTH, HEIGHT, COLORS, LAYOUT, SCENE_LAYOUTS } = window.RosaritoLayouts;
+const { AUDIO_FILES, AUDIO_SCRIPT } = window.RosaritoAudio;
+const RosaritoData = window.RosaritoData;
 
 const UI_ASSETS = [
   "button_arrow_right",
@@ -82,6 +64,31 @@ const MINIGAME2_ASSETS = [
   "speech_narrative",
 ];
 
+const MINIGAME1_UPDATE_ASSETS = [
+  "minigame1_update_03",
+  "minigame1_update_04",
+  "minigame1_update_05",
+  "minigame1_update_07",
+  "minigame1_update_10",
+  "minigame1_update_15",
+  "minigame1_update2_02",
+  "minigame1_update2_03",
+  "minigame1_update2_04",
+  "minigame1_update2_05",
+  "minigame1_update2_06",
+  "minigame1_update2_07",
+  "minigame1_update3_02",
+  "minigame1_update3_03",
+  "minigame1_update3_04",
+  "minigame1_update3_05",
+  "minigame1_update3_06",
+  "minigame1_update4_01",
+  "minigame1_update4_02",
+  "minigame1_update4_03",
+  "minigame1_update4_27",
+  "minigame1_update4_28",
+];
+
 const ROSARITO_SPRITE = {
   key: "rosarito-festejando",
   path: "assets/characters/rosarito_festejando.png",
@@ -92,62 +99,8 @@ const ROSARITO_SPRITE = {
   frames: 6,
 };
 
-const AUDIO_FILES = [
-  // Add real recordings here when available:
-  // { key: "voice.cover", path: "assets/audio/voice/cover.mp3" },
-  // { key: "sfx.success", path: "assets/audio/sfx/success.mp3" },
-];
-
-const AUDIO_SCRIPT = {
-  voice: {
-    cover: "Rosarito nos invita a jugar en su libro magico.",
-    mission: "Vamos a completar cuatro actividades para encender todas las estrellas.",
-    prep: "Hoy vamos a ayudar a Rosarito a prepararse con sus dones. Mira el don y elige los objetos correctos.",
-    quiz: "Escucha la pregunta y elige una respuesta.",
-    puzzle: "Arma la imagen colocando cada pieza en su lugar.",
-    objects: "Busca los objetos de ensenanza en la mesa.",
-    confirm: "Muy bien. Ganaste una estrella. Toca siguiente para pasar la pagina.",
-    final: "Completaste todas las actividades. Las cuatro estrellas estan encendidas.",
-    transition: "Pasemos la pagina.",
-  },
-  feedback: {
-    success: "Muy bien.",
-    error: "Intentalo nuevamente.",
-    complete: "Actividad completa.",
-  },
-  objects: {
-    Cubo: "Esto es un cubo.",
-    Esfera: "Esto es una esfera.",
-    Zapato: "Esto es un zapato.",
-    Peine: "Esto es un peine.",
-    Tarjetas: "Estas son tarjetas de colores.",
-    Flores: "Estas son flores de colores.",
-    Llave: "Esto es una llave.",
-    Reloj: "Esto es un reloj.",
-    Semillas: "Estas son semillas para contar.",
-    Fichas: "Estas son fichas para contar.",
-    Tetera: "Esto es una tetera.",
-    Bufanda: "Esto es una bufanda.",
-    Bloques: "Estos son bloques para construir.",
-    Palitos: "Estos son palitos para construir.",
-    Sombrero: "Esto es un sombrero.",
-    Cuchara: "Esto es una cuchara.",
-    Tiza: "Esto es una tiza.",
-    Pizarra: "Esto es una pizarra.",
-    Campana: "Esto es una campana.",
-    Florero: "Esto es un florero.",
-    Libro: "Esto es un libro.",
-    Lamina: "Esto es una lamina.",
-    Pelota: "Esto es una pelota.",
-    Boton: "Esto es un boton.",
-    Palmas: "Estas son palmas para marcar el ritmo.",
-    Lentes: "Estos son lentes.",
-    Escoba: "Esto es una escoba.",
-  },
-};
-
 const gameState = {
-  achievements: [false, false, false, false],
+  achievements: [false, false, false],
   quizSet: [],
   quizIndex: 0,
   donPool: [],
@@ -161,13 +114,13 @@ const gameState = {
 };
 
 const quizPool = [
-  { question: "Donde nacio Rosario Vera Penaloza?", options: ["La Rioja", "Buenos Aires", "Mendoza"], correct: 0 },
-  { question: "Que impulso con mucho amor?", options: ["El jardin de infantes", "Los trenes", "La pintura de casas"], correct: 0 },
-  { question: "Como aprendian mejor los ninos segun Rosarito?", options: ["Jugando y explorando", "Quedandose quietos", "Copiando muchas veces"], correct: 0 },
-  { question: "Que usaba para ensenar?", options: ["Objetos y materiales", "Sombreros magicos", "Autos de carrera"], correct: 0 },
-  { question: "Como recordamos a Rosario?", options: ["Como educadora", "Como marinera", "Como doctora de plantas"], correct: 0 },
+  { question: "En donde nacio Rosario Vera Peñaloza?", options: ["La Rioja", "Buenos Aires", "Mendoza"], correct: 0 },
+  { question: "Que fecha importante coincide con su cumpleaños?", options: ["Pascuas", "Navidad", "Dia de la primavera"], correct: 1 },
+  { question: "Donde se encuentra la casa natal de Rosarito?", options: ["Carrizal", "Malanzan", "Atiles"], correct: 2 },
+  { question: "Rosario era la menor de cuantas hermanas?", options: ["4", "2", "3"], correct: 0 },
+  // { question: "Como recordamos a Rosario?", options: ["Como educadora", "Como marinera", "Como doctora de plantas"], correct: 0 },
   { question: "Que lugar ayudo a valorar?", options: ["La escuela y el jardin", "El estadio", "El aeropuerto"], correct: 0 },
-  { question: "Que actitud acompana a aprender?", options: ["Curiosidad", "Enojo", "Apuro"], correct: 0 },
+  // { question: "Que actitud acompana a aprender?", options: ["Curiosidad", "Enojo", "Apuro"], correct: 0 },
 ];
 
 const giftPool = [
@@ -250,6 +203,7 @@ const COMPONENT_ICON_RULES = [
 ];
 
 function componentIconKey(label) {
+  return RosaritoData.componentIconKey(label);
   if (OBJECT_ICON_KEYS[label]) return OBJECT_ICON_KEYS[label];
   const key = normalizeKey(label);
   const match = COMPONENT_ICON_RULES.find(([term]) => key.includes(term));
@@ -307,17 +261,25 @@ function normalizeKey(value) {
 
 function titleCase(value) {
   return repairText(value)
+    .replace(/_/g, " ")
     .split(" ")
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
 }
 
-function buildGiftPoolFromDones(dones) {
+function giftComponentLabel(item) {
+  if (typeof item === "string") return titleCase(item);
+  return titleCase(item?.label || item?.nombre || item?.id || "");
+}
+
+function buildGiftPoolFromDones(data) {
+  return RosaritoData.buildGiftPoolFromDones(data);
+  const dones = Array.isArray(data) ? data : data?.dones;
   if (!Array.isArray(dones) || dones.length === 0) return giftPool;
   const parsed = dones.map((don) => {
-    const correctPool = uniqueList((don.componentes_correctos || []).map(titleCase));
-    const incorrectPool = uniqueList((don.componentes_incorrectos || []).map(titleCase));
+    const correctPool = uniqueList((don.componentes_correctos || []).map(giftComponentLabel));
+    const incorrectPool = uniqueList((don.componentes_incorrectos || don.distractores_recomendados || []).map(giftComponentLabel));
     if (correctPool.length < 2 || incorrectPool.length < 2) return null;
     const correct = sample(correctPool, 2).map((label, index) => ({
       id: `${don.id || "don"}-correct-${index}-${normalizeKey(label)}`,
@@ -331,9 +293,9 @@ function buildGiftPoolFromDones(dones) {
     }));
     return {
       id: don.id,
-      name: repairText(don.titulo_para_ninos || don.nombre),
-      subtitle: repairText(don.nombre || ""),
-      prompt: repairText(don.concepto || ""),
+      name: repairText(don.titulo_para_ninos || don.nombre || don.nombre_pdf || "Don de Rosarito"),
+      subtitle: repairText(don.nombre_pdf || don.nombre || ""),
+      prompt: repairText(don.consigna_para_ninos || don.pregunta_principal || don.concepto || don.descripcion_docente || "Elegi los componentes correctos."),
       correct: correct.map((option) => option.id),
       options: shuffle([...correct, ...incorrect]).slice(0, 4),
       feedbackCorrect: repairText(don.feedback_correcto || AUDIO_SCRIPT.feedback.success),
@@ -344,6 +306,7 @@ function buildGiftPoolFromDones(dones) {
 }
 
 function buildPuzzlePool(data) {
+  return RosaritoData.buildPuzzlePool(data);
   const list = Array.isArray(data?.puzzles) ? data.puzzles : [];
   return list
     .filter((puzzle) => puzzle?.previewKey && puzzle?.preview && Array.isArray(puzzle.pieces) && puzzle.pieces.length === 4)
@@ -361,6 +324,7 @@ function buildPuzzlePool(data) {
 }
 
 function buildHiddenObjectPool(data) {
+  return RosaritoData.buildHiddenObjectPool(data);
   const list = Array.isArray(data?.objects) ? data.objects : [];
   return list
     .filter((obj) => obj?.id && obj?.label && obj?.iconKey && obj?.spriteKey)
@@ -381,6 +345,7 @@ function buildHiddenObjectPool(data) {
 }
 
 function selectHiddenObjects(pool) {
+  return RosaritoData.selectHiddenObjects(pool);
   const required = pool.filter((obj) => obj.required);
   const optional = pool.filter((obj) => !obj.required);
   const selected = [...required, ...sample(optional, Math.max(0, 4 - required.length))];
@@ -388,6 +353,7 @@ function selectHiddenObjects(pool) {
 }
 
 function loadPuzzleAssets(scene, puzzles, onComplete) {
+  return RosaritoData.loadPuzzleAssets(scene, puzzles, onComplete);
   let queued = false;
   puzzles.forEach((puzzle) => {
     if (!scene.textures.exists(puzzle.previewKey)) {
@@ -410,6 +376,7 @@ function loadPuzzleAssets(scene, puzzles, onComplete) {
 }
 
 function loadHiddenObjectAssets(scene, objects, onComplete) {
+  return RosaritoData.loadHiddenObjectAssets(scene, objects, onComplete);
   let queued = false;
   const data = scene.cache.json.get("hiddenObjects") || {};
   const background = data.background || {};
@@ -446,10 +413,11 @@ function loadHiddenObjectAssets(scene, objects, onComplete) {
 }
 
 function resetRun() {
-  gameState.achievements = [false, false, false, false];
+  return RosaritoData.resetRunState(gameState);
+  gameState.achievements = [false, false, false];
   gameState.quizSet = sample(quizPool, 3);
   gameState.quizIndex = 0;
-  gameState.giftSet = sample(gameState.donPool.length ? gameState.donPool : giftPool, 3);
+  gameState.giftSet = [];
   gameState.giftIndex = 0;
   gameState.puzzleSet = gameState.puzzlePool.slice(0, Math.min(3, gameState.puzzlePool.length));
   gameState.puzzleIndex = 0;
@@ -457,14 +425,12 @@ function resetRun() {
 }
 
 function directSceneFromUrl() {
+  return RosaritoData.directSceneFromUrl();
   const value = new URLSearchParams(window.location.search).get("scene");
   const key = normalizeKey(value || "");
   return {
     cover: "Cover",
     inicio: "Cover",
-    dones: "PrepGame",
-    prep: "PrepGame",
-    regalos: "PrepGame",
     preguntas: "QuizGame",
     quiz: "QuizGame",
     infancia: "QuizGame",
@@ -477,6 +443,7 @@ function directSceneFromUrl() {
 }
 
 function playTone(scene, type = "click") {
+  return window.RosaritoAudio.playTone(scene, type);
   const sfxKey = `sfx.${type}`;
   if (scene.cache.audio.exists(sfxKey)) {
     scene.sound.play(sfxKey);
@@ -504,18 +471,11 @@ function playTone(scene, type = "click") {
   oscillator.stop(context.currentTime + settings.duration);
 }
 
-function playAudioKey(scene, key, fallbackText = "") {
+function playAudioKey(scene, key) {
+  return window.RosaritoAudio.playAudioKey(scene, key);
   if (key && scene.cache.audio.exists(key)) {
     scene.sound.play(key);
-    return;
   }
-  if (!fallbackText || !window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(fallbackText);
-  utterance.lang = "es-AR";
-  utterance.rate = 0.88;
-  utterance.pitch = 1.08;
-  window.speechSynthesis.speak(utterance);
 }
 
 class BootScene extends Phaser.Scene {
@@ -531,6 +491,7 @@ class BootScene extends Phaser.Scene {
     }
     UI_ASSETS.forEach((key) => this.load.image(`ui-${key}`, `assets/ui/selected/${key}.png`));
     MINIGAME2_ASSETS.forEach((key) => this.load.image(`m2-${key}`, `assets/ui/minigame2/${key}.png`));
+    MINIGAME1_UPDATE_ASSETS.forEach((key) => this.load.image(`m1-${key}`, `assets/ui/minigame1_update/${key}.png`));
     this.load.json("dones", "src/dones.json");
     this.load.json("puzzles", "assets/puzzles/puzzles.json");
     this.load.json("hiddenObjects", "assets/hiddenObjects/objects.json");
@@ -571,7 +532,7 @@ class BaseScene extends Phaser.Scene {
       .on("pointerover", () => playTone(this, "hover"))
       .on("pointerdown", () => {
         playTone(this, "click");
-        if (this.currentVoiceKey) playAudioKey(this, `voice.${this.currentVoiceKey}`, AUDIO_SCRIPT.voice[this.currentVoiceKey]);
+        if (this.currentVoiceKey) playAudioKey(this, `voice.${this.currentVoiceKey}`);
       });
     this.add.text(112, 70, title, {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
@@ -596,6 +557,7 @@ class BaseScene extends Phaser.Scene {
   }
 
   drawProgress() {
+    return window.RosaritoUI.drawProgress(this, gameState);
     for (let i = 0; i < 4; i += 1) {
       const x = 770 + i * 76;
       const star = this.add.image(x, 96, "ui-icon_star").setDisplaySize(50, 50);
@@ -638,13 +600,13 @@ class BaseScene extends Phaser.Scene {
   }
 
   makeNextButton(label, nextScene) {
-    const button = this.add.image(1098, 675, "ui-button_arrow_right").setDisplaySize(126, 126).setInteractive({ useHandCursor: true });
+    const button = this.add.image(1098, 675, "ui-button_arrow_right").setDisplaySize(126, 126).setDepth(900).setInteractive({ useHandCursor: true });
     this.add.text(935, 688, label, {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "23px",
       fontStyle: "bold",
       color: "#fff8e9",
-    }).setOrigin(0.5);
+    }).setOrigin(0.5).setDepth(901);
     button.on("pointerover", () => {
       button.setDisplaySize(138, 138);
       playTone(this, "hover");
@@ -652,7 +614,7 @@ class BaseScene extends Phaser.Scene {
     button.on("pointerout", () => button.setDisplaySize(126, 126));
     button.on("pointerdown", () => {
       playTone(this, "click");
-      this.scene.start("PageTransition", { next: nextScene });
+      this.scene.start(nextScene);
     });
     return button;
   }
@@ -692,6 +654,7 @@ class BaseScene extends Phaser.Scene {
   }
 
   drawStarCounter(x = 1048, y = 96, value = 0) {
+    return window.RosaritoUI.drawStarCounter(this, x, y, value);
     this.add.image(x, y, "ui-score_star_panel").setDisplaySize(118, 88).setDepth(5);
     this.add.text(x + 13, y, String(value), {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
@@ -726,7 +689,7 @@ class BaseScene extends Phaser.Scene {
     card.on("pointerout", () => card.setScale(1));
     card.on("pointerdown", () => {
       playTone(this, "click");
-      playAudioKey(this, `voice.quiz.${index}`, option);
+      playAudioKey(this, `voice.quiz.${index}`);
       onClick(card);
     });
     return card;
@@ -747,7 +710,7 @@ class BaseScene extends Phaser.Scene {
     card.setSize(width, 86).setInteractive({ useHandCursor: true });
     card.on("pointerdown", () => {
       playTone(this, "click");
-      if (voiceText) playAudioKey(this, `voice.object.${label}`, voiceText);
+      playAudioKey(this, `voice.object.${label}`);
       onClick();
     });
     card.on("pointerover", () => {
@@ -760,22 +723,25 @@ class BaseScene extends Phaser.Scene {
 
   makeComponentOption(x, y, option, onClick, voiceText = "") {
     const labelText = typeof option === "string" ? option : option.label;
-    const card = this.add.container(x, y);
-    const bg = this.add.image(0, -8, "ui-panel_task_floral").setDisplaySize(150, 126);
-    const icon = this.add.image(0, -25, componentIconKey(labelText)).setDisplaySize(64, 64);
-    const label = this.add.text(0, 66, labelText, {
+    const cardKey = option.cardKey || "m1-minigame1_update2_04";
+    const labelSize = labelText.length > 30 ? "17px" : labelText.length > 20 ? "19px" : "22px";
+    const card = this.add.container(x, y).setDepth(8);
+    const bg = this.add.image(0, 0, cardKey).setDisplaySize(230, 110);
+    const icon = this.add.image(18, -26, componentIconKey(labelText)).setDisplaySize(44, 44);
+    const label = this.add.text(18, 27, labelText, {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "17px",
+      fontSize: labelSize,
       fontStyle: "bold",
       color: "#3e2b22",
       align: "center",
-      wordWrap: { width: 135 },
+      wordWrap: { width: 160 },
+      lineSpacing: 0,
     }).setOrigin(0.5);
     card.add([bg, icon, label]);
-    card.setSize(150, 156).setInteractive({ useHandCursor: true });
+    card.setSize(230, 110).setInteractive({ useHandCursor: true });
     card.on("pointerdown", () => {
       playTone(this, "click");
-      if (voiceText) playAudioKey(this, `voice.object.${labelText}`, voiceText);
+      playAudioKey(this, `voice.object.${labelText}`);
       onClick(card);
     });
     card.on("pointerover", () => {
@@ -787,9 +753,10 @@ class BaseScene extends Phaser.Scene {
   }
 
   feedback(message, good = true) {
+    return window.RosaritoUI.createFeedback(this, message, good);
     playTone(this, good ? "success" : "error");
-    playAudioKey(this, good ? "voice.feedback.success" : "voice.feedback.error", good ? AUDIO_SCRIPT.feedback.success : AUDIO_SCRIPT.feedback.error);
-    const panel = this.add.container(WIDTH / 2, 145);
+    playAudioKey(this, good ? "voice.feedback.success" : "voice.feedback.error");
+    const panel = this.add.container(WIDTH / 2, 145).setDepth(1000);
     panel.add(this.add.image(0, 0, good ? "ui-speech_large_lilac" : "ui-speech_large_cream").setDisplaySize(690, 126));
     panel.add(this.add.image(-292, -2, good ? "ui-icon_check" : "ui-icon_x").setDisplaySize(54, 54));
     panel.add(this.add.text(35, 0, message, {
@@ -804,34 +771,7 @@ class BaseScene extends Phaser.Scene {
   }
 
   narrateScreen(key) {
-    playAudioKey(this, `voice.${key}`, AUDIO_SCRIPT.voice[key]);
-  }
-}
-
-class PageTransitionScene extends Phaser.Scene {
-  constructor() {
-    super("PageTransition");
-  }
-
-  create(data) {
-    document.body.dataset.scene = "PageTransition";
-    this.cameras.main.setBackgroundColor("#557b72");
-    playTone(this, "page");
-    playAudioKey(this, "voice.transition", AUDIO_SCRIPT.voice.transition);
-    this.add.image(LAYOUT.book.x, LAYOUT.book.y, "book-bg").setDisplaySize(LAYOUT.book.width, LAYOUT.book.height);
-    const page = this.add.image(LAYOUT.pageTurn.x, LAYOUT.pageTurn.y, "page-turn-1").setScale(LAYOUT.pageTurn.scale).setAlpha(0.98);
-    const keys = [1, 2, 3, 4, 5, 6].map((i) => `page-turn-${i}`);
-    let frame = 1;
-    this.time.addEvent({
-      delay: LAYOUT.pageTurn.frameDelay,
-      repeat: keys.length - 2,
-      callback: () => {
-        page.setTexture(keys[frame]);
-        frame += 1;
-      },
-    });
-    this.tweens.add({ targets: page, alpha: 1, duration: 520, ease: "Sine.easeInOut" });
-    this.time.delayedCall(760, () => this.scene.start(data.next));
+    playAudioKey(this, `voice.${key}`);
   }
 }
 
@@ -891,7 +831,7 @@ class CoverScene extends BaseScene {
     this.add.image(650, 666, "ui-flower_cluster_bottom").setDisplaySize(150, 96).setDepth(5);
     this.add.image(90, 450, "ui-flower_cluster_left").setDisplaySize(96, 58).setAngle(-18).setDepth(4);
 
-    this.drawStarCounter(1044, 96, gameState.achievements.filter(Boolean).length);
+    this.drawStarCounter(SCENE_LAYOUTS.cover.starCounter.x, SCENE_LAYOUTS.cover.starCounter.y, gameState.achievements.filter(Boolean).length);
     this.add.image(860, 112, "ui-speech_large_lilac").setDisplaySize(300, 98).setDepth(5);
     this.add.text(860, 112, "Tu mision", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
@@ -915,15 +855,14 @@ class CoverScene extends BaseScene {
       this.scene.start(sceneKey);
     };
     const cards = [
-      ["Dones", "ui-icon_bag", "PrepGame"],
       ["Infancia", "ui-icon_question", "QuizGame"],
       ["Puzzle", "ui-icon_puzzle", "PuzzleGame"],
       ["Objetos", "ui-icon_ink", "ObjectsGame"],
     ];
     cards.forEach(([label, icon, sceneKey], i) => {
-      this.makeCoverMissionCard(700 + i * 118, 435, i + 1, label, icon, () => startTestScene(sceneKey)).setDepth(6);
+      this.makeCoverMissionCard(745 + i * 150, 435, i + 1, label, icon, () => startTestScene(sceneKey)).setDepth(6);
     });
-    this.add.text(895, 505, "Toca una tarjeta para probar una actividad.", {
+    this.add.text(895, 522, "Toca una tarjeta para probar una actividad.", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "14px",
       color: "#6a3d8f",
@@ -948,17 +887,16 @@ class CoverScene extends BaseScene {
       lineSpacing: 2,
     }).setOrigin(0.5).setDepth(5);
 
-    const start = this.makeButton(1010, 706, "Comenzar", () => {
+    const start = this.makeButton(SCENE_LAYOUTS.cover.startButton.x, SCENE_LAYOUTS.cover.startButton.y, "Comenzar", () => {
       resetRun();
-      this.scene.start("PrepGame");
-    }, 280);
+      this.scene.start("QuizGame");
+    }, SCENE_LAYOUTS.cover.startButton.width);
     start.setDepth(10);
     this.add.image(1120, 706, "ui-icon_arrow_right").setDisplaySize(48, 42).setDepth(11);
     this.add.image(1088, 685, "ui-flower_cluster_bottom").setDisplaySize(86, 58).setDepth(11);
-    this.input.keyboard?.on("keydown-ONE", () => startTestScene("PrepGame"));
-    this.input.keyboard?.on("keydown-TWO", () => startTestScene("QuizGame"));
-    this.input.keyboard?.on("keydown-THREE", () => startTestScene("PuzzleGame"));
-    this.input.keyboard?.on("keydown-FOUR", () => startTestScene("ObjectsGame"));
+    this.input.keyboard?.on("keydown-ONE", () => startTestScene("QuizGame"));
+    this.input.keyboard?.on("keydown-TWO", () => startTestScene("PuzzleGame"));
+    this.input.keyboard?.on("keydown-THREE", () => startTestScene("ObjectsGame"));
   }
 }
 
@@ -968,49 +906,109 @@ class PrepGameScene extends BaseScene {
   }
 
   create() {
-    this.createBook("Los dones de Rosarito", "Observa el don y toca solo los componentes correctos.");
-    this.rosaritoSprite.setPosition(1082, 595).setScale(0.19);
+    this.createBook("", "", { progress: true });
+    this.rosaritoSprite.setPosition(1105, 615).setScale(0.2).setDepth(8).setVisible(true);
     this.narrateScreen("prep");
     this.selected = new Set();
+    this.drawDonesHeader();
     this.showGift();
+  }
+
+  drawDonesHeader() {
+    this.add.image(196, 84, "m1-minigame1_update_04").setDisplaySize(230, 50).setDepth(4).setFlipX(true);
+    this.add.image(512, 84, "m1-minigame1_update_05").setDisplaySize(230, 50).setDepth(4);
+    this.add.image(358, 122, "m1-minigame1_update_03").setDisplaySize(42, 40).setDepth(5);
+    this.add.text(354, 82, "Los dones de Rosarito", {
+      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+      fontSize: "46px",
+      fontStyle: "bold",
+      color: "#6a3d8f",
+      stroke: "#f6e2ba",
+      strokeThickness: 4,
+      align: "center",
+    }).setOrigin(0.5).setDepth(6);
+    this.add.text(354, 165, "Observa el don y toca solo los\ncomponentes correctos.", {
+      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+      fontSize: "26px",
+      color: "#3e2b22",
+      align: "center",
+      lineSpacing: 4,
+    }).setOrigin(0.5).setDepth(6);
+    this.add.image(90, 424, "m1-minigame1_update4_27").setDisplaySize(150, 130).setDepth(3);
+    this.add.image(530, 676, "m1-minigame1_update4_28").setDisplaySize(146, 112).setDepth(3);
   }
 
   showGift() {
     const gift = gameState.giftSet[gameState.giftIndex];
-    this.add.image(218, 236, "ui-label_long_cream").setDisplaySize(270, 70);
-    this.add.text(218, 236, `Don ${gameState.giftIndex + 1} de 3`, {
+    this.add.image(354, 236, "m1-minigame1_update_07").setDisplaySize(350, 62).setDepth(5);
+    this.add.text(354, 236, `Don ${gameState.giftIndex + 1} de 3`, {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "27px",
+      fontSize: "31px",
       fontStyle: "bold",
       color: "#3e2b22",
-    }).setOrigin(0.5);
-    this.add.image(305, 400, "ui-speech_large_lilac").setDisplaySize(435, 250);
-    this.add.image(305, 266, "ui-icon_sparkles").setDisplaySize(54, 54);
-    this.add.text(305, 348, gift.name, { fontFamily: "Comic Sans MS, Trebuchet MS, Arial", fontSize: "29px", fontStyle: "bold", color: "#5b3277", wordWrap: { width: 330 }, align: "center" }).setOrigin(0.5);
-    this.add.text(305, 418, gift.prompt, { fontFamily: "Comic Sans MS, Trebuchet MS, Arial", fontSize: "19px", color: "#3e2b22", wordWrap: { width: 330 }, align: "center", lineSpacing: 4 }).setOrigin(0.5);
-    this.add.image(305, 525, "ui-label_long_cream").setDisplaySize(280, 62).setAlpha(0.95);
-    this.add.text(305, 525, "Imagen del don", {
+    }).setOrigin(0.5).setDepth(6);
+    this.add.image(632, 244, "ui-icon_sparkles").setDisplaySize(56, 56).setDepth(6);
+
+    this.add.image(354, 412, "m1-minigame1_update_10").setDisplaySize(520, 244).setDepth(5);
+    const giftTitleSize = gift.name.length > 28 ? "29px" : "34px";
+    const giftPromptSize = gift.prompt.length > 66 ? "21px" : "24px";
+    this.add.text(354, 368, gift.name, {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "20px",
+      fontSize: giftTitleSize,
+      fontStyle: "bold",
       color: "#6a3d8f",
-    }).setOrigin(0.5);
-    this.add.image(855, 344, "ui-speech_large_cream").setDisplaySize(510, 286).setAlpha(0.86);
-    this.add.text(855, 205, "Componentes del don", {
+      wordWrap: { width: 420 },
+      align: "center",
+      lineSpacing: 2,
+    }).setOrigin(0.5).setDepth(6);
+    this.add.image(354, 424, "m1-minigame1_update4_03").setDisplaySize(150, 36).setDepth(6);
+    this.add.text(354, 472, gift.prompt, {
+      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+      fontSize: giftPromptSize,
+      color: "#3e2b22",
+      wordWrap: { width: 405 },
+      align: "center",
+      lineSpacing: 3,
+    }).setOrigin(0.5).setDepth(6);
+    this.add.image(354, 590, "m1-minigame1_update_15").setDisplaySize(330, 64).setDepth(5);
+    this.add.text(354, 590, "Imagen del don", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "24px",
       fontStyle: "bold",
       color: "#6a3d8f",
+    }).setOrigin(0.5).setDepth(6);
+
+    this.add.image(900, 184, "m1-minigame1_update4_01").setDisplaySize(190, 28).setDepth(4);
+    this.add.image(900, 184, "m1-minigame1_update4_02").setDisplaySize(190, 28).setDepth(4).setFlipX(true);
+    this.add.text(900, 184, "Componentes del don", {
+      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+      fontSize: "34px",
+      fontStyle: "bold",
+      color: "#6a3d8f",
       align: "center",
       wordWrap: { width: 410 },
-    }).setOrigin(0.5);
+    }).setOrigin(0.5).setDepth(6);
+    this.add.image(900, 222, "m1-minigame1_update_03").setDisplaySize(34, 32).setDepth(6);
+    this.add.image(900, 400, "m1-minigame1_update2_02").setDisplaySize(560, 320).setDepth(4);
+
+    const cardKeys = ["m1-minigame1_update2_04", "m1-minigame1_update2_03", "m1-minigame1_update2_06", "m1-minigame1_update2_05"];
     gift.options.forEach((option, i) => {
-      const x = 745 + (i % 2) * 220;
-      const y = 330 + Math.floor(i / 2) * 132;
+      const x = SCENE_LAYOUTS.dones.optionStart.x + (i % 2) * SCENE_LAYOUTS.dones.optionGap.x;
+      const y = SCENE_LAYOUTS.dones.optionStart.y + Math.floor(i / 2) * SCENE_LAYOUTS.dones.optionGap.y;
+      option.cardKey = cardKeys[i % cardKeys.length];
       this.makeComponentOption(x, y, option, (card) => this.pickGiftObject(option, gift, card), AUDIO_SCRIPT.objects[option.label]);
     });
-    this.add.image(865, 572, "ui-label_long_cream").setDisplaySize(360, 70);
-    this.add.image(690, 572, "ui-icon_star").setDisplaySize(62, 62);
-    this.add.text(885, 572, "Elige 2 objetos correctos.", { fontFamily: "Comic Sans MS, Trebuchet MS, Arial", fontSize: "23px", color: "#3e2b22", wordWrap: { width: 255 }, align: "center" }).setOrigin(0.5);
+    this.add.image(890, 612, "m1-minigame1_update2_07").setDisplaySize(440, 82).setDepth(5);
+    this.add.image(700, 606, "m1-minigame1_update3_02").setDisplaySize(76, 76).setDepth(6);
+    this.add.text(910, 610, `Elige ${gift.correct.length} objetos\ncorrectos.`, {
+      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+      fontSize: "26px",
+      fontStyle: "bold",
+      color: "#3e2b22",
+      wordWrap: { width: 260 },
+      align: "center",
+      lineSpacing: 2,
+    }).setOrigin(0.5).setDepth(6);
   }
 
   pickGiftObject(option, gift, card) {
@@ -1033,7 +1031,7 @@ class PrepGameScene extends BaseScene {
       if (gameState.giftIndex >= gameState.giftSet.length) {
         gameState.achievements[0] = true;
         this.celebrateRosarito();
-        this.time.delayedCall(1450, () => this.scene.start("Confirm", { index: 0, next: "QuizGame" }));
+        this.time.delayedCall(850, () => this.scene.start("QuizGame"));
       } else {
         this.time.delayedCall(850, () => {
           this.selected.clear();
@@ -1098,7 +1096,7 @@ class QuizGameScene extends BaseScene {
     }).setOrigin(0.5).setDepth(8);
     this.add.image(355, 650, "ui-icon_mouse").setDisplaySize(48, 48).setDepth(8);
 
-    this.drawStarCounter(1126, 82, gameState.achievements.filter(Boolean).length);
+    this.drawStarCounter(SCENE_LAYOUTS.quiz.starCounter.x, SCENE_LAYOUTS.quiz.starCounter.y, gameState.achievements.filter(Boolean).length);
     this.add.image(864, 92, "m2-header_responde").setDisplaySize(380, 74).setDepth(5);
     this.add.image(884, 188, "m2-instruction_banner").setDisplaySize(430, 62).setDepth(4);
     this.add.text(884, 186, "Haz clic en la respuesta correcta.", {
@@ -1141,16 +1139,16 @@ class QuizGameScene extends BaseScene {
     }).setOrigin(0.5).setDepth(7);
     this.add.image(884, 350, "m2-heart").setDisplaySize(30, 28).setDepth(7);
     q.options.forEach((option, i) => {
-      this.makeQuizAnswerCard(720 + i * 170, 526, option, i, (card) => {
+      this.makeQuizAnswerCard(SCENE_LAYOUTS.quiz.answerStart.x + i * SCENE_LAYOUTS.quiz.answerGap, SCENE_LAYOUTS.quiz.answerStart.y, option, i, (card) => {
         if (i === q.correct) {
           card.disableInteractive();
           card.add(this.add.image(58, -104, "ui-icon_check").setDisplaySize(42, 42));
           this.feedback("Respuesta correcta!", true);
           gameState.quizIndex += 1;
           if (gameState.quizIndex >= gameState.quizSet.length) {
-            gameState.achievements[1] = true;
+            gameState.achievements[0] = true;
             this.celebrateRosarito();
-            this.time.delayedCall(1450, () => this.scene.start("Confirm", { index: 1, next: "PuzzleGame" }));
+            this.time.delayedCall(850, () => this.scene.start("PuzzleGame"));
           } else {
             this.time.delayedCall(650, () => this.scene.restart());
           }
@@ -1200,7 +1198,7 @@ class PuzzleGameScene extends BaseScene {
   drawPuzzleStoryPage() {
     this.add.ellipse(170, 650, 142, 26, 0x5b3f2d, 0.18).setDepth(2);
     this.add.image(370, 94, "ui-label_long_cream").setDisplaySize(164, 52).setTint(0x8c63a8).setAlpha(0.86).setDepth(4);
-    this.add.text(370, 94, "Juego 3", {
+    this.add.text(370, 94, "Juego 2", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "26px",
       fontStyle: "bold",
@@ -1268,7 +1266,7 @@ class PuzzleGameScene extends BaseScene {
   }
 
   drawPuzzleBoard(puzzle) {
-    this.drawStarCounter(1110, 84, gameState.achievements.filter(Boolean).length);
+    this.drawStarCounter(SCENE_LAYOUTS.puzzle.starCounter.x, SCENE_LAYOUTS.puzzle.starCounter.y, gameState.achievements.filter(Boolean).length);
     this.add.image(884, 128, "ui-label_long_cream").setDisplaySize(410, 66).setDepth(4);
     this.add.text(884, 126, "Arma la imagen con las piezas.", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
@@ -1278,7 +1276,7 @@ class PuzzleGameScene extends BaseScene {
     this.add.image(884, 166, "m2-heart").setDisplaySize(30, 28).setDepth(5);
     this.add.image(1140, 156, "m2-leaves").setDisplaySize(72, 52).setAngle(22).setDepth(4);
 
-    const board = { x: 885, y: 365, size: 390 };
+    const board = { ...SCENE_LAYOUTS.puzzle.board };
     board.scale = board.size / 512;
     const frame = this.add.graphics().setDepth(4);
     frame.fillStyle(0xb992d6, 0.78);
@@ -1404,7 +1402,7 @@ class PuzzleGameScene extends BaseScene {
   }
 
   createLockedNextButton() {
-    this.nextButton = this.add.container(1095, 675).setAlpha(0.42).setDepth(20);
+    this.nextButton = this.add.container(SCENE_LAYOUTS.puzzle.nextButton.x, SCENE_LAYOUTS.puzzle.nextButton.y).setAlpha(0.42).setDepth(900);
     this.nextButton.add(this.add.image(0, 0, "ui-button_arrow_right").setDisplaySize(126, 126));
     this.nextButton.add(this.add.text(-118, 12, "Siguiente", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
@@ -1425,16 +1423,16 @@ class PuzzleGameScene extends BaseScene {
       playTone(this, "click");
       gameState.puzzleIndex += 1;
       if (gameState.puzzleIndex >= gameState.puzzleSet.length) {
-        this.scene.start("PageTransition", { next: "ObjectsGame" });
+        this.scene.start("ObjectsGame");
       } else {
-        this.scene.start("PageTransition", { next: "PuzzleGame" });
+        this.scene.start("PuzzleGame");
       }
     });
   }
 
   completePuzzle() {
     this.feedback("Imagen completa!", true);
-    gameState.achievements[2] = true;
+    gameState.achievements[1] = true;
     this.celebrateRosarito();
     this.enableNextButton();
   }
@@ -1515,7 +1513,7 @@ class ObjectsGameScene extends BaseScene {
   }
 
   drawSearchScene() {
-    this.drawStarCounter(1110, 84, gameState.achievements.filter(Boolean).length);
+    this.drawStarCounter(SCENE_LAYOUTS.objects.starCounter.x, SCENE_LAYOUTS.objects.starCounter.y, gameState.achievements.filter(Boolean).length);
     this.add.image(895, 92, "ui-label_long_cream").setDisplaySize(390, 70).setTint(0xb994d2).setDepth(5);
     this.add.text(895, 92, "Encuentra los objetos", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
@@ -1526,7 +1524,7 @@ class ObjectsGameScene extends BaseScene {
     this.add.image(895, 137, "m2-heart").setDisplaySize(30, 28).setDepth(6);
     this.add.image(1140, 145, "m2-leaves").setDisplaySize(78, 56).setAngle(18).setDepth(4);
 
-    this.sceneBounds = { x: 902, y: 378, width: 520, height: 430 };
+    this.sceneBounds = { ...SCENE_LAYOUTS.objects.sceneBounds };
     const frame = this.add.graphics().setDepth(4);
     frame.fillStyle(0xf6dfb6, 0.95);
     frame.fillRoundedRect(630, 136, 544, 484, 24);
@@ -1540,7 +1538,7 @@ class ObjectsGameScene extends BaseScene {
     this.add.image(675, 588, "ui-flower_cluster_bottom").setDisplaySize(92, 58).setDepth(6);
     this.add.image(1138, 584, "ui-flower_cluster_left").setDisplaySize(74, 62).setAngle(14).setDepth(6);
 
-    this.successPanel = this.add.container(896, 626).setAlpha(0).setDepth(14);
+    this.successPanel = this.add.container(896, 626).setAlpha(0).setDepth(850);
     this.successPanel.add(this.add.image(0, 0, "ui-label_long_cream").setDisplaySize(350, 80));
     this.successPanel.add(this.add.image(-152, -2, "m2-heart").setDisplaySize(28, 26));
     this.successPanel.add(this.add.text(18, 0, "Que bien! Rosario usaba estos objetos para ensenar con amor.", {
@@ -1616,7 +1614,7 @@ class ObjectsGameScene extends BaseScene {
     target.setData("found", true);
     target.disableInteractive();
     playTone(this, "success");
-    playAudioKey(this, `voice.object.${obj.label}`, AUDIO_SCRIPT.objects[obj.label] || obj.label);
+    playAudioKey(this, `voice.object.${obj.label}`);
     this.found += 1;
     const item = this.checkItems.get(obj.id);
     if (item) {
@@ -1625,14 +1623,14 @@ class ObjectsGameScene extends BaseScene {
       item.row.setAlpha(0.82);
     }
     this.tweens.add({ targets: target, scale: 1.16, alpha: 0.54, yoyo: true, duration: 180, onComplete: () => target.setAlpha(0.56) });
-    this.add.star(obj.x + obj.width / 2, obj.y - obj.height / 2, 5, 8, 18, COLORS.gold).setStrokeStyle(2, 0x8a6534).setDepth(20);
+    this.add.star(obj.x + obj.width / 2, obj.y - obj.height / 2, 5, 8, 18, COLORS.gold).setStrokeStyle(2, 0x8a6534).setDepth(25);
     if (this.found >= this.activeObjects.length) {
       this.completeHiddenObjects();
     }
   }
 
   createObjectsNextButton() {
-    this.nextButton = this.add.container(1095, 675).setAlpha(0.42).setDepth(20);
+    this.nextButton = this.add.container(SCENE_LAYOUTS.objects.nextButton.x, SCENE_LAYOUTS.objects.nextButton.y).setAlpha(0.42).setDepth(900);
     this.nextButton.add(this.add.image(0, 0, "ui-button_arrow_right").setDisplaySize(126, 126));
     this.nextButton.add(this.add.text(-118, 12, "Siguiente", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
@@ -1651,42 +1649,16 @@ class ObjectsGameScene extends BaseScene {
     this.nextButton.on("pointerout", () => this.nextButton.setScale(1));
     this.nextButton.on("pointerdown", () => {
       playTone(this, "click");
-      this.scene.start("PageTransition", { next: "Final" });
+      this.scene.start("Final");
     });
   }
 
   completeHiddenObjects() {
-    gameState.achievements[3] = true;
+    gameState.achievements[2] = true;
     this.celebrateRosarito();
     this.feedback("Encontraste todos los objetos!", true);
     this.tweens.add({ targets: this.successPanel, alpha: 1, y: 610, duration: 280, ease: "Back.easeOut" });
     this.enableObjectsNextButton();
-  }
-}
-
-class ConfirmScene extends BaseScene {
-  constructor() {
-    super("Confirm");
-  }
-
-  create(data) {
-    const labels = ["Dones completos", "Preguntas completas", "Rompecabezas completo", "Objetos encontrados"];
-    this.createBook("", "");
-    this.rosaritoSprite.setPosition(965, 485).setScale(0.38);
-    this.celebrateRosarito();
-    this.narrateScreen("confirm");
-    this.add.image(315, 365, "ui-icon_star").setDisplaySize(250, 250);
-    this.add.text(315, 365, "OK", { fontSize: "60px", fontStyle: "bold", color: "#3e2b22" }).setOrigin(0.5);
-    this.add.image(705, 220, "ui-panel_floral_wide").setDisplaySize(380, 125);
-    this.add.text(705, 220, labels[data.index], { fontFamily: "Comic Sans MS, Trebuchet MS, Arial", fontSize: "31px", fontStyle: "bold", color: "#5b3277" }).setOrigin(0.5);
-    this.add.text(610, 315, "Rosarito festeja contigo. Sigamos a la proxima pagina.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "28px",
-      color: "#3e2b22",
-      lineSpacing: 10,
-      wordWrap: { width: 260 },
-    });
-    this.makeNextButton("Siguiente", data.next);
   }
 }
 
@@ -1707,7 +1679,7 @@ class FinalScene extends BaseScene {
       fontStyle: "bold",
       color: "#6a3d8f",
     }).setOrigin(0.5);
-    this.add.text(110, 245, "Las cuatro estrellas estan encendidas. Rosarito ya tiene sus dones, sus recuerdos y sus objetos de ensenanza.", {
+    this.add.text(110, 245, "Las tres estrellas estan encendidas. Rosarito ya tiene sus recuerdos, su rompecabezas y sus objetos de ensenanza.", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "30px",
       color: "#3e2b22",
@@ -1715,7 +1687,7 @@ class FinalScene extends BaseScene {
       wordWrap: { width: 430 },
     });
     this.add.image(825, 360, "ui-icon_star").setDisplaySize(260, 260);
-    this.add.text(825, 360, "4/4", { fontSize: "72px", fontStyle: "bold", color: "#3e2b22" }).setOrigin(0.5);
+    this.add.text(825, 360, "3/3", { fontSize: "72px", fontStyle: "bold", color: "#3e2b22" }).setOrigin(0.5);
     this.makeButton(975, 710, "Jugar de nuevo", () => {
       resetRun();
       this.scene.start("Cover");
@@ -1733,7 +1705,7 @@ const config = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [BootScene, PageTransitionScene, CoverScene, PrepGameScene, QuizGameScene, PuzzleGameScene, ObjectsGameScene, ConfirmScene, FinalScene],
+  scene: [BootScene, CoverScene, QuizGameScene, PuzzleGameScene, ObjectsGameScene, FinalScene],
 };
 
 window.addEventListener("load", () => {

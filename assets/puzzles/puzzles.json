@@ -15,29 +15,29 @@
           "id": 0,
           "key": "puzzle-rosario_retrato_01-piece-0",
           "path": "assets/puzzles/generated/rosario_retrato_01/piece_0.png",
-          "centerX": 156.5,
-          "centerY": 158.0
+          "centerX": 159.5,
+          "centerY": 139.5
         },
         {
           "id": 1,
           "key": "puzzle-rosario_retrato_01-piece-1",
           "path": "assets/puzzles/generated/rosario_retrato_01/piece_1.png",
-          "centerX": 383.0,
-          "centerY": 158.0
+          "centerX": 378.0,
+          "centerY": 160.5
         },
         {
           "id": 2,
           "key": "puzzle-rosario_retrato_01-piece-2",
           "path": "assets/puzzles/generated/rosario_retrato_01/piece_2.png",
-          "centerX": 156.5,
-          "centerY": 386.0
+          "centerX": 138.5,
+          "centerY": 357.0
         },
         {
           "id": 3,
           "key": "puzzle-rosario_retrato_01-piece-3",
           "path": "assets/puzzles/generated/rosario_retrato_01/piece_3.png",
-          "centerX": 383.0,
-          "centerY": 386.0
+          "centerX": 357.0,
+          "centerY": 378.0
         }
       ]
     },
@@ -56,29 +56,29 @@
           "id": 0,
           "key": "puzzle-rosario_casa_01-piece-0",
           "path": "assets/puzzles/generated/rosario_casa_01/piece_0.png",
-          "centerX": 156.5,
-          "centerY": 158.0
+          "centerX": 159.5,
+          "centerY": 139.5
         },
         {
           "id": 1,
           "key": "puzzle-rosario_casa_01-piece-1",
           "path": "assets/puzzles/generated/rosario_casa_01/piece_1.png",
-          "centerX": 383.0,
-          "centerY": 158.0
+          "centerX": 378.0,
+          "centerY": 160.5
         },
         {
           "id": 2,
           "key": "puzzle-rosario_casa_01-piece-2",
           "path": "assets/puzzles/generated/rosario_casa_01/piece_2.png",
-          "centerX": 156.5,
-          "centerY": 386.0
+          "centerX": 138.5,
+          "centerY": 357.0
         },
         {
           "id": 3,
           "key": "puzzle-rosario_casa_01-piece-3",
           "path": "assets/puzzles/generated/rosario_casa_01/piece_3.png",
-          "centerX": 383.0,
-          "centerY": 386.0
+          "centerX": 357.0,
+          "centerY": 378.0
         }
       ]
     },
@@ -97,29 +97,70 @@
           "id": 0,
           "key": "puzzle-rosario_lectura_01-piece-0",
           "path": "assets/puzzles/generated/rosario_lectura_01/piece_0.png",
-          "centerX": 156.5,
-          "centerY": 158.0
+          "centerX": 159.5,
+          "centerY": 139.5
         },
         {
           "id": 1,
           "key": "puzzle-rosario_lectura_01-piece-1",
           "path": "assets/puzzles/generated/rosario_lectura_01/piece_1.png",
-          "centerX": 383.0,
-          "centerY": 158.0
+          "centerX": 378.0,
+          "centerY": 160.5
         },
         {
           "id": 2,
           "key": "puzzle-rosario_lectura_01-piece-2",
           "path": "assets/puzzles/generated/rosario_lectura_01/piece_2.png",
-          "centerX": 156.5,
-          "centerY": 386.0
+          "centerX": 138.5,
+          "centerY": 357.0
         },
         {
           "id": 3,
           "key": "puzzle-rosario_lectura_01-piece-3",
           "path": "assets/puzzles/generated/rosario_lectura_01/piece_3.png",
-          "centerX": 383.0,
-          "centerY": 386.0
+          "centerX": 357.0,
+          "centerY": 378.0
+        }
+      ]
+    },
+    {
+      "id": "rosario_infancia_01",
+      "title": "Infancia de Rosario",
+      "description": "Arma una escena de la infancia de Rosario.",
+      "sourceImage": "assets/puzzles/source/rosario_infancia_01.png",
+      "preview": "assets/puzzles/generated/rosario_infancia_01/preview.png",
+      "previewKey": "puzzle-rosario_infancia_01-preview",
+      "rows": 2,
+      "cols": 2,
+      "totalPieces": 4,
+      "pieces": [
+        {
+          "id": 0,
+          "key": "puzzle-rosario_infancia_01-piece-0",
+          "path": "assets/puzzles/generated/rosario_infancia_01/piece_0.png",
+          "centerX": 159.5,
+          "centerY": 139.5
+        },
+        {
+          "id": 1,
+          "key": "puzzle-rosario_infancia_01-piece-1",
+          "path": "assets/puzzles/generated/rosario_infancia_01/piece_1.png",
+          "centerX": 378.0,
+          "centerY": 160.5
+        },
+        {
+          "id": 2,
+          "key": "puzzle-rosario_infancia_01-piece-2",
+          "path": "assets/puzzles/generated/rosario_infancia_01/piece_2.png",
+          "centerX": 138.5,
+          "centerY": 357.0
+        },
+        {
+          "id": 3,
+          "key": "puzzle-rosario_infancia_01-piece-3",
+          "path": "assets/puzzles/generated/rosario_infancia_01/piece_3.png",
+          "centerX": 357.0,
+          "centerY": 378.0
         }
       ]
     }
