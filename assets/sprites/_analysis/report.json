@@ -1,0 +1,194 @@
+[
+  {
+    "file": "assets\\sprites\\box_background.png",
+    "size": [
+      1448,
+      1086
+    ],
+    "alpha_bbox": [
+      0,
+      0,
+      1448,
+      1086
+    ],
+    "component_count": 1,
+    "preview": "assets\\sprites\\_analysis\\box_background_components.png",
+    "components": [
+      {
+        "id": 1,
+        "bbox": [
+          0,
+          0,
+          1448,
+          1086
+        ],
+        "size": [
+          1448,
+          1086
+        ],
+        "area": 1572528,
+        "path": "assets\\sprites\\_analysis\\box_background\\01_0_0_1448x1086.png"
+      }
+    ]
+  },
+  {
+    "file": "assets\\sprites\\buttons.png",
+    "size": [
+      1448,
+      1086
+    ],
+    "alpha_bbox": [
+      0,
+      0,
+      1448,
+      1086
+    ],
+    "component_count": 1,
+    "preview": "assets\\sprites\\_analysis\\buttons_components.png",
+    "components": [
+      {
+        "id": 1,
+        "bbox": [
+          0,
+          0,
+          1448,
+          1086
+        ],
+        "size": [
+          1448,
+          1086
+        ],
+        "area": 1572528,
+        "path": "assets\\sprites\\_analysis\\buttons\\01_0_0_1448x1086.png"
+      }
+    ]
+  },
+  {
+    "file": "assets\\sprites\\flower_details.png",
+    "size": [
+      1448,
+      1086
+    ],
+    "alpha_bbox": [
+      0,
+      0,
+      1448,
+      1086
+    ],
+    "component_count": 1,
+    "preview": "assets\\sprites\\_analysis\\flower_details_components.png",
+    "components": [
+      {
+        "id": 1,
+        "bbox": [
+          0,
+          0,
+          1448,
+          1086
+        ],
+        "size": [
+          1448,
+          1086
+        ],
+        "area": 1572528,
+        "path": "assets\\sprites\\_analysis\\flower_details\\01_0_0_1448x1086.png"
+      }
+    ]
+  },
+  {
+    "file": "assets\\sprites\\icons.png",
+    "size": [
+      1448,
+      1086
+    ],
+    "alpha_bbox": [
+      0,
+      0,
+      1448,
+      1086
+    ],
+    "component_count": 1,
+    "preview": "assets\\sprites\\_analysis\\icons_components.png",
+    "components": [
+      {
+        "id": 1,
+        "bbox": [
+          0,
+          0,
+          1448,
+          1086
+        ],
+        "size": [
+          1448,
+          1086
+        ],
+        "area": 1572528,
+        "path": "assets\\sprites\\_analysis\\icons\\01_0_0_1448x1086.png"
+      }
+    ]
+  },
+  {
+    "file": "assets\\sprites\\sprite_6.png",
+    "size": [
+      1448,
+      1086
+    ],
+    "alpha_bbox": [
+      0,
+      0,
+      1448,
+      1086
+    ],
+    "component_count": 1,
+    "preview": "assets\\sprites\\_analysis\\sprite_6_components.png",
+    "components": [
+      {
+        "id": 1,
+        "bbox": [
+          0,
+          0,
+          1448,
+          1086
+        ],
+        "size": [
+          1448,
+          1086
+        ],
+        "area": 1572528,
+        "path": "assets\\sprites\\_analysis\\sprite_6\\01_0_0_1448x1086.png"
+      }
+    ]
+  },
+  {
+    "file": "assets\\sprites\\textbox_background.png",
+    "size": [
+      1448,
+      1086
+    ],
+    "alpha_bbox": [
+      0,
+      0,
+      1448,
+      1086
+    ],
+    "component_count": 1,
+    "preview": "assets\\sprites\\_analysis\\textbox_background_components.png",
+    "components": [
+      {
+        "id": 1,
+        "bbox": [
+          0,
+          0,
+          1448,
+          1086
+        ],
+        "size": [
+          1448,
+          1086
+        ],
+        "area": 1572528,
+        "path": "assets\\sprites\\_analysis\\textbox_background\\01_0_0_1448x1086.png"
+      }
+    ]
+  }
+]

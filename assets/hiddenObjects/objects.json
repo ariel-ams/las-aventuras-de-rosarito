@@ -1,0 +1,302 @@
+{
+  "background": {
+    "key": "hidden-classroom",
+    "path": "assets/hiddenObjects/backgrounds/classroom_scene.png",
+    "sourceSize": [
+      1312,
+      1086
+    ]
+  },
+  "ui": {
+    "list_header": {
+      "key": "hidden-ui-list_header",
+      "path": "assets/hiddenObjects/ui/list_header.png",
+      "size": [
+        746,
+        221
+      ]
+    },
+    "list_panel": {
+      "key": "hidden-ui-list_panel",
+      "path": "assets/hiddenObjects/ui/list_panel.png",
+      "size": [
+        709,
+        748
+      ]
+    },
+    "list_row": {
+      "key": "hidden-ui-list_row",
+      "path": "assets/hiddenObjects/ui/list_row.png",
+      "size": [
+        595,
+        156
+      ]
+    }
+  },
+  "objects": [
+    {
+      "id": "lentes",
+      "label": "Lentes",
+      "required": true,
+      "xRatio": 0.55,
+      "yRatio": 0.34,
+      "widthRatio": 0.125,
+      "heightRatio": 0.06,
+      "hitPadding": 20,
+      "iconKey": "hidden-icon-lentes",
+      "spriteKey": "hidden-sprite-lentes",
+      "icon": "assets/hiddenObjects/icons/lentes.png",
+      "sprite": "assets/hiddenObjects/sprites/lentes.png",
+      "iconSourceSize": [
+        101,
+        50
+      ],
+      "spriteSourceSize": [
+        238,
+        111
+      ]
+    },
+    {
+      "id": "libro",
+      "label": "Libro",
+      "required": false,
+      "xRatio": 0.235,
+      "yRatio": 0.45,
+      "widthRatio": 0.215,
+      "heightRatio": 0.13,
+      "hitPadding": 20,
+      "iconKey": "hidden-icon-libro",
+      "spriteKey": "hidden-sprite-libro",
+      "icon": "assets/hiddenObjects/icons/libro.png",
+      "sprite": "assets/hiddenObjects/sprites/libro.png",
+      "iconSourceSize": [
+        115,
+        79
+      ],
+      "spriteSourceSize": [
+        271,
+        182
+      ]
+    },
+    {
+      "id": "campana",
+      "label": "Campana",
+      "required": false,
+      "xRatio": 0.4,
+      "yRatio": 0.39,
+      "widthRatio": 0.12,
+      "heightRatio": 0.16,
+      "hitPadding": 20,
+      "iconKey": "hidden-icon-campana",
+      "spriteKey": "hidden-sprite-campana",
+      "icon": "assets/hiddenObjects/icons/campana.png",
+      "sprite": "assets/hiddenObjects/sprites/campana.png",
+      "iconSourceSize": [
+        86,
+        101
+      ],
+      "spriteSourceSize": [
+        164,
+        195
+      ]
+    },
+    {
+      "id": "tintero",
+      "label": "Tintero",
+      "required": false,
+      "xRatio": 0.67,
+      "yRatio": 0.45,
+      "widthRatio": 0.105,
+      "heightRatio": 0.14,
+      "hitPadding": 20,
+      "iconKey": "hidden-icon-tintero",
+      "spriteKey": "hidden-sprite-tintero",
+      "icon": "assets/hiddenObjects/icons/tintero.png",
+      "sprite": "assets/hiddenObjects/sprites/tintero.png",
+      "iconSourceSize": [
+        67,
+        90
+      ],
+      "spriteSourceSize": [
+        133,
+        182
+      ]
+    },
+    {
+      "id": "pluma",
+      "label": "Pluma",
+      "required": false,
+      "xRatio": 0.78,
+      "yRatio": 0.45,
+      "widthRatio": 0.08,
+      "heightRatio": 0.205,
+      "hitPadding": 20,
+      "iconKey": "hidden-icon-pluma",
+      "spriteKey": "hidden-sprite-pluma",
+      "icon": "assets/hiddenObjects/icons/pluma.png",
+      "sprite": "assets/hiddenObjects/sprites/pluma.png",
+      "iconSourceSize": [
+        77,
+        107
+      ],
+      "spriteSourceSize": [
+        155,
+        239
+      ]
+    },
+    {
+      "id": "pizarron",
+      "label": "Pizarron",
+      "required": false,
+      "xRatio": 0.62,
+      "yRatio": 0.705,
+      "widthRatio": 0.25,
+      "heightRatio": 0.14,
+      "hitPadding": 20,
+      "iconKey": "hidden-icon-pizarron",
+      "spriteKey": "hidden-sprite-pizarron",
+      "icon": "assets/hiddenObjects/icons/pizarron.png",
+      "sprite": "assets/hiddenObjects/sprites/pizarron.png",
+      "iconSourceSize": [
+        139,
+        85
+      ],
+      "spriteSourceSize": [
+        309,
+        202
+      ]
+    },
+    {
+      "id": "cuaderno",
+      "label": "Cuaderno",
+      "required": false,
+      "xRatio": 0.405,
+      "yRatio": 0.705,
+      "widthRatio": 0.16,
+      "heightRatio": 0.15,
+      "hitPadding": 20,
+      "iconKey": "hidden-icon-cuaderno",
+      "spriteKey": "hidden-sprite-cuaderno",
+      "icon": "assets/hiddenObjects/icons/cuaderno.png",
+      "sprite": "assets/hiddenObjects/sprites/cuaderno.png",
+      "iconSourceSize": [
+        119,
+        105
+      ],
+      "spriteSourceSize": [
+        226,
+        192
+      ]
+    },
+    {
+      "id": "caja_bloques",
+      "label": "Caja de bloques",
+      "required": false,
+      "xRatio": 0.79,
+      "yRatio": 0.645,
+      "widthRatio": 0.18,
+      "heightRatio": 0.14,
+      "hitPadding": 20,
+      "iconKey": "hidden-icon-caja_bloques",
+      "spriteKey": "hidden-sprite-caja_bloques",
+      "icon": "assets/hiddenObjects/icons/caja_bloques.png",
+      "sprite": "assets/hiddenObjects/sprites/caja_bloques.png",
+      "iconSourceSize": [
+        144,
+        110
+      ],
+      "spriteSourceSize": [
+        252,
+        194
+      ]
+    },
+    {
+      "id": "tiza",
+      "label": "Tiza",
+      "required": false,
+      "xRatio": 0.645,
+      "yRatio": 0.735,
+      "widthRatio": 0.11,
+      "heightRatio": 0.055,
+      "hitPadding": 20,
+      "iconKey": "hidden-icon-tiza",
+      "spriteKey": "hidden-sprite-tiza",
+      "icon": "assets/hiddenObjects/icons/tiza.png",
+      "sprite": "assets/hiddenObjects/sprites/tiza.png",
+      "iconSourceSize": [
+        66,
+        48
+      ],
+      "spriteSourceSize": [
+        139,
+        108
+      ]
+    },
+    {
+      "id": "lapiz",
+      "label": "Lapiz",
+      "required": false,
+      "xRatio": 0.88,
+      "yRatio": 0.36,
+      "widthRatio": 0.105,
+      "heightRatio": 0.14,
+      "hitPadding": 20,
+      "iconKey": "hidden-icon-lapiz",
+      "spriteKey": "hidden-sprite-lapiz",
+      "icon": "assets/hiddenObjects/icons/lapiz.png",
+      "sprite": "assets/hiddenObjects/sprites/lapiz.png",
+      "iconSourceSize": [
+        82,
+        99
+      ],
+      "spriteSourceSize": [
+        169,
+        194
+      ]
+    },
+    {
+      "id": "flor_maceta",
+      "label": "Flor en maceta",
+      "required": false,
+      "xRatio": 0.2,
+      "yRatio": 0.305,
+      "widthRatio": 0.11,
+      "heightRatio": 0.15,
+      "hitPadding": 20,
+      "iconKey": "hidden-icon-flor_maceta",
+      "spriteKey": "hidden-sprite-flor_maceta",
+      "icon": "assets/hiddenObjects/icons/flor_maceta.png",
+      "sprite": "assets/hiddenObjects/sprites/flor_maceta.png",
+      "iconSourceSize": [
+        88,
+        117
+      ],
+      "spriteSourceSize": [
+        180,
+        245
+      ]
+    },
+    {
+      "id": "retrato",
+      "label": "Retrato",
+      "required": false,
+      "xRatio": 0.34,
+      "yRatio": 0.17,
+      "widthRatio": 0.13,
+      "heightRatio": 0.17,
+      "hitPadding": 20,
+      "iconKey": "hidden-icon-retrato",
+      "spriteKey": "hidden-sprite-retrato",
+      "icon": "assets/hiddenObjects/icons/retrato.png",
+      "sprite": "assets/hiddenObjects/sprites/retrato.png",
+      "iconSourceSize": [
+        128,
+        190
+      ],
+      "spriteSourceSize": [
+        209,
+        311
+      ]
+    }
+  ]
+}

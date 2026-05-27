@@ -1,0 +1,127 @@
+{
+  "puzzles": [
+    {
+      "id": "rosario_retrato_01",
+      "title": "Retrato de Rosario",
+      "description": "Arma el retrato de Rosario Vera Penaloza.",
+      "sourceImage": "assets/puzzles/source/rosario_retrato_01.png",
+      "preview": "assets/puzzles/generated/rosario_retrato_01/preview.png",
+      "previewKey": "puzzle-rosario_retrato_01-preview",
+      "rows": 2,
+      "cols": 2,
+      "totalPieces": 4,
+      "pieces": [
+        {
+          "id": 0,
+          "key": "puzzle-rosario_retrato_01-piece-0",
+          "path": "assets/puzzles/generated/rosario_retrato_01/piece_0.png",
+          "centerX": 156.5,
+          "centerY": 158.0
+        },
+        {
+          "id": 1,
+          "key": "puzzle-rosario_retrato_01-piece-1",
+          "path": "assets/puzzles/generated/rosario_retrato_01/piece_1.png",
+          "centerX": 383.0,
+          "centerY": 158.0
+        },
+        {
+          "id": 2,
+          "key": "puzzle-rosario_retrato_01-piece-2",
+          "path": "assets/puzzles/generated/rosario_retrato_01/piece_2.png",
+          "centerX": 156.5,
+          "centerY": 386.0
+        },
+        {
+          "id": 3,
+          "key": "puzzle-rosario_retrato_01-piece-3",
+          "path": "assets/puzzles/generated/rosario_retrato_01/piece_3.png",
+          "centerX": 383.0,
+          "centerY": 386.0
+        }
+      ]
+    },
+    {
+      "id": "rosario_casa_01",
+      "title": "Casa natal de Rosario",
+      "description": "Arma la imagen de la casa natal de Rosario.",
+      "sourceImage": "assets/puzzles/source/rosario_casa_01.png",
+      "preview": "assets/puzzles/generated/rosario_casa_01/preview.png",
+      "previewKey": "puzzle-rosario_casa_01-preview",
+      "rows": 2,
+      "cols": 2,
+      "totalPieces": 4,
+      "pieces": [
+        {
+          "id": 0,
+          "key": "puzzle-rosario_casa_01-piece-0",
+          "path": "assets/puzzles/generated/rosario_casa_01/piece_0.png",
+          "centerX": 156.5,
+          "centerY": 158.0
+        },
+        {
+          "id": 1,
+          "key": "puzzle-rosario_casa_01-piece-1",
+          "path": "assets/puzzles/generated/rosario_casa_01/piece_1.png",
+          "centerX": 383.0,
+          "centerY": 158.0
+        },
+        {
+          "id": 2,
+          "key": "puzzle-rosario_casa_01-piece-2",
+          "path": "assets/puzzles/generated/rosario_casa_01/piece_2.png",
+          "centerX": 156.5,
+          "centerY": 386.0
+        },
+        {
+          "id": 3,
+          "key": "puzzle-rosario_casa_01-piece-3",
+          "path": "assets/puzzles/generated/rosario_casa_01/piece_3.png",
+          "centerX": 383.0,
+          "centerY": 386.0
+        }
+      ]
+    },
+    {
+      "id": "rosario_lectura_01",
+      "title": "Rosario y la lectura",
+      "description": "Arma una escena de lectura y aprendizaje.",
+      "sourceImage": "assets/puzzles/source/rosario_lectura_01.png",
+      "preview": "assets/puzzles/generated/rosario_lectura_01/preview.png",
+      "previewKey": "puzzle-rosario_lectura_01-preview",
+      "rows": 2,
+      "cols": 2,
+      "totalPieces": 4,
+      "pieces": [
+        {
+          "id": 0,
+          "key": "puzzle-rosario_lectura_01-piece-0",
+          "path": "assets/puzzles/generated/rosario_lectura_01/piece_0.png",
+          "centerX": 156.5,
+          "centerY": 158.0
+        },
+        {
+          "id": 1,
+          "key": "puzzle-rosario_lectura_01-piece-1",
+          "path": "assets/puzzles/generated/rosario_lectura_01/piece_1.png",
+          "centerX": 383.0,
+          "centerY": 158.0
+        },
+        {
+          "id": 2,
+          "key": "puzzle-rosario_lectura_01-piece-2",
+          "path": "assets/puzzles/generated/rosario_lectura_01/piece_2.png",
+          "centerX": 156.5,
+          "centerY": 386.0
+        },
+        {
+          "id": 3,
+          "key": "puzzle-rosario_lectura_01-piece-3",
+          "path": "assets/puzzles/generated/rosario_lectura_01/piece_3.png",
+          "centerX": 383.0,
+          "centerY": 386.0
+        }
+      ]
+    }
+  ]
+}

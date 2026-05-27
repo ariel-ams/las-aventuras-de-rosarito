@@ -1,0 +1,317 @@
+[
+  {
+    "id": "don_1",
+    "nombre": "Don 1",
+    "titulo_para_ninos": "Las pelotitas de colores",
+    "concepto": "Color, forma esferica, movimiento y textura",
+    "componentes_correctos": [
+      "pelota de lana roja",
+      "pelota de lana azul",
+      "pelota de lana amarilla",
+      "pelota de lana verde",
+      "pelota de lana naranja",
+      "pelota de lana violeta"
+    ],
+    "componentes_incorrectos": [
+      "cubo",
+      "campana",
+      "pluma",
+      "libro",
+      "regla",
+      "taza"
+    ],
+    "aprendizajes": [
+      "colores",
+      "redondo",
+      "suave",
+      "rodar",
+      "grande y pequeno"
+    ],
+    "pregunta_principal": "¿Qué objetos van en el Don de las pelotitas?",
+    "tipo_interaccion": "seleccionar_y_arrastrar",
+    "feedback_correcto": "¡Muy bien! Elegiste las pelotitas de colores.",
+    "feedback_incorrecto": "Mirá otra vez. Este Don usa pelotitas."
+  },
+  {
+    "id": "don_2",
+    "nombre": "Don 2",
+    "titulo_para_ninos": "Las tres formas mágicas",
+    "concepto": "Reconocimiento de esfera, cubo y cilindro",
+    "componentes_correctos": [
+      "esfera",
+      "cubo",
+      "cilindro"
+    ],
+    "componentes_incorrectos": [
+      "corazon",
+      "estrella",
+      "flor",
+      "campana",
+      "pluma",
+      "libro"
+    ],
+    "aprendizajes": [
+      "forma",
+      "rodar",
+      "apilar",
+      "girar",
+      "comparar"
+    ],
+    "pregunta_principal": "Rosarito necesita las tres formas. ¿Cuáles son?",
+    "tipo_interaccion": "arrastrar_a_bandeja",
+    "feedback_correcto": "¡Excelente! Encontraste la esfera, el cubo y el cilindro.",
+    "feedback_incorrecto": "Probemos de nuevo. Buscá las formas de madera."
+  },
+  {
+    "id": "don_3",
+    "nombre": "Don 3",
+    "titulo_para_ninos": "El cubo que se separa",
+    "concepto": "Todo y partes: un cubo formado por cubitos",
+    "componentes_correctos": [
+      "cubito de madera",
+      "cubito de madera",
+      "cubito de madera",
+      "cubito de madera",
+      "cubito de madera",
+      "cubito de madera",
+      "cubito de madera",
+      "cubito de madera"
+    ],
+    "componentes_incorrectos": [
+      "esfera",
+      "cilindro",
+      "aro",
+      "pluma",
+      "pelota",
+      "campana"
+    ],
+    "aprendizajes": [
+      "contar hasta 8",
+      "construir",
+      "todo y partes",
+      "torres",
+      "orden"
+    ],
+    "pregunta_principal": "¿Qué piezas ayudan a formar el cubo grande?",
+    "tipo_interaccion": "reconstruir_figura",
+    "feedback_correcto": "¡Muy bien! Con los cubitos armamos un cubo grande.",
+    "feedback_incorrecto": "Ese objeto no forma parte del cubo. Elegí cubitos."
+  },
+  {
+    "id": "don_4",
+    "nombre": "Don 4",
+    "titulo_para_ninos": "Los ladrillitos largos",
+    "concepto": "Bloques rectangulares para construir",
+    "componentes_correctos": [
+      "bloque rectangular",
+      "bloque rectangular largo",
+      "prisma rectangular",
+      "tablita gruesa de madera"
+    ],
+    "componentes_incorrectos": [
+      "pelota",
+      "aro",
+      "flor",
+      "campana",
+      "pluma",
+      "tintero"
+    ],
+    "aprendizajes": [
+      "largo y corto",
+      "alto y bajo",
+      "construccion",
+      "equilibrio"
+    ],
+    "pregunta_principal": "¿Qué piezas sirven para hacer una pared larga?",
+    "tipo_interaccion": "seleccionar_para_construir",
+    "feedback_correcto": "¡Genial! Los ladrillitos largos sirven para construir.",
+    "feedback_incorrecto": "Buscá piezas largas como ladrillitos."
+  },
+  {
+    "id": "don_5",
+    "nombre": "Don 5",
+    "titulo_para_ninos": "El cubo con partes",
+    "concepto": "Cubos divididos en mitades y partes pequeñas",
+    "componentes_correctos": [
+      "cubo",
+      "medio cubo",
+      "cuarto de cubo",
+      "prisma pequeño"
+    ],
+    "componentes_incorrectos": [
+      "pelota",
+      "aro",
+      "flor",
+      "campana",
+      "pluma",
+      "tintero"
+    ],
+    "aprendizajes": [
+      "mitad",
+      "parte",
+      "juntar",
+      "comparar",
+      "formar figuras"
+    ],
+    "pregunta_principal": "¿Qué piezas pertenecen al cubo dividido?",
+    "tipo_interaccion": "completar_figura",
+    "feedback_correcto": "¡Muy bien! Juntaste las partes del cubo.",
+    "feedback_incorrecto": "Esa pieza no es parte del cubo. Buscá cubos y mitades."
+  },
+  {
+    "id": "don_6",
+    "nombre": "Don 6",
+    "titulo_para_ninos": "La caja de construir",
+    "concepto": "Bloques variados para construir formas más complejas",
+    "componentes_correctos": [
+      "cubo",
+      "bloque rectangular",
+      "prisma",
+      "tablita de madera"
+    ],
+    "componentes_incorrectos": [
+      "pelota de lana",
+      "pluma",
+      "campana",
+      "libro",
+      "tintero",
+      "flor"
+    ],
+    "aprendizajes": [
+      "construir",
+      "simetria",
+      "tamano",
+      "equilibrio",
+      "creatividad"
+    ],
+    "pregunta_principal": "¿Qué objetos sirven para construir la escuela de Rosarito?",
+    "tipo_interaccion": "construir_escena",
+    "feedback_correcto": "¡Excelente! Con estas piezas podemos construir.",
+    "feedback_incorrecto": "Para construir necesitamos bloques de madera."
+  },
+  {
+    "id": "don_7",
+    "nombre": "Don 7",
+    "titulo_para_ninos": "Las formitas planas",
+    "concepto": "Figuras planas: superficies",
+    "componentes_correctos": [
+      "cuadrado plano",
+      "triangulo plano",
+      "circulo plano",
+      "rectangulo plano",
+      "semicirculo"
+    ],
+    "componentes_incorrectos": [
+      "cubo",
+      "pelota",
+      "cilindro",
+      "campana",
+      "pluma",
+      "tintero"
+    ],
+    "aprendizajes": [
+      "figuras geometricas",
+      "plano",
+      "mosaicos",
+      "componer dibujos"
+    ],
+    "pregunta_principal": "¿Qué piezas son planas como una tarjeta?",
+    "tipo_interaccion": "clasificar_formas",
+    "feedback_correcto": "¡Muy bien! Elegiste figuras planas.",
+    "feedback_incorrecto": "Buscá piezas planas, no objetos con volumen."
+  },
+  {
+    "id": "don_8",
+    "nombre": "Don 8",
+    "titulo_para_ninos": "Los palitos de líneas",
+    "concepto": "Líneas rectas para formar letras, caminos y figuras",
+    "componentes_correctos": [
+      "palito recto",
+      "liston",
+      "varilla fina",
+      "linea de color"
+    ],
+    "componentes_incorrectos": [
+      "pelota",
+      "cubo",
+      "cilindro",
+      "campana",
+      "tintero",
+      "flor"
+    ],
+    "aprendizajes": [
+      "linea",
+      "largo y corto",
+      "direccion",
+      "arriba y abajo",
+      "formar letras"
+    ],
+    "pregunta_principal": "¿Qué objetos parecen líneas?",
+    "tipo_interaccion": "formar_dibujo_con_lineas",
+    "feedback_correcto": "¡Genial! Los palitos forman líneas.",
+    "feedback_incorrecto": "Buscá objetos largos y finitos como líneas."
+  },
+  {
+    "id": "don_9",
+    "nombre": "Don 9",
+    "titulo_para_ninos": "Los aritos",
+    "concepto": "Aros, curvas y círculos",
+    "componentes_correctos": [
+      "aro",
+      "anillo",
+      "medio aro",
+      "circulo de color"
+    ],
+    "componentes_incorrectos": [
+      "cubo",
+      "bloque rectangular",
+      "pluma",
+      "campana",
+      "tiza",
+      "libro"
+    ],
+    "aprendizajes": [
+      "circulo",
+      "curva",
+      "abierto y cerrado",
+      "rueda",
+      "flor"
+    ],
+    "pregunta_principal": "¿Qué piezas son redondas como un aro?",
+    "tipo_interaccion": "seleccionar_aros",
+    "feedback_correcto": "¡Muy bien! Encontraste los aritos.",
+    "feedback_incorrecto": "Ese objeto no es un aro. Buscá formas redondas."
+  },
+  {
+    "id": "don_10",
+    "nombre": "Don 10",
+    "titulo_para_ninos": "Los puntitos",
+    "concepto": "Puntos, cantidad, patrones y ubicación",
+    "componentes_correctos": [
+      "puntito",
+      "fichita pequeña",
+      "cuenta",
+      "semilla",
+      "piedrita pequeña"
+    ],
+    "componentes_incorrectos": [
+      "cubo grande",
+      "pelota",
+      "campana",
+      "libro",
+      "pluma",
+      "pizarra"
+    ],
+    "aprendizajes": [
+      "contar",
+      "muchos y pocos",
+      "cerca y lejos",
+      "patrones",
+      "ubicacion"
+    ],
+    "pregunta_principal": "¿Qué piezas son puntitos pequeños?",
+    "tipo_interaccion": "completar_patron",
+    "feedback_correcto": "¡Excelente! Con puntitos podemos contar y dibujar.",
+    "feedback_incorrecto": "Buscá piezas pequeñas como puntitos."
+  }
+]
