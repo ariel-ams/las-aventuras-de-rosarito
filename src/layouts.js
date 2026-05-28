@@ -24,7 +24,7 @@ const LAYOUT = {
 const SCENE_LAYOUTS = {
   cover: {
     startButton: { x: 1010, y: 706, width: 280 },
-    starCounter: { x: 1044, y: 96 },
+    starCounter: { x: 1090, y: 90 },
   },
   dones: {
     optionStart: { x: 735, y: 330 },

@@ -630,14 +630,14 @@ class BaseScene extends Phaser.Scene {
       color: "#fff8e9",
     }).setOrigin(0.5);
     const icon = this.add.image(0, -18, iconKey).setDisplaySize(68, 58);
-    const title = this.add.text(0, 58, label, {
+    const title = this.add.text(0, 60, label, {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "14px",
       fontStyle: "bold",
       color: "#3e2b22",
       align: "center",
       wordWrap: { width: 102 },
-      lineSpacing: 2,
+      lineSpacing: 0,
     }).setOrigin(0.5);
     card.add([bg, badge, num, icon, title]);
     card.setSize(126, 156).setInteractive({ useHandCursor: true });
@@ -862,13 +862,6 @@ class CoverScene extends BaseScene {
     cards.forEach(([label, icon, sceneKey], i) => {
       this.makeCoverMissionCard(745 + i * 150, 435, i + 1, label, icon, () => startTestScene(sceneKey)).setDepth(6);
     });
-    this.add.text(895, 522, "Toca una tarjeta para probar una actividad.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "14px",
-      color: "#6a3d8f",
-      fontStyle: "bold",
-    }).setOrigin(0.5).setDepth(6);
-
     this.add.image(858, 605, "ui-notebook_panel").setDisplaySize(420, 144).setDepth(4);
     this.add.image(708, 606, "ui-icon_book").setDisplaySize(84, 72).setDepth(5);
     this.add.image(1014, 605, "ui-icon_star").setDisplaySize(84, 84).setDepth(5);
