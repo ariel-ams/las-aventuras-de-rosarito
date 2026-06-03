@@ -33,8 +33,8 @@ const SCENE_LAYOUTS = {
   },
   quiz: {
     starCounter: { x: 1126, y: 82 },
-    answerStart: { x: 720, y: 526 },
-    answerGap: 170,
+    answerStart: { x: 735, y: 526 },
+    answerGap: 165,
   },
   puzzle: {
     starCounter: { x: 1110, y: 84 },

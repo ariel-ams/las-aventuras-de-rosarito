@@ -630,7 +630,7 @@ class BaseScene extends Phaser.Scene {
       color: "#fff8e9",
     }).setOrigin(0.5);
     const icon = this.add.image(0, -18, iconKey).setDisplaySize(68, 58);
-    const title = this.add.text(0, 60, label, {
+    const title = this.add.text(0, 50, label, {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "14px",
       fontStyle: "bold",
@@ -668,20 +668,20 @@ class BaseScene extends Phaser.Scene {
     const cardKeys = ["m2-answer_card_green", "m2-answer_card_blue", "m2-answer_card_pink"];
     const iconKeys = ["ui-icon_home", "ui-icon_blackboard", "ui-icon_flower"];
     const card = this.add.container(x, y);
-    const bg = this.add.image(0, 0, cardKeys[index % cardKeys.length]).setDisplaySize(175, 240);
-    const icon = this.add.image(0, -52, iconKeys[index % iconKeys.length]).setDisplaySize(92, 76);
-    const text = this.add.text(0, 63, option, {
+    const bg = this.add.image(0, 0, cardKeys[index % cardKeys.length]).setDisplaySize(155, 230);
+    const icon = this.add.image(0, -52, iconKeys[index % iconKeys.length]).setDisplaySize(82, 68);
+    const text = this.add.text(0, 58, option, {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "18px",
       color: "#3e2b22",
       align: "center",
-      wordWrap: { width: 135 },
+      wordWrap: { width: 118 },
       lineSpacing: 4,
     }).setOrigin(0.5);
-    const heart = this.add.image(0, 117, "m2-heart").setDisplaySize(32, 30);
+    const heart = this.add.image(0, 110, "m2-heart").setDisplaySize(30, 28);
     card.add([bg, icon, text, heart]);
     card.setDepth(8);
-    card.setSize(175, 240).setInteractive({ useHandCursor: true });
+    card.setSize(155, 230).setInteractive({ useHandCursor: true });
     card.on("pointerover", () => {
       card.setScale(1.04);
       playTone(this, "hover");
@@ -1108,15 +1108,22 @@ class QuizGameScene extends BaseScene {
   showQuestion() {
     const q = gameState.quizSet[gameState.quizIndex];
     this.add.image(884, 310, "m2-question_panel").setDisplaySize(470, 78).setDepth(5);
-    this.add.image(650, 310, "m2-question_badge").setDisplaySize(66, 86).setDepth(6);
-    this.add.text(650, 311, String(gameState.quizIndex + 1), {
+    this.add.image(650, 310, "ui-icon_flower").setDisplaySize(74, 74).setDepth(6);
+    this.add.text(650, 302, String(gameState.quizIndex + 1), {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "36px",
+      fontSize: "34px",
       fontStyle: "bold",
       color: "#fff8e9",
+      stroke: "#6a3d8f",
+      strokeThickness: 3,
     }).setOrigin(0.5).setDepth(7);
-    this.add.image(1103, 286, "m2-progress_badge").setDisplaySize(68, 70).setDepth(6);
-    this.add.text(1103, 286, `${gameState.quizIndex + 1}/3`, {
+    this.add.graphics()
+      .fillStyle(0x77559a, 0.94)
+      .fillRoundedRect(1064, 260, 78, 48, 20)
+      .lineStyle(3, 0xf3d36d, 0.95)
+      .strokeRoundedRect(1064, 260, 78, 48, 20)
+      .setDepth(6);
+    this.add.text(1103, 284, `${gameState.quizIndex + 1}/3`, {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "22px",
       fontStyle: "bold",
