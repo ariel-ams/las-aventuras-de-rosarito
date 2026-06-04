@@ -3,11 +3,8 @@ function drawProgress(scene, gameState) {
   for (let i = 0; i < 3; i += 1) {
     const x = 825 + i * 90;
     const active = gameState.achievements[i] || i === gameState.achievements.filter(Boolean).length;
-    const key = active ? "m1-minigame1_update3_02" : `m1-minigame1_update3_0${Math.min(i + 3, 5)}`;
-    const star = scene.textures.exists(key)
-      ? scene.add.image(x, 96, key).setDisplaySize(58, 58)
-      : scene.add.image(x, 96, "ui-icon_star").setDisplaySize(50, 50);
-    if (!active && !scene.textures.exists(key)) star.setTint(0xd0c2b0).setAlpha(0.65);
+    const star = scene.add.image(x, 96, "ui-star_full").setDisplaySize(54, 54);
+    if (!active) star.setTint(0xd0c2b0).setAlpha(0.58);
     scene.add.text(x, 94, String(i + 1), {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "21px",
@@ -18,11 +15,11 @@ function drawProgress(scene, gameState) {
 }
 
 function drawStarCounter(scene, x = 1048, y = 96, value = 0) {
-  scene.add.image(x, y, "ui-label_long_cream").setDisplaySize(150, 54).setDepth(5);
-  scene.add.image(x - 48, y - 1, "ui-icon_star").setDisplaySize(48, 48).setDepth(6);
-  scene.add.text(x + 24, y, `${value}/3`, {
+  scene.add.image(x, y, "ui-label_long_cream").setDisplaySize(98, 44).setDepth(5);
+  scene.add.image(x - 32, y - 1, "ui-star_full").setDisplaySize(34, 34).setDepth(6);
+  scene.add.text(x + 20, y, `${value}/3`, {
     fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-    fontSize: "26px",
+    fontSize: "23px",
     fontStyle: "bold",
     color: "#3e2b22",
   }).setOrigin(0.5).setDepth(6);

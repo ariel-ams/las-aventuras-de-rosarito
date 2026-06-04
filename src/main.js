@@ -442,6 +442,16 @@ function directSceneFromUrl() {
   }[key] || "Cover";
 }
 
+function requestImmersiveMode() {
+  const root = document.documentElement;
+  if (!document.fullscreenElement && root.requestFullscreen) {
+    root.requestFullscreen({ navigationUI: "hide" }).catch(() => {});
+  }
+  if (screen.orientation?.lock) {
+    screen.orientation.lock("landscape").catch(() => {});
+  }
+}
+
 function playTone(scene, type = "click") {
   return window.RosaritoAudio.playTone(scene, type);
   const sfxKey = `sfx.${type}`;
@@ -490,6 +500,7 @@ class BootScene extends Phaser.Scene {
       this.load.image(`page-turn-${i}`, `assets/page_turn/page_turn_${i}.png`);
     }
     UI_ASSETS.forEach((key) => this.load.image(`ui-${key}`, `assets/ui/selected/${key}.png`));
+    this.load.image("ui-star_full", "assets/ui/generated/star_full.png");
     MINIGAME2_ASSETS.forEach((key) => this.load.image(`m2-${key}`, `assets/ui/minigame2/${key}.png`));
     MINIGAME1_UPDATE_ASSETS.forEach((key) => this.load.image(`m1-${key}`, `assets/ui/minigame1_update/${key}.png`));
     this.load.json("dones", "src/dones.json");
@@ -594,6 +605,7 @@ class BaseScene extends Phaser.Scene {
     button.on("pointerout", () => button.setScale(1));
     button.on("pointerdown", () => {
       playTone(this, "click");
+      requestImmersiveMode();
       onClick();
     });
     return button;
@@ -614,6 +626,7 @@ class BaseScene extends Phaser.Scene {
     button.on("pointerout", () => button.setDisplaySize(126, 126));
     button.on("pointerdown", () => {
       playTone(this, "click");
+      requestImmersiveMode();
       this.scene.start(nextScene);
     });
     return button;
@@ -648,6 +661,7 @@ class BaseScene extends Phaser.Scene {
     card.on("pointerout", () => card.setScale(1));
     card.on("pointerdown", () => {
       playTone(this, "click");
+      requestImmersiveMode();
       if (onClick) onClick();
     });
     return card;
@@ -689,6 +703,7 @@ class BaseScene extends Phaser.Scene {
     card.on("pointerout", () => card.setScale(1));
     card.on("pointerdown", () => {
       playTone(this, "click");
+      requestImmersiveMode();
       playAudioKey(this, `voice.quiz.${index}`);
       onClick(card);
     });
@@ -710,6 +725,7 @@ class BaseScene extends Phaser.Scene {
     card.setSize(width, 86).setInteractive({ useHandCursor: true });
     card.on("pointerdown", () => {
       playTone(this, "click");
+      requestImmersiveMode();
       playAudioKey(this, `voice.object.${label}`);
       onClick();
     });
@@ -741,6 +757,7 @@ class BaseScene extends Phaser.Scene {
     card.setSize(230, 110).setInteractive({ useHandCursor: true });
     card.on("pointerdown", () => {
       playTone(this, "click");
+      requestImmersiveMode();
       playAudioKey(this, `voice.object.${labelText}`);
       onClick(card);
     });
@@ -807,26 +824,25 @@ class CoverScene extends BaseScene {
       strokeThickness: 5,
     }).setDepth(5);
 
-    this.add.image(438, 360, "ui-speech_bottom_cream").setDisplaySize(302, 142).setDepth(6);
-    this.add.text(443, 353, "Ayuda a Rosarito a aprender, jugar y recordar su historia.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "22px",
-      color: "#3e2b22",
-      lineSpacing: 5,
-      wordWrap: { width: 218 },
-      align: "center",
-    }).setOrigin(0.5).setDepth(7);
-
-    this.add.image(440, 568, "ui-speech_large_lilac").setDisplaySize(250, 134).setDepth(6);
-    this.add.text(440, 555, "Usa el mouse para explorar.", {
+    this.add.image(438, 360, "m2-speech_narrative").setDisplaySize(314, 162).setDepth(6);
+    this.add.text(444, 352, "Ayuda a Rosarito a aprender, jugar y recordar su historia.", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "20px",
       color: "#3e2b22",
-      lineSpacing: 4,
-      wordWrap: { width: 170 },
+      lineSpacing: 3,
+      wordWrap: { width: 220 },
       align: "center",
     }).setOrigin(0.5).setDepth(7);
-    this.add.image(440, 616, "ui-icon_mouse").setDisplaySize(58, 58).setDepth(7);
+
+    this.add.image(440, 568, "m2-speech_mouse").setDisplaySize(230, 168).setDepth(6);
+    this.add.text(440, 540, "Usa el mouse\npara explorar.", {
+      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+      fontSize: "18px",
+      color: "#3e2b22",
+      lineSpacing: 2,
+      wordWrap: { width: 150 },
+      align: "center",
+    }).setOrigin(0.5).setDepth(7);
 
     this.add.image(650, 666, "ui-flower_cluster_bottom").setDisplaySize(150, 96).setDepth(5);
     this.add.image(90, 450, "ui-flower_cluster_left").setDisplaySize(96, 58).setAngle(-18).setDepth(4);
@@ -864,7 +880,7 @@ class CoverScene extends BaseScene {
     });
     this.add.image(858, 605, "ui-notebook_panel").setDisplaySize(420, 144).setDepth(4);
     this.add.image(708, 606, "ui-icon_book").setDisplaySize(84, 72).setDepth(5);
-    this.add.image(1014, 605, "ui-icon_star").setDisplaySize(84, 84).setDepth(5);
+    this.add.image(1014, 605, "ui-star_full").setDisplaySize(80, 80).setDepth(5);
     this.add.text(846, 570, "Gran objetivo", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "26px",
@@ -1131,11 +1147,11 @@ class QuizGameScene extends BaseScene {
     }).setOrigin(0.5).setDepth(7);
     this.add.text(888, 310, q.question, {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "27px",
+      fontSize: q.question.length > 42 ? "23px" : "25px",
       color: "#3e2b22",
       align: "center",
-      wordWrap: { width: 360 },
-      lineSpacing: 4,
+      wordWrap: { width: 350 },
+      lineSpacing: 3,
     }).setOrigin(0.5).setDepth(7);
     this.add.image(884, 350, "m2-heart").setDisplaySize(30, 28).setDepth(7);
     q.options.forEach((option, i) => {
@@ -1357,7 +1373,10 @@ class PuzzleGameScene extends BaseScene {
         if (image.getData("locked")) return;
         this.tweens.add({ targets: image, scale: this.trayScale, duration: 120 });
       });
-      image.on("pointerdown", () => playTone(this, "click"));
+      image.on("pointerdown", () => {
+        requestImmersiveMode();
+        playTone(this, "click");
+      });
       this.input.setDraggable(image);
     });
   }
@@ -1420,6 +1439,7 @@ class PuzzleGameScene extends BaseScene {
     });
     this.nextButton.on("pointerout", () => this.nextButton.setScale(1));
     this.nextButton.on("pointerdown", () => {
+      requestImmersiveMode();
       playTone(this, "click");
       gameState.puzzleIndex += 1;
       if (gameState.puzzleIndex >= gameState.puzzleSet.length) {
@@ -1503,9 +1523,9 @@ class ObjectsGameScene extends BaseScene {
 
     this.add.image(452, 536, "hidden-ui-list_panel").setDisplaySize(300, 316).setDepth(5);
     this.add.image(452, 383, "hidden-ui-list_header").setDisplaySize(314, 92).setDepth(6);
-    this.add.text(452, 383, "Puedes encontrarlos?", {
+    this.add.text(452, 392, "Puedes encontrarlos?", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "22px",
+      fontSize: "20px",
       fontStyle: "bold",
       color: "#fff8e9",
     }).setOrigin(0.5).setDepth(7);
@@ -1605,7 +1625,10 @@ class ObjectsGameScene extends BaseScene {
       this.tweens.add({ targets: target, scale: 1, duration: 130 });
       glow.setAlpha(0.52);
     });
-    target.on("pointerdown", () => this.findHiddenObject(target));
+    target.on("pointerdown", () => {
+      requestImmersiveMode();
+      this.findHiddenObject(target);
+    });
   }
 
   findHiddenObject(target) {
@@ -1648,6 +1671,7 @@ class ObjectsGameScene extends BaseScene {
     });
     this.nextButton.on("pointerout", () => this.nextButton.setScale(1));
     this.nextButton.on("pointerdown", () => {
+      requestImmersiveMode();
       playTone(this, "click");
       this.scene.start("Final");
     });
@@ -1686,8 +1710,8 @@ class FinalScene extends BaseScene {
       lineSpacing: 10,
       wordWrap: { width: 430 },
     });
-    this.add.image(825, 360, "ui-icon_star").setDisplaySize(260, 260);
-    this.add.text(825, 360, "3/3", { fontSize: "72px", fontStyle: "bold", color: "#3e2b22" }).setOrigin(0.5);
+    this.add.image(825, 360, "ui-star_full").setDisplaySize(230, 230);
+    this.add.text(825, 360, "3/3", { fontSize: "62px", fontStyle: "bold", color: "#3e2b22" }).setOrigin(0.5);
     this.makeButton(975, 710, "Jugar de nuevo", () => {
       resetRun();
       this.scene.start("Cover");

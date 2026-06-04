@@ -24,7 +24,7 @@ const LAYOUT = {
 const SCENE_LAYOUTS = {
   cover: {
     startButton: { x: 1010, y: 706, width: 280 },
-    starCounter: { x: 1090, y: 90 },
+    starCounter: { x: 1130, y: 90 },
   },
   dones: {
     optionStart: { x: 735, y: 330 },
@@ -32,17 +32,17 @@ const SCENE_LAYOUTS = {
     rosarito: { x: 1082, y: 595, scale: 0.19 },
   },
   quiz: {
-    starCounter: { x: 1126, y: 82 },
+    starCounter: { x: 1130, y: 82 },
     answerStart: { x: 735, y: 526 },
     answerGap: 165,
   },
   puzzle: {
-    starCounter: { x: 1110, y: 84 },
+    starCounter: { x: 1130, y: 84 },
     board: { x: 885, y: 365, size: 390 },
     nextButton: { x: 1095, y: 675 },
   },
   objects: {
-    starCounter: { x: 1110, y: 84 },
+    starCounter: { x: 1130, y: 84 },
     sceneBounds: { x: 902, y: 378, width: 520, height: 430 },
     nextButton: { x: 1095, y: 675 },
   },
