@@ -104,6 +104,16 @@ function sample(list, count) {
   return shuffle(list).slice(0, count);
 }
 
+function shuffleQuizQuestion(question) {
+  const correctAnswer = question.options[question.correct];
+  const options = shuffle(question.options);
+  return {
+    ...question,
+    options,
+    correct: Math.max(0, options.indexOf(correctAnswer)),
+  };
+}
+
 function uniqueList(list) {
   return [...new Set(list.filter(Boolean))];
 }
@@ -376,10 +386,6 @@ function loadHiddenObjectAssets(scene, objects, onComplete) {
     scene.load.image(background.key, background.path);
     queued = true;
   }
-  if (!scene.textures.exists("hidden-glow")) {
-    scene.load.image("hidden-glow", "assets/hiddenObjects/highlights/soft_ring.png");
-    queued = true;
-  }
   Object.values(data.ui || {}).forEach((asset) => {
     if (asset.key && asset.path && !scene.textures.exists(asset.key)) {
       scene.load.image(asset.key, asset.path);
@@ -406,11 +412,11 @@ function loadHiddenObjectAssets(scene, objects, onComplete) {
 
 function resetRunState(gameState) {
   gameState.achievements = [false, false, false];
-  gameState.quizSet = sample(quizPool, 3);
+  gameState.quizSet = sample(quizPool, 3).map(shuffleQuizQuestion);
   gameState.quizIndex = 0;
   gameState.giftSet = [];
   gameState.giftIndex = 0;
-  gameState.puzzleSet = gameState.puzzlePool.slice(0, Math.min(3, gameState.puzzlePool.length));
+  gameState.puzzleSet = sample(gameState.puzzlePool, Math.min(1, gameState.puzzlePool.length));
   gameState.puzzleIndex = 0;
   gameState.hiddenObjectSet = selectHiddenObjects(gameState.hiddenObjectPool);
 }
@@ -437,6 +443,7 @@ window.RosaritoData = {
   giftPool,
   componentIconKey,
   shuffle,
+  shuffleQuizQuestion,
   sample,
   repairText,
   normalizeKey,

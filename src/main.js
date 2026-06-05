@@ -1,4 +1,4 @@
-const { WIDTH, HEIGHT, COLORS, LAYOUT, SCENE_LAYOUTS } = window.RosaritoLayouts;
+const { WIDTH, HEIGHT, COLORS, LAYOUT, PAGE_AREAS, SCENE_LAYOUTS } = window.RosaritoLayouts;
 const { AUDIO_FILES, AUDIO_SCRIPT } = window.RosaritoAudio;
 const RosaritoData = window.RosaritoData;
 
@@ -113,333 +113,44 @@ const gameState = {
   hiddenObjectSet: [],
 };
 
-const quizPool = [
-  { question: "En donde nacio Rosario Vera Peñaloza?", options: ["La Rioja", "Buenos Aires", "Mendoza"], correct: 0 },
-  { question: "Que fecha importante coincide con su cumpleaños?", options: ["Pascuas", "Navidad", "Dia de la primavera"], correct: 1 },
-  { question: "Donde se encuentra la casa natal de Rosarito?", options: ["Carrizal", "Malanzan", "Atiles"], correct: 2 },
-  { question: "Rosario era la menor de cuantas hermanas?", options: ["4", "2", "3"], correct: 0 },
-  // { question: "Como recordamos a Rosario?", options: ["Como educadora", "Como marinera", "Como doctora de plantas"], correct: 0 },
-  { question: "Que lugar ayudo a valorar?", options: ["La escuela y el jardin", "El estadio", "El aeropuerto"], correct: 0 },
-  // { question: "Que actitud acompana a aprender?", options: ["Curiosidad", "Enojo", "Apuro"], correct: 0 },
-];
-
-const giftPool = [
-  { name: "Don de formas", prompt: "Elige las formas que ayudan a explorar.", correct: ["Cubo", "Esfera"], options: ["Cubo", "Esfera", "Zapato", "Peine"] },
-  { name: "Don de colores", prompt: "Elige objetos para mirar y comparar colores.", correct: ["Tarjetas", "Flores"], options: ["Tarjetas", "Flores", "Llave", "Reloj"] },
-  { name: "Don de conteo", prompt: "Elige materiales para contar.", correct: ["Semillas", "Fichas"], options: ["Semillas", "Fichas", "Tetera", "Bufanda"] },
-  { name: "Don de construccion", prompt: "Elige piezas para construir.", correct: ["Bloques", "Palitos"], options: ["Bloques", "Palitos", "Sombrero", "Cuchara"] },
-  { name: "Don de trazos", prompt: "Elige objetos para dibujar y trazar.", correct: ["Tiza", "Pizarra"], options: ["Tiza", "Pizarra", "Campana", "Florero"] },
-  { name: "Don de lectura", prompt: "Elige objetos para contar historias.", correct: ["Libro", "Lamina"], options: ["Libro", "Lamina", "Pelota", "Boton"] },
-  { name: "Don de ritmo", prompt: "Elige objetos para escuchar y repetir ritmos.", correct: ["Campana", "Palmas"], options: ["Campana", "Palmas", "Lentes", "Escoba"] },
-];
-
-const OBJECT_ICON_KEYS = {
-  Tiza: "ui-icon_chalk",
-  Pizarra: "ui-icon_blackboard",
-  Campana: "ui-icon_bell",
-  Libro: "ui-icon_book",
-  Lamina: "ui-icon_book",
-  Bloques: "ui-icon_puzzle",
-  Fichas: "ui-icon_star",
-  Semillas: "ui-icon_flower",
-  Flores: "ui-icon_flower",
-  Tarjetas: "ui-panel_task_floral",
-  Cubo: "ui-icon_puzzle",
-  Esfera: "ui-icon_sparkles",
-  Palitos: "ui-icon_quill",
-  Palmas: "ui-icon_tap",
-  Llave: "ui-icon_home",
-  Reloj: "ui-icon_restart",
-  Zapato: "ui-icon_x",
-  Peine: "ui-icon_x",
-  Tetera: "ui-icon_x",
-  Bufanda: "ui-icon_x",
-  Sombrero: "ui-icon_x",
-  Cuchara: "ui-icon_x",
-  Florero: "ui-icon_flower",
-  Pelota: "ui-icon_sparkles",
-  Boton: "ui-icon_heart",
-  Lentes: "ui-icon_question",
-  Escoba: "ui-icon_x",
-};
-
-const COMPONENT_ICON_RULES = [
-  ["pelota", "ui-icon_sparkles"],
-  ["lana", "ui-icon_sparkles"],
-  ["esfera", "ui-icon_sparkles"],
-  ["cubo", "ui-icon_puzzle"],
-  ["cubito", "ui-icon_puzzle"],
-  ["bloque", "ui-icon_puzzle"],
-  ["prisma", "ui-icon_puzzle"],
-  ["tablita", "ui-icon_puzzle"],
-  ["cilindro", "ui-icon_restart"],
-  ["aro", "ui-icon_restart"],
-  ["anillo", "ui-icon_restart"],
-  ["circulo", "ui-icon_restart"],
-  ["palito", "ui-icon_quill"],
-  ["liston", "ui-icon_quill"],
-  ["varilla", "ui-icon_quill"],
-  ["linea", "ui-icon_quill"],
-  ["puntito", "ui-icon_star"],
-  ["fichita", "ui-icon_star"],
-  ["cuenta", "ui-icon_star"],
-  ["semilla", "ui-icon_flower"],
-  ["piedrita", "ui-icon_star"],
-  ["cuadrado", "ui-icon_blackboard"],
-  ["triangulo", "ui-icon_exclaim"],
-  ["rectangulo", "ui-icon_blackboard"],
-  ["semicirculo", "ui-icon_restart"],
-  ["campana", "ui-icon_bell"],
-  ["pluma", "ui-icon_quill"],
-  ["libro", "ui-icon_book"],
-  ["regla", "ui-icon_chalk"],
-  ["taza", "ui-icon_x"],
-  ["corazon", "ui-icon_heart"],
-  ["estrella", "ui-icon_star"],
-  ["flor", "ui-icon_flower"],
-  ["tintero", "ui-icon_ink"],
-  ["tiza", "ui-icon_chalk"],
-  ["pizarra", "ui-icon_blackboard"],
-];
-
 function componentIconKey(label) {
   return RosaritoData.componentIconKey(label);
-  if (OBJECT_ICON_KEYS[label]) return OBJECT_ICON_KEYS[label];
-  const key = normalizeKey(label);
-  const match = COMPONENT_ICON_RULES.find(([term]) => key.includes(term));
-  return match ? match[1] : "ui-icon_sparkles";
 }
-
-const puzzleShapes = [
-  [
-    [0, 0], [145, 0], [132, 72], [150, 150], [0, 150], [15, 82],
-  ],
-  [
-    [0, 0], [150, 0], [150, 150], [4, 150], [18, 76],
-  ],
-  [
-    [0, 0], [150, 0], [132, 72], [146, 150], [0, 150],
-  ],
-  [
-    [18, 0], [150, 0], [150, 150], [0, 150], [8, 78],
-  ],
-];
 
 function shuffle(list) {
-  return [...list].sort(() => Math.random() - 0.5);
-}
-
-function sample(list, count) {
-  return shuffle(list).slice(0, count);
-}
-
-function uniqueList(list) {
-  return [...new Set(list.filter(Boolean))];
-}
-
-function repairText(value) {
-  const text = String(value || "");
-  if (!/[ÃÂ]/.test(text)) return text;
-  try {
-    return decodeURIComponent([...text].map((char) => {
-      const code = char.charCodeAt(0);
-      return code <= 255 ? `%${code.toString(16).padStart(2, "0")}` : encodeURIComponent(char);
-    }).join(""));
-  } catch {
-    return text.replace(/Â/g, "");
-  }
-}
-
-function normalizeKey(value) {
-  return repairText(value)
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-}
-
-function titleCase(value) {
-  return repairText(value)
-    .replace(/_/g, " ")
-    .split(" ")
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-}
-
-function giftComponentLabel(item) {
-  if (typeof item === "string") return titleCase(item);
-  return titleCase(item?.label || item?.nombre || item?.id || "");
+  return RosaritoData.shuffle(list);
 }
 
 function buildGiftPoolFromDones(data) {
   return RosaritoData.buildGiftPoolFromDones(data);
-  const dones = Array.isArray(data) ? data : data?.dones;
-  if (!Array.isArray(dones) || dones.length === 0) return giftPool;
-  const parsed = dones.map((don) => {
-    const correctPool = uniqueList((don.componentes_correctos || []).map(giftComponentLabel));
-    const incorrectPool = uniqueList((don.componentes_incorrectos || don.distractores_recomendados || []).map(giftComponentLabel));
-    if (correctPool.length < 2 || incorrectPool.length < 2) return null;
-    const correct = sample(correctPool, 2).map((label, index) => ({
-      id: `${don.id || "don"}-correct-${index}-${normalizeKey(label)}`,
-      label,
-      correct: true,
-    }));
-    const incorrect = sample(incorrectPool, 2).map((label, index) => ({
-      id: `${don.id || "don"}-wrong-${index}-${normalizeKey(label)}`,
-      label,
-      correct: false,
-    }));
-    return {
-      id: don.id,
-      name: repairText(don.titulo_para_ninos || don.nombre || don.nombre_pdf || "Don de Rosarito"),
-      subtitle: repairText(don.nombre_pdf || don.nombre || ""),
-      prompt: repairText(don.consigna_para_ninos || don.pregunta_principal || don.concepto || don.descripcion_docente || "Elegi los componentes correctos."),
-      correct: correct.map((option) => option.id),
-      options: shuffle([...correct, ...incorrect]).slice(0, 4),
-      feedbackCorrect: repairText(don.feedback_correcto || AUDIO_SCRIPT.feedback.success),
-      feedbackIncorrect: repairText(don.feedback_incorrecto || AUDIO_SCRIPT.feedback.error),
-    };
-  }).filter(Boolean);
-  return parsed.length ? parsed : giftPool;
 }
 
 function buildPuzzlePool(data) {
   return RosaritoData.buildPuzzlePool(data);
-  const list = Array.isArray(data?.puzzles) ? data.puzzles : [];
-  return list
-    .filter((puzzle) => puzzle?.previewKey && puzzle?.preview && Array.isArray(puzzle.pieces) && puzzle.pieces.length === 4)
-    .map((puzzle) => ({
-      ...puzzle,
-      title: repairText(puzzle.title || "Rompecabezas de Rosario"),
-      description: repairText(puzzle.description || "Arma la imagen con sus piezas."),
-      pieces: puzzle.pieces.map((piece) => ({
-        ...piece,
-        id: Number(piece.id),
-        centerX: Number(piece.centerX),
-        centerY: Number(piece.centerY),
-      })),
-    }));
 }
 
 function buildHiddenObjectPool(data) {
   return RosaritoData.buildHiddenObjectPool(data);
-  const list = Array.isArray(data?.objects) ? data.objects : [];
-  return list
-    .filter((obj) => obj?.id && obj?.label && obj?.iconKey && obj?.spriteKey)
-    .map((obj) => ({
-      ...obj,
-      label: repairText(obj.label),
-      x: Number(obj.x),
-      y: Number(obj.y),
-      xRatio: Number(obj.xRatio),
-      yRatio: Number(obj.yRatio),
-      widthRatio: Number(obj.widthRatio),
-      heightRatio: Number(obj.heightRatio),
-      width: Number(obj.width),
-      height: Number(obj.height),
-      hitPadding: Number(obj.hitPadding || 15),
-      required: Boolean(obj.required),
-    }));
 }
 
 function selectHiddenObjects(pool) {
   return RosaritoData.selectHiddenObjects(pool);
-  const required = pool.filter((obj) => obj.required);
-  const optional = pool.filter((obj) => !obj.required);
-  const selected = [...required, ...sample(optional, Math.max(0, 4 - required.length))];
-  return selected.slice(0, 4);
 }
 
 function loadPuzzleAssets(scene, puzzles, onComplete) {
   return RosaritoData.loadPuzzleAssets(scene, puzzles, onComplete);
-  let queued = false;
-  puzzles.forEach((puzzle) => {
-    if (!scene.textures.exists(puzzle.previewKey)) {
-      scene.load.image(puzzle.previewKey, puzzle.preview);
-      queued = true;
-    }
-    puzzle.pieces.forEach((piece) => {
-      if (!scene.textures.exists(piece.key)) {
-        scene.load.image(piece.key, piece.path);
-        queued = true;
-      }
-    });
-  });
-  if (!queued) {
-    onComplete();
-    return;
-  }
-  scene.load.once("complete", onComplete);
-  scene.load.start();
 }
 
 function loadHiddenObjectAssets(scene, objects, onComplete) {
   return RosaritoData.loadHiddenObjectAssets(scene, objects, onComplete);
-  let queued = false;
-  const data = scene.cache.json.get("hiddenObjects") || {};
-  const background = data.background || {};
-  if (background.key && background.path && !scene.textures.exists(background.key)) {
-    scene.load.image(background.key, background.path);
-    queued = true;
-  }
-  if (!scene.textures.exists("hidden-glow")) {
-    scene.load.image("hidden-glow", "assets/hiddenObjects/highlights/soft_ring.png");
-    queued = true;
-  }
-  Object.values(data.ui || {}).forEach((asset) => {
-    if (asset.key && asset.path && !scene.textures.exists(asset.key)) {
-      scene.load.image(asset.key, asset.path);
-      queued = true;
-    }
-  });
-  objects.forEach((obj) => {
-    if (!scene.textures.exists(obj.iconKey)) {
-      scene.load.image(obj.iconKey, obj.icon);
-      queued = true;
-    }
-    if (!scene.textures.exists(obj.spriteKey)) {
-      scene.load.image(obj.spriteKey, obj.sprite);
-      queued = true;
-    }
-  });
-  if (!queued) {
-    onComplete();
-    return;
-  }
-  scene.load.once("complete", onComplete);
-  scene.load.start();
 }
 
 function resetRun() {
   return RosaritoData.resetRunState(gameState);
-  gameState.achievements = [false, false, false];
-  gameState.quizSet = sample(quizPool, 3);
-  gameState.quizIndex = 0;
-  gameState.giftSet = [];
-  gameState.giftIndex = 0;
-  gameState.puzzleSet = gameState.puzzlePool.slice(0, Math.min(3, gameState.puzzlePool.length));
-  gameState.puzzleIndex = 0;
-  gameState.hiddenObjectSet = selectHiddenObjects(gameState.hiddenObjectPool);
 }
 
 function directSceneFromUrl() {
   return RosaritoData.directSceneFromUrl();
-  const value = new URLSearchParams(window.location.search).get("scene");
-  const key = normalizeKey(value || "");
-  return {
-    cover: "Cover",
-    inicio: "Cover",
-    preguntas: "QuizGame",
-    quiz: "QuizGame",
-    infancia: "QuizGame",
-    puzzle: "PuzzleGame",
-    rompecabezas: "PuzzleGame",
-    objetos: "ObjectsGame",
-    objects: "ObjectsGame",
-    final: "Final",
-  }[key] || "Cover";
 }
 
 function requestImmersiveMode() {
@@ -454,38 +165,10 @@ function requestImmersiveMode() {
 
 function playTone(scene, type = "click") {
   return window.RosaritoAudio.playTone(scene, type);
-  const sfxKey = `sfx.${type}`;
-  if (scene.cache.audio.exists(sfxKey)) {
-    scene.sound.play(sfxKey);
-    return;
-  }
-  if (!scene.sound || !scene.sound.context) return;
-  const context = scene.sound.context;
-  const oscillator = context.createOscillator();
-  const gain = context.createGain();
-  const settings = {
-    click: { frequency: 520, duration: 0.05, volume: 0.035, type: "sine" },
-    hover: { frequency: 720, duration: 0.035, volume: 0.022, type: "triangle" },
-    success: { frequency: 880, duration: 0.13, volume: 0.055, type: "sine" },
-    error: { frequency: 180, duration: 0.16, volume: 0.045, type: "sawtooth" },
-    page: { frequency: 330, duration: 0.22, volume: 0.035, type: "triangle" },
-  }[type] || { frequency: 440, duration: 0.07, volume: 0.03, type: "sine" };
-  oscillator.type = settings.type;
-  oscillator.frequency.setValueAtTime(settings.frequency, context.currentTime);
-  if (type === "success") oscillator.frequency.exponentialRampToValueAtTime(1174, context.currentTime + settings.duration);
-  gain.gain.setValueAtTime(settings.volume, context.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + settings.duration);
-  oscillator.connect(gain);
-  gain.connect(context.destination);
-  oscillator.start();
-  oscillator.stop(context.currentTime + settings.duration);
 }
 
 function playAudioKey(scene, key) {
   return window.RosaritoAudio.playAudioKey(scene, key);
-  if (key && scene.cache.audio.exists(key)) {
-    scene.sound.play(key);
-  }
 }
 
 class BootScene extends Phaser.Scene {
@@ -526,7 +209,7 @@ class BootScene extends Phaser.Scene {
     gameState.puzzlePool = buildPuzzlePool(this.cache.json.get("puzzles"));
     gameState.hiddenObjectPool = buildHiddenObjectPool(this.cache.json.get("hiddenObjects"));
     resetRun();
-    loadPuzzleAssets(this, gameState.puzzleSet, () => {
+    loadPuzzleAssets(this, gameState.puzzlePool, () => {
       loadHiddenObjectAssets(this, gameState.hiddenObjectPool, () => this.scene.start(directSceneFromUrl()));
     });
   }
@@ -634,26 +317,27 @@ class BaseScene extends Phaser.Scene {
 
   makeCoverMissionCard(x, y, number, label, iconKey, onClick = null) {
     const card = this.add.container(x, y);
-    const bg = this.add.image(0, 8, "ui-card_arch_filled").setDisplaySize(126, 150);
-    const badge = this.add.image(-46, -64, "ui-icon_flower").setDisplaySize(50, 50);
-    const num = this.add.text(-46, -66, String(number), {
+    const bg = this.add.image(0, 8, "ui-card_arch_filled").setDisplaySize(138, 164);
+    const badge = this.add.image(-50, -70, "ui-icon_flower").setDisplaySize(52, 52);
+    const num = this.add.text(-50, -72, String(number), {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "22px",
       fontStyle: "bold",
       color: "#fff8e9",
     }).setOrigin(0.5);
-    const icon = this.add.image(0, -18, iconKey).setDisplaySize(68, 58);
+    const icon = this.add.image(0, -24, iconKey).setDisplaySize(74, 64);
     const title = this.add.text(0, 50, label, {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "14px",
+      fontSize: "15px",
       fontStyle: "bold",
       color: "#3e2b22",
       align: "center",
-      wordWrap: { width: 102 },
+      wordWrap: { width: 112 },
       lineSpacing: 0,
     }).setOrigin(0.5);
+    title.setY(42);
     card.add([bg, badge, num, icon, title]);
-    card.setSize(126, 156).setInteractive({ useHandCursor: true });
+    card.setSize(138, 170).setInteractive({ useHandCursor: true });
     card.on("pointerover", () => {
       card.setScale(1.04);
       playTone(this, "hover");
@@ -799,9 +483,11 @@ class CoverScene extends BaseScene {
 
   create() {
     this.createBook("", "", { progress: false });
-    this.rosaritoSprite.setPosition(220, 500).setScale(0.54).setDepth(8);
+    const leftPage = PAGE_AREAS.left;
+    const rightPage = PAGE_AREAS.right;
+    this.rosaritoSprite.setPosition(leftPage.x + 160, leftPage.y + 462).setScale(0.6).setDepth(8);
     this.narrateScreen("cover");
-    this.add.ellipse(220, 666, 170, 32, 0x5b3f2d, 0.18).setDepth(2);
+    this.add.ellipse(leftPage.x + 160, leftPage.y + 624, 190, 34, 0x5b3f2d, 0.18).setDepth(2);
 
     this.add.image(150, 160, "ui-flower_cluster_left").setDisplaySize(120, 78).setAngle(-8).setDepth(4);
     this.add.image(407, 166, "ui-flower_cluster_bottom").setDisplaySize(146, 96).setAngle(5).setDepth(4);
@@ -824,31 +510,35 @@ class CoverScene extends BaseScene {
       strokeThickness: 5,
     }).setDepth(5);
 
-    this.add.image(438, 360, "m2-speech_narrative").setDisplaySize(314, 162).setDepth(6);
-    this.add.text(444, 352, "Ayuda a Rosarito a aprender, jugar y recordar su historia.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "20px",
-      color: "#3e2b22",
-      lineSpacing: 3,
-      wordWrap: { width: 220 },
-      align: "center",
-    }).setOrigin(0.5).setDepth(7);
+    this.add.image(448, 356, "m2-speech_narrative").setDisplaySize(324, 166).setDepth(6);
+    window.RosaritoUI.addFittedText(this, 454, 348, "Ayuda a Rosarito a aprender, jugar y recordar su historia.", "body", {
+      maxWidth: 226,
+      maxHeight: 86,
+      minFontSize: 17,
+      depth: 7,
+      style: {
+        fontSize: "20px",
+        wordWrap: { width: 226 },
+      },
+    });
 
-    this.add.image(440, 568, "m2-speech_mouse").setDisplaySize(230, 168).setDepth(6);
-    this.add.text(440, 540, "Usa el mouse\npara explorar.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "18px",
-      color: "#3e2b22",
-      lineSpacing: 2,
-      wordWrap: { width: 150 },
-      align: "center",
-    }).setOrigin(0.5).setDepth(7);
+    this.add.image(452, 574, "m2-speech_mouse").setDisplaySize(246, 172).setDepth(6);
+    window.RosaritoUI.addFittedText(this, 452, 544, "Usa el mouse\npara explorar.", "body", {
+      maxWidth: 158,
+      maxHeight: 60,
+      minFontSize: 16,
+      depth: 7,
+      style: {
+        fontSize: "19px",
+        wordWrap: { width: 158 },
+      },
+    });
 
     this.add.image(650, 666, "ui-flower_cluster_bottom").setDisplaySize(150, 96).setDepth(5);
     this.add.image(90, 450, "ui-flower_cluster_left").setDisplaySize(96, 58).setAngle(-18).setDepth(4);
 
     this.drawStarCounter(SCENE_LAYOUTS.cover.starCounter.x, SCENE_LAYOUTS.cover.starCounter.y, gameState.achievements.filter(Boolean).length);
-    this.add.image(860, 112, "ui-speech_large_lilac").setDisplaySize(300, 98).setDepth(5);
+    this.add.image(rightPage.x + 254, 112, "ui-speech_large_lilac").setDisplaySize(300, 98).setDepth(5);
     this.add.text(860, 112, "Tu mision", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "42px",
@@ -856,14 +546,16 @@ class CoverScene extends BaseScene {
       color: "#6a3d8f",
     }).setOrigin(0.5).setDepth(6);
     this.add.image(860, 232, "ui-speech_large_cream").setDisplaySize(440, 138).setAlpha(0.9).setDepth(4);
-    this.add.text(860, 226, "Completa las actividades para conocer la vida y el legado de Rosarito.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "22px",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 340 },
-      lineSpacing: 4,
-    }).setOrigin(0.5).setDepth(5);
+    window.RosaritoUI.addFittedText(this, 860, 226, "Completa las actividades para conocer la vida y el legado de Rosarito.", "body", {
+      maxWidth: 340,
+      maxHeight: 86,
+      minFontSize: 18,
+      depth: 5,
+      style: {
+        fontSize: "22px",
+        wordWrap: { width: 340 },
+      },
+    });
     this.add.image(860, 298, "ui-icon_heart").setDisplaySize(34, 34).setDepth(5);
 
     const startTestScene = (sceneKey) => {
@@ -876,7 +568,7 @@ class CoverScene extends BaseScene {
       ["Objetos", "ui-icon_ink", "ObjectsGame"],
     ];
     cards.forEach(([label, icon, sceneKey], i) => {
-      this.makeCoverMissionCard(745 + i * 150, 435, i + 1, label, icon, () => startTestScene(sceneKey)).setDepth(6);
+      this.makeCoverMissionCard(705 + i * 180, 430, i + 1, label, icon, () => startTestScene(sceneKey)).setDepth(6);
     });
     this.add.image(858, 605, "ui-notebook_panel").setDisplaySize(420, 144).setDepth(4);
     this.add.image(708, 606, "ui-icon_book").setDisplaySize(84, 72).setDepth(5);
@@ -887,14 +579,16 @@ class CoverScene extends BaseScene {
       fontStyle: "bold",
       color: "#6a3d8f",
     }).setOrigin(0.5).setDepth(5);
-    this.add.text(848, 615, "Completa las actividades y gana el album de Rosarito.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "17px",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 235 },
-      lineSpacing: 2,
-    }).setOrigin(0.5).setDepth(5);
+    window.RosaritoUI.addFittedText(this, 848, 615, "Completa las actividades y gana el album de Rosarito.", "body", {
+      maxWidth: 235,
+      maxHeight: 54,
+      minFontSize: 15,
+      depth: 5,
+      style: {
+        fontSize: "17px",
+        wordWrap: { width: 235 },
+      },
+    });
 
     const start = this.makeButton(SCENE_LAYOUTS.cover.startButton.x, SCENE_LAYOUTS.cover.startButton.y, "Comenzar", () => {
       resetRun();
@@ -1145,14 +839,16 @@ class QuizGameScene extends BaseScene {
       fontStyle: "bold",
       color: "#fff8e9",
     }).setOrigin(0.5).setDepth(7);
-    this.add.text(888, 310, q.question, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: q.question.length > 42 ? "23px" : "25px",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 350 },
-      lineSpacing: 3,
-    }).setOrigin(0.5).setDepth(7);
+    window.RosaritoUI.addFittedText(this, 888, 310, q.question, "question", {
+      maxWidth: 350,
+      maxHeight: 64,
+      minFontSize: 19,
+      depth: 7,
+      style: {
+        fontSize: q.question.length > 42 ? "23px" : "25px",
+        wordWrap: { width: 350 },
+      },
+    });
     this.add.image(884, 350, "m2-heart").setDisplaySize(30, 28).setDepth(7);
     q.options.forEach((option, i) => {
       this.makeQuizAnswerCard(SCENE_LAYOUTS.quiz.answerStart.x + i * SCENE_LAYOUTS.quiz.answerGap, SCENE_LAYOUTS.quiz.answerStart.y, option, i, (card) => {
@@ -1599,11 +1295,9 @@ class ObjectsGameScene extends BaseScene {
     const objectWidth = Number.isFinite(obj.widthRatio) ? bounds.width * obj.widthRatio : obj.width;
     const objectHeight = Number.isFinite(obj.heightRatio) ? bounds.height * obj.heightRatio : obj.height;
     const target = this.add.container(objectX, objectY).setDepth(12);
-    const displayMax = Math.max(objectWidth, objectHeight);
-    const glow = this.add.image(0, 0, "hidden-glow").setDisplaySize(displayMax + 58, displayMax + 58).setAlpha(0.52);
     const sprite = this.add.image(0, 0, obj.spriteKey).setDisplaySize(objectWidth, objectHeight);
-    target.add([glow, sprite]);
-    const hitPadding = Math.max(obj.hitPadding, 34);
+    target.add(sprite);
+    const hitPadding = Math.max(obj.hitPadding, 48);
     target.setSize(objectWidth + hitPadding * 2, objectHeight + hitPadding * 2);
     target.setInteractive(new Phaser.Geom.Rectangle(
       -target.width / 2,
@@ -1613,17 +1307,16 @@ class ObjectsGameScene extends BaseScene {
     ), Phaser.Geom.Rectangle.Contains);
     target.setData("object", { ...obj, x: objectX, y: objectY, width: objectWidth, height: objectHeight });
     target.setData("found", false);
-    this.tweens.add({ targets: glow, alpha: 0.18, scale: 1.08, yoyo: true, repeat: -1, duration: 1200, ease: "Sine.easeInOut" });
     target.on("pointerover", () => {
       if (target.getData("found")) return;
       playTone(this, "hover");
-      this.tweens.add({ targets: target, scale: 1.05, duration: 130 });
-      glow.setAlpha(0.78);
+      target.setAlpha(0.92);
+      this.tweens.add({ targets: target, scale: 1.035, duration: 130 });
     });
     target.on("pointerout", () => {
       if (target.getData("found")) return;
       this.tweens.add({ targets: target, scale: 1, duration: 130 });
-      glow.setAlpha(0.52);
+      target.setAlpha(1);
     });
     target.on("pointerdown", () => {
       requestImmersiveMode();

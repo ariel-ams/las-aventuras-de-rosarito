@@ -21,6 +21,13 @@ const LAYOUT = {
   rosarito: { x: 1010, y: 458, scale: 0.38 },
 };
 
+const PAGE_AREAS = {
+  left: { x: 54, y: 54, width: 520, height: 650 },
+  right: { x: 606, y: 54, width: 520, height: 650 },
+  gutter: { x: 566, y: 54, width: 48, height: 650 },
+  safe: { x: 70, y: 70, width: 1040, height: 620 },
+};
+
 const SCENE_LAYOUTS = {
   cover: {
     startButton: { x: 1010, y: 706, width: 280 },
@@ -48,5 +55,5 @@ const SCENE_LAYOUTS = {
   },
 };
 
-window.RosaritoLayouts = { WIDTH, HEIGHT, COLORS, LAYOUT, SCENE_LAYOUTS };
+window.RosaritoLayouts = { WIDTH, HEIGHT, COLORS, LAYOUT, PAGE_AREAS, SCENE_LAYOUTS };
 }());
