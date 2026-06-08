@@ -268,6 +268,52 @@ function addNextButton(scene, x, y, label, onClick, options = {}) {
   return button;
 }
 
+function addPrimaryButton(scene, x, y, label, onClick, options = {}) {
+  const {
+    width = 250,
+    height = 82,
+    depth,
+    fontSize = "24px",
+    enabled = true,
+  } = options;
+  let isEnabled = enabled;
+  const button = scene.add.container(x, y);
+  if (depth !== undefined) button.setDepth(depth);
+  const bg = scene.add.image(0, 0, "ui-button_long_purple").setDisplaySize(width, height);
+  const text = scene.add.text(0, 0, label, {
+    ...TEXT_STYLES.button,
+    fontSize,
+  }).setOrigin(0.5);
+  button.add([bg, text]);
+  button.setSize(width, height).setInteractive({ useHandCursor: true });
+
+  button.setEnabled = (nextEnabled = true) => {
+    isEnabled = nextEnabled;
+    button.setAlpha(isEnabled ? 1 : 0.45);
+    if (button.input) button.input.enabled = isEnabled;
+    button.setScale(1);
+    return button;
+  };
+
+  button.on("pointerover", () => {
+    if (!isEnabled) return;
+    button.setScale(1.03);
+    window.RosaritoAudio.playTone(scene, "hover");
+  });
+  button.on("pointerout", () => {
+    if (!isEnabled) return;
+    button.setScale(1);
+  });
+  button.on("pointerdown", () => {
+    if (!isEnabled) return;
+    window.RosaritoAudio.playTone(scene, "click");
+    if (window.requestImmersiveMode) window.requestImmersiveMode();
+    onClick();
+  });
+  button.setEnabled(enabled);
+  return button;
+}
+
 function drawProgress(scene, gameState) {
   for (let i = 0; i < 3; i += 1) {
     const x = 825 + i * 90;
@@ -322,6 +368,7 @@ window.RosaritoUI = {
   addChecklistFrame,
   addScreenTitle,
   addNextButton,
+  addPrimaryButton,
   drawProgress,
   drawStarCounter,
   createFeedback,

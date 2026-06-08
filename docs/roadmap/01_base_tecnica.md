@@ -169,7 +169,7 @@ Observaciones:
 - [x] Crear helper restante de componente visual: boton siguiente.
 - [x] Migrar portada y quiz a los helpers visuales comunes en titulos y globos.
 - [x] Validar la migracion con `node --check`, smoke tests CDP y capturas `test-artifacts/cover-quiz-helper-pass-2/`.
-- [ ] Migrar botones comunes a estilos compartidos.
+- [x] Migrar botones comunes a estilos compartidos con `RosaritoUI.addPrimaryButton`.
 - [ ] Decidir destino de `PrepGameScene`.
 - [ ] Separar datos de preguntas a JSON externo.
 

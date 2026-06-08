@@ -271,27 +271,7 @@ class BaseScene extends Phaser.Scene {
   }
 
   makeButton(x, y, label, onClick, width = 250) {
-    const button = this.add.container(x, y);
-    const bg = this.add.image(0, 0, "ui-button_long_purple").setDisplaySize(width, 82);
-    const text = this.add.text(0, 0, label, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "24px",
-      fontStyle: "bold",
-      color: "#fff8e9",
-    }).setOrigin(0.5);
-    button.add([bg, text]);
-    button.setSize(width, 82).setInteractive({ useHandCursor: true });
-    button.on("pointerover", () => {
-      button.setScale(1.03);
-      playTone(this, "hover");
-    });
-    button.on("pointerout", () => button.setScale(1));
-    button.on("pointerdown", () => {
-      playTone(this, "click");
-      requestImmersiveMode();
-      onClick();
-    });
-    return button;
+    return window.RosaritoUI.addPrimaryButton(this, x, y, label, onClick, { width });
   }
 
   makeNextButton(label, nextScene) {

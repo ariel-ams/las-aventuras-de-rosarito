@@ -15,6 +15,7 @@ Capturas revisadas:
 - Tanda actual de consistencia UI y objetos: `test-artifacts/ui-consistency-objects-hit/`
 - Tanda actual despues de helpers UI: `test-artifacts/ui-helpers-title-pass/`
 - Tanda despues de helper de boton y portada/quiz: `test-artifacts/cover-quiz-helper-pass-2/`
+- Tanda despues de helper de boton principal: `test-artifacts/primary-button-helper-pass/`
 
 Cambios ya aplicados en esta ronda:
 
@@ -48,6 +49,7 @@ Pruebas ejecutadas:
 - `tools/capture-screens.ps1 -RunName ui-helpers-title-pass`
 - `tools/capture-screens.ps1 -RunName next-button-helper-pass`
 - `tools/capture-screens.ps1 -RunName cover-quiz-helper-pass-2`
+- `tools/capture-screens.ps1 -RunName primary-button-helper-pass`
 
 Resultado funcional:
 
@@ -62,6 +64,7 @@ Resultado funcional:
 - La pasada actual corrigio el doble indicador de lista y el click impreciso de objetos.
 - La nueva pasada migro titulos, globos, headers y checklist de puzzle/objetos a helpers compartidos sin cambiar la composicion visual.
 - La pasada actual agrego `addNextButton`, migro botones siguientes de puzzle/objetos y llevo portada/quiz a los helpers de titulo/globos en las zonas de bajo riesgo.
+- La ultima pasada agrego `addPrimaryButton` y dejo los botones largos comunes centralizados sin cambiar el layout visible.
 
 ## Comparacion con la referencia
 

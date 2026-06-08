@@ -46,7 +46,8 @@ Estado: avanzada.
 - Helpers de datos, UI, audio y layout ya existen.
 - Hay capturas headless repetibles.
 - Hay smoke test del puzzle.
-- Pendiente: seguir migrando textos/paneles escena por escena.
+- Los helpers visuales principales ya cubren titulos, globos, headers, checklist y boton siguiente.
+- Pendiente: migrar boton principal largo y empezar a mover coordenadas repetidas a `SCENE_LAYOUTS`.
 
 ### Etapa 2 - Pantalla inicial
 
@@ -54,17 +55,19 @@ Estado: parcialmente alineada con referencia.
 
 - La portada se ve estable y clara.
 - Rosarito, tarjetas y objetivo final ya funcionan.
-- Pendiente: tarjetas mas ilustradas y objetivo final mas rico.
+- Portada ya usa helpers comunes en titulos y globos.
+- Pendiente: tarjetas mas ilustradas, boton principal compartido y objetivo final mas rico.
 
 ### Etapa 3 - Minijuegos
 
 Estado: funcional, con pulido visual en curso.
 
 - Preguntas funciona y no muestra cortes en la captura actual.
+- Preguntas ya usa helpers comunes en titulo y globos.
 - Puzzle funciona y el drag/snap esta validado.
 - Puzzle recibio ajuste de globo y texto inferior.
 - Objetos tiene buena escena y el globo inferior fue reposicionado.
-- Pendiente: revalidar capturas nuevas, feedback visual breve y pulido de bandeja/tablero.
+- Pendiente: feedback visual breve y pulido de bandeja/tablero.
 
 ### Etapa 4 - Audio, mobile y accesibilidad
 
@@ -100,6 +103,7 @@ Estado: iniciado.
 
 ## Ultima evidencia de prueba
 
-- Carpeta: `test-artifacts/roadmap-review/`
+- Carpeta: `test-artifacts/cover-quiz-helper-pass-2/`
 - Smoke test: `node tools/puzzle-cdp-test.mjs`
 - Resultado esperado del puzzle: `ok: true`, `pieces: 4`, `lockedCount >= 1`, `missingTextures: []`.
+- Smoke test de objetos: `node tools/objects-cdp-test.mjs`, resultado esperado `ok: true`, `found: 4`.

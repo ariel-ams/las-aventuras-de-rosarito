@@ -167,6 +167,9 @@ Notas de revision:
 - El header lila de objetos, quiz y portada todavia usa variantes visuales; queda como tarea de unificacion en la etapa de sistema UI.
 - Avance posterior aplicado: puzzle y objetos migraron titulos, globos, headers y checklist a helpers visuales compartidos.
 - Capturas posteriores: `test-artifacts/ui-helpers-title-pass/puzzle.png` y `test-artifacts/ui-helpers-title-pass/objects.png`.
+- Avance posterior aplicado: portada y quiz migraron titulos/globos a helpers compartidos en las zonas de bajo riesgo.
+- Avance posterior aplicado: puzzle y objetos migraron el boton `Siguiente` a `RosaritoUI.addNextButton`.
+- Capturas posteriores: `test-artifacts/cover-quiz-helper-pass-2/cover.png` y `test-artifacts/cover-quiz-helper-pass-2/quiz.png`.
 
 ## Revision visual `roadmap-review`
 
@@ -187,9 +190,9 @@ Prioridad inmediata dentro de etapa 3:
 
 1. Agregar feedback visual breve al colocar piezas/encontrar objetos.
 2. Pulir bandeja del puzzle.
-3. Mejorar estado deshabilitado de boton siguiente en objetos.
+3. Pulir estado visual del boton siguiente deshabilitado si todavia se confunde con decoracion.
 4. Separar preguntas a JSON externo cuando el contenido final este mas estable.
-5. Migrar globos/headers restantes al sistema comun definido en la base tecnica, empezando por portada y quiz.
+5. Mover coordenadas repetidas de minijuegos a `SCENE_LAYOUTS` cuando el layout deje de moverse.
 
 ## Transiciones
 
