@@ -67,6 +67,152 @@ function addFittedText(scene, x, y, text, styleNameOrStyle = "body", options = {
   return label;
 }
 
+function addNarrativeBubble(scene, x, y, text, options = {}) {
+  const {
+    width = 300,
+    height = 132,
+    depth = 7,
+    alpha = 1,
+    textOffsetX = 0,
+    textOffsetY = 0,
+    maxWidth = width * 0.72,
+    maxHeight = height * 0.58,
+    fontSize = "22px",
+    minFontSize = 16,
+    lineSpacing = 4,
+    key = "ui-speech_large_cream",
+  } = options;
+  const bubble = scene.add.image(x, y, key).setDisplaySize(width, height).setDepth(depth);
+  if (alpha !== 1) bubble.setAlpha(alpha);
+  const label = addFittedText(scene, x + textOffsetX, y + textOffsetY, text, "body", {
+    maxWidth,
+    maxHeight,
+    minFontSize,
+    depth: depth + 1,
+    style: {
+      fontSize,
+      lineSpacing,
+      wordWrap: { width: maxWidth },
+    },
+  });
+  return { bubble, label };
+}
+
+function addMouseHint(scene, x, y, text, options = {}) {
+  const {
+    width = 220,
+    height = 140,
+    depth = 7,
+    textOffsetY = -20,
+    iconOffsetY = 42,
+    iconSize = 44,
+    maxWidth = width * 0.62,
+    maxHeight = height * 0.42,
+    fontSize = "18px",
+    minFontSize = 14,
+  } = options;
+  const bubble = scene.add.image(x, y, "ui-speech_large_lilac").setDisplaySize(width, height).setDepth(depth);
+  const label = addFittedText(scene, x, y + textOffsetY, text, "body", {
+    maxWidth,
+    maxHeight,
+    minFontSize,
+    depth: depth + 1,
+    style: {
+      fontSize,
+      wordWrap: { width: maxWidth },
+    },
+  });
+  const icon = scene.add.image(x, y + iconOffsetY, "ui-icon_mouse").setDisplaySize(iconSize, iconSize).setDepth(depth + 1);
+  return { bubble, label, icon };
+}
+
+function addSectionHeader(scene, x, y, text, options = {}) {
+  const {
+    width = 390,
+    height = 70,
+    depth = 5,
+    tint,
+    alpha = 1,
+    fontSize = "28px",
+    color = "#5b3277",
+    maxWidth = width * 0.82,
+    minFontSize = 18,
+    heart = true,
+    heartOffsetY = height * 0.64,
+  } = options;
+  const plate = scene.add.image(x, y, "ui-label_long_cream").setDisplaySize(width, height).setDepth(depth);
+  if (tint) plate.setTint(tint);
+  if (alpha !== 1) plate.setAlpha(alpha);
+  const label = addFittedText(scene, x, y, text, "title", {
+    maxWidth,
+    maxHeight: height * 0.58,
+    minFontSize,
+    depth: depth + 1,
+    style: {
+      fontSize,
+      color,
+      strokeThickness: 0,
+    },
+  });
+  const heartIcon = heart ? scene.add.image(x, y + heartOffsetY, "m2-heart").setDisplaySize(30, 28).setDepth(depth + 1) : null;
+  return { plate, label, heart: heartIcon };
+}
+
+function addChecklistFrame(scene, x, y, title, options = {}) {
+  const {
+    panelWidth = 300,
+    panelHeight = 316,
+    headerWidth = 314,
+    headerHeight = 92,
+    headerY = y - panelHeight / 2 + 5,
+    panelDepth = 5,
+    headerDepth = 6,
+    titleY = headerY + 9,
+  } = options;
+  const panel = scene.add.image(x, y, "hidden-ui-list_panel").setDisplaySize(panelWidth, panelHeight).setDepth(panelDepth);
+  const header = scene.add.image(x, headerY, "hidden-ui-list_header").setDisplaySize(headerWidth, headerHeight).setDepth(headerDepth);
+  const label = addFittedText(scene, x, titleY, title, "button", {
+    maxWidth: headerWidth * 0.78,
+    maxHeight: 34,
+    minFontSize: 16,
+    depth: headerDepth + 1,
+    style: {
+      fontSize: "20px",
+      color: "#fff8e9",
+    },
+  });
+  return { panel, header, label };
+}
+
+function addScreenTitle(scene, lines, options = {}) {
+  const {
+    depth = 5,
+    stroke = "#f6e2ba",
+    strokeThickness = 4,
+    color = "#6a3d8f",
+    divider,
+    flowers = [],
+  } = options;
+  const titleLines = lines.map((line) => scene.add.text(line.x, line.y, line.text, {
+    ...TEXT_STYLES.title,
+    fontSize: line.fontSize,
+    color: line.color || color,
+    stroke: line.stroke || stroke,
+    strokeThickness: line.strokeThickness ?? strokeThickness,
+  }).setOrigin(line.origin ?? 0.5).setDepth(line.depth ?? depth));
+  const dividerImage = divider ? scene.add.image(divider.x, divider.y, divider.key || "ui-divider_heart_purple")
+    .setDisplaySize(divider.width, divider.height)
+    .setDepth(divider.depth ?? depth) : null;
+  const flowerImages = flowers.map((flower) => {
+    const image = scene.add.image(flower.x, flower.y, flower.key)
+      .setDisplaySize(flower.width, flower.height)
+      .setDepth(flower.depth ?? depth - 1);
+    if (flower.angle) image.setAngle(flower.angle);
+    return image;
+  });
+  return { lines: titleLines, divider: dividerImage, flowers: flowerImages };
+}
+
 function drawProgress(scene, gameState) {
   for (let i = 0; i < 3; i += 1) {
     const x = 825 + i * 90;
@@ -111,5 +257,17 @@ function createFeedback(scene, message, good = true) {
   return panel;
 }
 
-window.RosaritoUI = { TEXT_STYLES, getTextStyle, addFittedText, drawProgress, drawStarCounter, createFeedback };
+window.RosaritoUI = {
+  TEXT_STYLES,
+  getTextStyle,
+  addFittedText,
+  addNarrativeBubble,
+  addMouseHint,
+  addSectionHeader,
+  addChecklistFrame,
+  addScreenTitle,
+  drawProgress,
+  drawStarCounter,
+  createFeedback,
+};
 }());

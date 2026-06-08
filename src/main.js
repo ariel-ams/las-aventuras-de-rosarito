@@ -916,76 +916,75 @@ class PuzzleGameScene extends BaseScene {
       fontStyle: "bold",
       color: "#fff8e9",
     }).setOrigin(0.5).setDepth(5);
-    this.add.text(352, 142, "El rompecabezas", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "43px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-      stroke: "#f6e2ba",
-      strokeThickness: 4,
-    }).setOrigin(0.5).setDepth(5);
-    this.add.text(365, 205, "de Rosario", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "48px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-      stroke: "#f6e2ba",
-      strokeThickness: 4,
-    }).setOrigin(0.5).setDepth(5);
-    this.add.image(402, 256, "ui-divider_heart_purple").setDisplaySize(235, 50).setDepth(5);
-    this.add.image(156, 154, "ui-flower_cluster_left").setDisplaySize(76, 54).setDepth(4).setAngle(-8);
-    this.add.image(505, 174, "ui-flower_cluster_bottom").setDisplaySize(92, 58).setDepth(4);
+    window.RosaritoUI.addScreenTitle(this, [
+      { x: 352, y: 142, text: "El rompecabezas", fontSize: "43px" },
+      { x: 365, y: 205, text: "de Rosario", fontSize: "48px" },
+    ], {
+      divider: { x: 402, y: 256, width: 235, height: 50 },
+      flowers: [
+        { x: 156, y: 154, key: "ui-flower_cluster_left", width: 76, height: 54, angle: -8 },
+        { x: 505, y: 174, key: "ui-flower_cluster_bottom", width: 92, height: 58 },
+      ],
+    });
 
-    this.add.image(408, 340, "ui-speech_large_cream").setDisplaySize(300, 132).setDepth(7);
-    this.add.text(414, 336, "Vamos a armar la imagen de Rosario Vera Penaloza!", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+    window.RosaritoUI.addNarrativeBubble(this, 408, 340, "Vamos a armar la imagen de Rosario Vera Penaloza!", {
+      width: 300,
+      height: 132,
+      depth: 7,
+      textOffsetX: 6,
+      textOffsetY: -4,
+      maxWidth: 220,
+      maxHeight: 78,
       fontSize: "23px",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 220 },
-      lineSpacing: 4,
-    }).setOrigin(0.5).setDepth(8);
+      minFontSize: 18,
+    });
 
-    this.add.image(430, 520, "ui-speech_large_lilac").setDisplaySize(280, 170).setDepth(7);
-    this.add.text(430, 510, "Arrastra cada pieza al lugar correcto para completar la imagen.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "17px",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 170 },
-      lineSpacing: 2,
-    }).setOrigin(0.5).setDepth(8);
-    this.add.image(430, 580, "ui-icon_mouse").setDisplaySize(48, 48).setDepth(8);
+    window.RosaritoUI.addMouseHint(this, 430, 515, "Arrastra cada pieza al lugar correcto.", {
+      width: 292,
+      height: 166,
+      depth: 8,
+      textOffsetY: -23,
+      iconOffsetY: 59,
+      iconSize: 46,
+      maxWidth: 176,
+      maxHeight: 64,
+      fontSize: "18px",
+      minFontSize: 15,
+    });
 
-    this.add.image(275, 654, "ui-notebook_panel").setDisplaySize(360, 116).setDepth(5).setAlpha(0.96);
-    this.add.image(174, 650, this.puzzle.previewKey).setDisplaySize(118, 82).setDepth(6).setAlpha(0.92);
-    this.add.image(356, 613, "ui-label_long_cream").setDisplaySize(150, 46).setTint(0x8c63a8).setDepth(6);
-    this.add.text(356, 613, "De su vida real", {
+    this.add.image(275, 648, "ui-notebook_panel").setDisplaySize(360, 116).setDepth(5).setAlpha(0.96);
+    this.add.image(174, 644, this.puzzle.previewKey).setDisplaySize(118, 82).setDepth(6).setAlpha(0.92);
+    this.add.image(356, 606, "ui-label_long_cream").setDisplaySize(150, 46).setTint(0x8c63a8).setDepth(6);
+    this.add.text(356, 606, "De su vida real", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
       fontSize: "16px",
       fontStyle: "bold",
       color: "#fff8e9",
     }).setOrigin(0.5).setDepth(7);
-    this.add.text(366, 663, this.puzzle.description, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "15px",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 172 },
-      lineSpacing: 2,
-    }).setOrigin(0.5).setDepth(7);
-    this.add.image(510, 656, "ui-icon_flower").setDisplaySize(42, 42).setDepth(7);
+    window.RosaritoUI.addFittedText(this, 366, 656, this.puzzle.title || this.puzzle.description, "body", {
+      maxWidth: 168,
+      maxHeight: 56,
+      minFontSize: 12,
+      depth: 7,
+      style: {
+        fontSize: "15px",
+        wordWrap: { width: 168 },
+      },
+    });
+    this.add.image(510, 650, "ui-icon_flower").setDisplaySize(40, 40).setDepth(7);
   }
 
   drawPuzzleBoard(puzzle) {
     this.drawStarCounter(SCENE_LAYOUTS.puzzle.starCounter.x, SCENE_LAYOUTS.puzzle.starCounter.y, gameState.achievements.filter(Boolean).length);
-    this.add.image(884, 128, "ui-label_long_cream").setDisplaySize(410, 66).setDepth(4);
-    this.add.text(884, 126, "Arma la imagen con las piezas.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+    window.RosaritoUI.addSectionHeader(this, 884, 128, "Arma la imagen con las piezas.", {
+      width: 410,
+      height: 66,
+      depth: 4,
       fontSize: "23px",
       color: "#3e2b22",
-    }).setOrigin(0.5).setDepth(5);
-    this.add.image(884, 166, "m2-heart").setDisplaySize(30, 28).setDepth(5);
+      maxWidth: 340,
+      heartOffsetY: 38,
+    });
     this.add.image(1140, 156, "m2-leaves").setDisplaySize(72, 52).setAngle(22).setDepth(4);
 
     const board = { ...SCENE_LAYOUTS.puzzle.board };
@@ -1175,69 +1174,66 @@ class ObjectsGameScene extends BaseScene {
 
   drawObjectsStoryPage() {
     this.add.ellipse(170, 650, 142, 26, 0x5b3f2d, 0.18).setDepth(2);
-    this.add.text(330, 72, "Los objetos de", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "42px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-      stroke: "#f6e2ba",
-      strokeThickness: 4,
-    }).setOrigin(0.5).setDepth(5);
-    this.add.text(360, 138, "Rosario", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "76px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-      stroke: "#f6e2ba",
-      strokeThickness: 5,
-    }).setOrigin(0.5).setDepth(5);
-    this.add.image(385, 208, "ui-divider_heart_purple").setDisplaySize(230, 50).setDepth(5);
-    this.add.image(180, 105, "ui-flower_cluster_left").setDisplaySize(82, 58).setDepth(4).setAngle(-8);
-    this.add.image(520, 120, "ui-flower_cluster_bottom").setDisplaySize(92, 60).setDepth(4);
+    window.RosaritoUI.addScreenTitle(this, [
+      { x: 330, y: 72, text: "Los objetos de", fontSize: "42px" },
+      { x: 360, y: 138, text: "Rosario", fontSize: "76px", strokeThickness: 5 },
+    ], {
+      divider: { x: 385, y: 208, width: 230, height: 50 },
+      flowers: [
+        { x: 180, y: 105, key: "ui-flower_cluster_left", width: 82, height: 58, angle: -8 },
+        { x: 520, y: 120, key: "ui-flower_cluster_bottom", width: 92, height: 60 },
+      ],
+    });
 
-    this.add.image(420, 294, "ui-speech_large_cream").setDisplaySize(288, 150).setDepth(7);
-    this.add.text(422, 286, "Encuentra los objetos que usaba Rosario en su mision de ensenar a muchos ninos.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+    window.RosaritoUI.addNarrativeBubble(this, 420, 294, "Encuentra los objetos que usaba Rosario en su mision de ensenar a muchos ninos.", {
+      width: 288,
+      height: 150,
+      depth: 7,
+      textOffsetX: 2,
+      textOffsetY: -8,
+      maxWidth: 205,
+      maxHeight: 94,
       fontSize: "19px",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 205 },
+      minFontSize: 16,
       lineSpacing: 3,
-    }).setOrigin(0.5).setDepth(8);
+    });
     this.add.image(420, 372, "m2-heart").setDisplaySize(28, 26).setDepth(8);
 
-    this.add.image(185, 632, "ui-speech_large_lilac").setDisplaySize(185, 120).setDepth(9);
-    this.add.text(185, 612, "Haz clic cuando los veas.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+    window.RosaritoUI.addMouseHint(this, 185, 590, "Toca\nlos objetos.", {
+      width: 196,
+      height: 124,
+      depth: 10,
+      textOffsetY: -20,
+      iconOffsetY: 36,
+      iconSize: 42,
+      maxWidth: 122,
+      maxHeight: 46,
       fontSize: "18px",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 115 },
-      lineSpacing: 3,
-    }).setOrigin(0.5).setDepth(10);
-    this.add.image(185, 662, "ui-icon_mouse").setDisplaySize(42, 42).setDepth(10);
+      minFontSize: 14,
+    });
 
-    this.add.image(452, 536, "hidden-ui-list_panel").setDisplaySize(300, 316).setDepth(5);
-    this.add.image(452, 383, "hidden-ui-list_header").setDisplaySize(314, 92).setDepth(6);
-    this.add.text(452, 392, "Puedes encontrarlos?", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "20px",
-      fontStyle: "bold",
-      color: "#fff8e9",
-    }).setOrigin(0.5).setDepth(7);
+    window.RosaritoUI.addChecklistFrame(this, 452, 536, "Puedes encontrarlos?", {
+      panelWidth: 300,
+      panelHeight: 316,
+      headerWidth: 314,
+      headerHeight: 92,
+      headerY: 383,
+      titleY: 392,
+    });
     this.add.image(560, 656, "ui-flower_cluster_bottom").setDisplaySize(86, 54).setDepth(6);
   }
 
   drawSearchScene() {
     this.drawStarCounter(SCENE_LAYOUTS.objects.starCounter.x, SCENE_LAYOUTS.objects.starCounter.y, gameState.achievements.filter(Boolean).length);
-    this.add.image(895, 92, "ui-label_long_cream").setDisplaySize(390, 70).setTint(0xb994d2).setDepth(5);
-    this.add.text(895, 92, "Encuentra los objetos", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+    window.RosaritoUI.addSectionHeader(this, 895, 92, "Encuentra los objetos", {
+      width: 390,
+      height: 70,
+      depth: 5,
+      tint: 0xb994d2,
       fontSize: "28px",
-      fontStyle: "bold",
       color: "#5b3277",
-    }).setOrigin(0.5).setDepth(6);
-    this.add.image(895, 137, "m2-heart").setDisplaySize(30, 28).setDepth(6);
+      heartOffsetY: 45,
+    });
     this.add.image(1140, 145, "m2-leaves").setDisplaySize(78, 56).setAngle(18).setDepth(4);
 
     this.sceneBounds = { ...SCENE_LAYOUTS.objects.sceneBounds };
@@ -1284,6 +1280,7 @@ class ObjectsGameScene extends BaseScene {
       fontStyle: "bold",
       color: "#b4864c",
     }).setOrigin(0.5);
+    check.setText("");
     row.add([label, check]);
     this.checkItems.set(obj.id, { row, label, check });
   }
@@ -1322,11 +1319,39 @@ class ObjectsGameScene extends BaseScene {
       requestImmersiveMode();
       this.findHiddenObject(target);
     });
+    target.disableInteractive();
+
+    const generousHitPadding = Math.max(obj.hitPadding || 0, 28);
+    const hitZone = this.add.zone(
+      objectX,
+      objectY,
+      objectWidth + generousHitPadding * 2,
+      objectHeight + generousHitPadding * 2,
+    ).setDepth(40).setInteractive({ useHandCursor: true });
+    hitZone.setData("object", { ...obj, x: objectX, y: objectY, width: objectWidth, height: objectHeight });
+    hitZone.setData("visual", target);
+    hitZone.setData("found", false);
+    hitZone.on("pointerover", () => {
+      if (hitZone.getData("found")) return;
+      playTone(this, "hover");
+      target.setAlpha(0.92);
+      this.tweens.add({ targets: target, scale: 1.035, duration: 130 });
+    });
+    hitZone.on("pointerout", () => {
+      if (hitZone.getData("found")) return;
+      this.tweens.add({ targets: target, scale: 1, duration: 130 });
+      target.setAlpha(1);
+    });
+    hitZone.on("pointerdown", () => {
+      requestImmersiveMode();
+      this.findHiddenObject(hitZone);
+    });
   }
 
   findHiddenObject(target) {
     if (target.getData("found")) return;
     const obj = target.getData("object");
+    const visual = target.getData("visual") || target;
     target.setData("found", true);
     target.disableInteractive();
     playTone(this, "success");
@@ -1335,10 +1360,11 @@ class ObjectsGameScene extends BaseScene {
     const item = this.checkItems.get(obj.id);
     if (item) {
       item.check.setText("✓").setColor("#5d8f55");
+      item.check.setText("✓").setColor("#5d8f55");
       item.label.setAlpha(0.58);
       item.row.setAlpha(0.82);
     }
-    this.tweens.add({ targets: target, scale: 1.16, alpha: 0.54, yoyo: true, duration: 180, onComplete: () => target.setAlpha(0.56) });
+    this.tweens.add({ targets: visual, scale: 1.16, alpha: 0.54, yoyo: true, duration: 180, onComplete: () => visual.setAlpha(0.56) });
     this.add.star(obj.x + obj.width / 2, obj.y - obj.height / 2, 5, 8, 18, COLORS.gold).setStrokeStyle(2, 0x8a6534).setDepth(25);
     if (this.found >= this.activeObjects.length) {
       this.completeHiddenObjects();
@@ -1386,29 +1412,65 @@ class FinalScene extends BaseScene {
 
   create() {
     this.createBook("", "");
-    this.rosaritoSprite.setPosition(975, 470).setScale(0.36);
+    this.rosaritoSprite.setPosition(1030, 468).setScale(0.34).setDepth(8);
     this.celebrateRosarito();
     this.narrateScreen("final");
-    this.add.image(310, 140, "ui-speech_large_lilac").setDisplaySize(370, 132);
-    this.add.text(310, 140, "Objetivos cumplidos", {
+    this.add.image(330, 106, "ui-flower_cluster_left").setDisplaySize(96, 62).setDepth(4).setAngle(-8);
+    this.add.image(465, 136, "ui-flower_cluster_bottom").setDisplaySize(94, 58).setDepth(4);
+    this.add.image(310, 132, "ui-speech_large_lilac").setDisplaySize(430, 136).setDepth(5);
+    this.add.text(310, 132, "Objetivos cumplidos", {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "38px",
+      fontSize: "34px",
       fontStyle: "bold",
       color: "#6a3d8f",
-    }).setOrigin(0.5);
-    this.add.text(110, 245, "Las tres estrellas estan encendidas. Rosarito ya tiene sus recuerdos, su rompecabezas y sus objetos de ensenanza.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "30px",
-      color: "#3e2b22",
-      lineSpacing: 10,
-      wordWrap: { width: 430 },
+    }).setOrigin(0.5).setDepth(6);
+    this.add.image(315, 332, "ui-speech_large_cream").setDisplaySize(420, 216).setAlpha(0.95).setDepth(4);
+    window.RosaritoUI.addFittedText(this, 315, 322, "Las tres estrellas estan encendidas. Rosarito ya completo sus recuerdos, su rompecabezas y sus objetos de ensenanza.", "body", {
+      maxWidth: 330,
+      maxHeight: 140,
+      minFontSize: 21,
+      depth: 5,
+      style: {
+        fontSize: "27px",
+        wordWrap: { width: 330 },
+        lineSpacing: 7,
+      },
     });
-    this.add.image(825, 360, "ui-star_full").setDisplaySize(230, 230);
-    this.add.text(825, 360, "3/3", { fontSize: "62px", fontStyle: "bold", color: "#3e2b22" }).setOrigin(0.5);
+    this.add.image(315, 456, "ui-divider_heart_purple").setDisplaySize(200, 46).setDepth(5);
+
+    this.add.image(794, 354, "ui-star_full").setDisplaySize(236, 236).setDepth(5);
+    this.add.text(794, 354, "3/3", {
+      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+      fontSize: "62px",
+      fontStyle: "bold",
+      color: "#3e2b22",
+    }).setOrigin(0.5).setDepth(6);
+
+    this.add.image(778, 590, "ui-notebook_panel").setDisplaySize(360, 132).setDepth(4).setAlpha(0.98);
+    this.add.image(642, 590, "ui-icon_book").setDisplaySize(84, 72).setDepth(5);
+    this.add.text(792, 558, "Album de Rosarito", {
+      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+      fontSize: "25px",
+      fontStyle: "bold",
+      color: "#6a3d8f",
+    }).setOrigin(0.5).setDepth(5);
+    window.RosaritoUI.addFittedText(this, 800, 604, "Gracias por ayudar a recordar su historia.", "body", {
+      maxWidth: 220,
+      maxHeight: 48,
+      minFontSize: 16,
+      depth: 5,
+      style: {
+        fontSize: "19px",
+        wordWrap: { width: 220 },
+      },
+    });
+    this.add.image(1090, 598, "ui-flower_cluster_bottom").setDisplaySize(94, 58).setDepth(9);
+    this.add.image(1000, 510, "ui-icon_sparkles").setDisplaySize(42, 42).setDepth(9);
+
     this.makeButton(975, 710, "Jugar de nuevo", () => {
       resetRun();
       this.scene.start("Cover");
-    }, 270);
+    }, 270).setDepth(10);
   }
 }
 

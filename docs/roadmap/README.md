@@ -58,12 +58,13 @@ Estado: parcialmente alineada con referencia.
 
 ### Etapa 3 - Minijuegos
 
-Estado: funcional, con pulido visual pendiente.
+Estado: funcional, con pulido visual en curso.
 
 - Preguntas funciona y no muestra cortes en la captura actual.
 - Puzzle funciona y el drag/snap esta validado.
-- Objetos tiene buena escena, pero necesita corregir el globo inferior.
-- Pendiente: feedback visual breve y ajuste de textos/paneles.
+- Puzzle recibio ajuste de globo y texto inferior.
+- Objetos tiene buena escena y el globo inferior fue reposicionado.
+- Pendiente: revalidar capturas nuevas, feedback visual breve y pulido de bandeja/tablero.
 
 ### Etapa 4 - Audio, mobile y accesibilidad
 
@@ -80,6 +81,7 @@ Estado: iniciado.
 
 - Knowledge base y roadmap existen.
 - `.gitignore` evita capturas y temporales.
+- El cierre/final recibio un primer tratamiento visual tipo album/recompensa.
 - Pendiente: preguntas a JSON externo y catalogo de assets activos.
 
 ## Definicion de listo para cualquier etapa
