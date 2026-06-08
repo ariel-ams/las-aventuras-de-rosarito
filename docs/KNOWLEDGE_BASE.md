@@ -536,6 +536,7 @@ Para evitar que cada pantalla use cajas parecidas pero distintas, mantener esta 
   - Helper actual: `RosaritoUI.addChecklistFrame`.
 - Boton principal: `ui-button_long_purple`.
 - Boton siguiente: `ui-button_arrow_right`.
+  - Helper actual: `RosaritoUI.addNextButton`.
 - Contador de estrellas: `RosaritoUI.drawStarCounter`.
 - Feedback temporal: `RosaritoUI.createFeedback`.
 

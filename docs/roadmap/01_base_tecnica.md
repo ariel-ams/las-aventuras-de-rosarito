@@ -166,8 +166,9 @@ Observaciones:
 - [x] Crear primera tanda de helpers de componente visual: titulo de pantalla, globo narrativo, globo de mouse, header y checklist.
 - [x] Migrar puzzle y objetos a la primera tanda de helpers visuales.
 - [x] Validar la migracion con `node --check`, smoke tests CDP y capturas `test-artifacts/ui-helpers-title-pass/`.
-- [ ] Crear helpers restantes de componente visual: boton siguiente.
-- [ ] Migrar portada y quiz a los helpers visuales comunes.
+- [x] Crear helper restante de componente visual: boton siguiente.
+- [x] Migrar portada y quiz a los helpers visuales comunes en titulos y globos.
+- [x] Validar la migracion con `node --check`, smoke tests CDP y capturas `test-artifacts/cover-quiz-helper-pass-2/`.
 - [ ] Migrar botones comunes a estilos compartidos.
 - [ ] Decidir destino de `PrepGameScene`.
 - [ ] Separar datos de preguntas a JSON externo.

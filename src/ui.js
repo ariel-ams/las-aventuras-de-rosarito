@@ -110,8 +110,9 @@ function addMouseHint(scene, x, y, text, options = {}) {
     maxHeight = height * 0.42,
     fontSize = "18px",
     minFontSize = 14,
+    key = "ui-speech_large_lilac",
   } = options;
-  const bubble = scene.add.image(x, y, "ui-speech_large_lilac").setDisplaySize(width, height).setDepth(depth);
+  const bubble = scene.add.image(x, y, key).setDisplaySize(width, height).setDepth(depth);
   const label = addFittedText(scene, x, y + textOffsetY, text, "body", {
     maxWidth,
     maxHeight,
@@ -213,6 +214,60 @@ function addScreenTitle(scene, lines, options = {}) {
   return { lines: titleLines, divider: dividerImage, flowers: flowerImages };
 }
 
+function addNextButton(scene, x, y, label, onClick, options = {}) {
+  const {
+    depth = 900,
+    enabled = true,
+    arrowSize = 126,
+    hoverArrowSize = 138,
+    labelX = -118,
+    labelY = 12,
+    hitArea = new Phaser.Geom.Rectangle(-168, -63, 230, 126),
+  } = options;
+  let isEnabled = enabled;
+  const button = scene.add.container(x, y).setDepth(depth);
+  const arrow = scene.add.image(0, 0, "ui-button_arrow_right").setDisplaySize(arrowSize, arrowSize);
+  const text = scene.add.text(labelX, labelY, label, {
+    ...TEXT_STYLES.button,
+    fontSize: "22px",
+  }).setOrigin(0.5);
+  button.add([arrow, text]);
+  button.setSize(hitArea.width, hitArea.height).setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
+
+  button.setEnabled = (nextEnabled = true) => {
+    isEnabled = nextEnabled;
+    button.setAlpha(isEnabled ? 1 : 0.42);
+    button.setScale(1);
+    if (button.input) button.input.enabled = isEnabled;
+    return button;
+  };
+
+  button.on("pointerover", () => {
+    if (!isEnabled) return;
+    button.setScale(1.04);
+    window.RosaritoAudio.playTone(scene, "hover");
+  });
+  button.on("pointerout", () => {
+    if (!isEnabled) return;
+    button.setScale(1);
+    arrow.setDisplaySize(arrowSize, arrowSize);
+  });
+  button.on("pointerdown", () => {
+    if (!isEnabled) return;
+    window.RosaritoAudio.playTone(scene, "click");
+    if (window.requestImmersiveMode) window.requestImmersiveMode();
+    onClick();
+  });
+
+  button.setEnabled(enabled);
+  button.setArrowSize = (nextSize = arrowSize) => {
+    arrow.setDisplaySize(nextSize, nextSize);
+    return button;
+  };
+  button.hoverArrowSize = hoverArrowSize;
+  return button;
+}
+
 function drawProgress(scene, gameState) {
   for (let i = 0; i < 3; i += 1) {
     const x = 825 + i * 90;
@@ -266,6 +321,7 @@ window.RosaritoUI = {
   addSectionHeader,
   addChecklistFrame,
   addScreenTitle,
+  addNextButton,
   drawProgress,
   drawStarCounter,
   createFeedback,

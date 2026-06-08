@@ -295,24 +295,11 @@ class BaseScene extends Phaser.Scene {
   }
 
   makeNextButton(label, nextScene) {
-    const button = this.add.image(1098, 675, "ui-button_arrow_right").setDisplaySize(126, 126).setDepth(900).setInteractive({ useHandCursor: true });
-    this.add.text(935, 688, label, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "23px",
-      fontStyle: "bold",
-      color: "#fff8e9",
-    }).setOrigin(0.5).setDepth(901);
-    button.on("pointerover", () => {
-      button.setDisplaySize(138, 138);
-      playTone(this, "hover");
+    return window.RosaritoUI.addNextButton(this, 1098, 675, label, () => this.scene.start(nextScene), {
+      enabled: true,
+      labelX: -163,
+      labelY: 13,
     });
-    button.on("pointerout", () => button.setDisplaySize(126, 126));
-    button.on("pointerdown", () => {
-      playTone(this, "click");
-      requestImmersiveMode();
-      this.scene.start(nextScene);
-    });
-    return button;
   }
 
   makeCoverMissionCard(x, y, number, label, iconKey, onClick = null) {
@@ -489,49 +476,42 @@ class CoverScene extends BaseScene {
     this.narrateScreen("cover");
     this.add.ellipse(leftPage.x + 160, leftPage.y + 624, 190, 34, 0x5b3f2d, 0.18).setDepth(2);
 
-    this.add.image(150, 160, "ui-flower_cluster_left").setDisplaySize(120, 78).setAngle(-8).setDepth(4);
-    this.add.image(407, 166, "ui-flower_cluster_bottom").setDisplaySize(146, 96).setAngle(5).setDepth(4);
-    this.add.image(344, 246, "ui-divider_heart_purple").setDisplaySize(230, 52).setDepth(4);
-
-    this.add.text(205, 82, "La aventura de", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "38px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-      stroke: "#f6e2ba",
-      strokeThickness: 4,
-    }).setDepth(5);
-    this.add.text(205, 124, "Rosarito", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "78px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-      stroke: "#f6e2ba",
-      strokeThickness: 5,
-    }).setDepth(5);
-
-    this.add.image(448, 356, "m2-speech_narrative").setDisplaySize(324, 166).setDepth(6);
-    window.RosaritoUI.addFittedText(this, 454, 348, "Ayuda a Rosarito a aprender, jugar y recordar su historia.", "body", {
-      maxWidth: 226,
-      maxHeight: 86,
-      minFontSize: 17,
-      depth: 7,
-      style: {
-        fontSize: "20px",
-        wordWrap: { width: 226 },
-      },
+    window.RosaritoUI.addScreenTitle(this, [
+      { x: 205, y: 82, text: "La aventura de", fontSize: "38px", origin: 0 },
+      { x: 205, y: 124, text: "Rosarito", fontSize: "78px", origin: 0, strokeThickness: 5 },
+    ], {
+      divider: { x: 344, y: 246, width: 230, height: 52, depth: 4 },
+      flowers: [
+        { x: 150, y: 160, key: "ui-flower_cluster_left", width: 120, height: 78, angle: -8, depth: 4 },
+        { x: 407, y: 166, key: "ui-flower_cluster_bottom", width: 146, height: 96, angle: 5, depth: 4 },
+      ],
     });
 
-    this.add.image(452, 574, "m2-speech_mouse").setDisplaySize(246, 172).setDepth(6);
-    window.RosaritoUI.addFittedText(this, 452, 544, "Usa el mouse\npara explorar.", "body", {
+    window.RosaritoUI.addNarrativeBubble(this, 448, 356, "Ayuda a Rosarito a aprender, jugar y recordar su historia.", {
+      key: "m2-speech_narrative",
+      width: 324,
+      height: 166,
+      depth: 6,
+      textOffsetX: 6,
+      textOffsetY: -8,
+      maxWidth: 226,
+      maxHeight: 86,
+      fontSize: "20px",
+      minFontSize: 17,
+    });
+
+    window.RosaritoUI.addMouseHint(this, 452, 574, "Usa el mouse\npara explorar.", {
+      key: "m2-speech_mouse",
+      width: 246,
+      height: 172,
+      depth: 6,
+      textOffsetY: -30,
+      iconOffsetY: 50,
+      iconSize: 50,
       maxWidth: 158,
       maxHeight: 60,
+      fontSize: "19px",
       minFontSize: 16,
-      depth: 7,
-      style: {
-        fontSize: "19px",
-        wordWrap: { width: 158 },
-      },
     });
 
     this.add.image(650, 666, "ui-flower_cluster_bottom").setDisplaySize(150, 96).setDepth(5);
@@ -757,47 +737,45 @@ class QuizGameScene extends BaseScene {
     this.add.ellipse(190, 650, 150, 28, 0x5b3f2d, 0.18).setDepth(2);
 
     this.add.image(355, 462, "minigame2-left-bg").setDisplaySize(440, 350).setDepth(3).setAlpha(0.94);
-    this.add.text(210, 72, "La infancia de", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "40px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-      stroke: "#f6e2ba",
-      strokeThickness: 4,
-    }).setDepth(5);
-    this.add.text(210, 124, "Rosario", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "82px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-      stroke: "#f6e2ba",
-      strokeThickness: 5,
-    }).setDepth(5);
-    this.add.image(345, 238, "ui-divider_heart_purple").setDisplaySize(230, 52).setDepth(5);
-    this.add.image(145, 145, "ui-flower_cluster_left").setDisplaySize(105, 68).setDepth(5).setAngle(-8);
-    this.add.image(465, 145, "ui-flower_cluster_bottom").setDisplaySize(118, 78).setDepth(5);
+    window.RosaritoUI.addScreenTitle(this, [
+      { x: 210, y: 72, text: "La infancia de", fontSize: "40px", origin: 0 },
+      { x: 210, y: 124, text: "Rosario", fontSize: "82px", origin: 0, strokeThickness: 5 },
+    ], {
+      divider: { x: 345, y: 238, width: 230, height: 52 },
+      flowers: [
+        { x: 145, y: 145, key: "ui-flower_cluster_left", width: 105, height: 68, angle: -8 },
+        { x: 465, y: 145, key: "ui-flower_cluster_bottom", width: 118, height: 78 },
+      ],
+    });
 
-    this.add.image(410, 338, "m2-speech_narrative").setDisplaySize(244, 168).setDepth(7);
-    this.add.text(414, 327, "Cuando Rosarito era nina, vivio momentos especiales que la ayudaron a sonar en grande.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+    window.RosaritoUI.addNarrativeBubble(this, 410, 338, "Cuando Rosarito era nina, vivio momentos especiales que la ayudaron a sonar en grande.", {
+      key: "m2-speech_narrative",
+      width: 244,
+      height: 168,
+      depth: 7,
+      textOffsetX: 4,
+      textOffsetY: -11,
+      maxWidth: 178,
+      maxHeight: 118,
       fontSize: "16px",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 168 },
+      minFontSize: 15,
       lineSpacing: 2,
-    }).setOrigin(0.5).setDepth(8);
+    });
     this.add.image(414, 415, "m2-heart").setDisplaySize(28, 26).setDepth(8);
 
-    this.add.image(355, 610, "m2-speech_mouse").setDisplaySize(205, 148).setDepth(7);
-    this.add.text(355, 582, "Usa el mouse para elegir la respuesta correcta.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+    window.RosaritoUI.addMouseHint(this, 355, 610, "Usa el mouse para elegir la respuesta correcta.", {
+      key: "m2-speech_mouse",
+      width: 205,
+      height: 148,
+      depth: 7,
+      textOffsetY: -28,
+      iconOffsetY: 40,
+      iconSize: 48,
+      maxWidth: 132,
+      maxHeight: 72,
       fontSize: "16px",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 132 },
-      lineSpacing: 2,
-    }).setOrigin(0.5).setDepth(8);
-    this.add.image(355, 650, "ui-icon_mouse").setDisplaySize(48, 48).setDepth(8);
+      minFontSize: 15,
+    });
 
     this.drawStarCounter(SCENE_LAYOUTS.quiz.starCounter.x, SCENE_LAYOUTS.quiz.starCounter.y, gameState.achievements.filter(Boolean).length);
     this.add.image(864, 92, "m2-header_responde").setDisplaySize(380, 74).setDepth(5);
@@ -1116,33 +1094,25 @@ class PuzzleGameScene extends BaseScene {
   }
 
   createLockedNextButton() {
-    this.nextButton = this.add.container(SCENE_LAYOUTS.puzzle.nextButton.x, SCENE_LAYOUTS.puzzle.nextButton.y).setAlpha(0.42).setDepth(900);
-    this.nextButton.add(this.add.image(0, 0, "ui-button_arrow_right").setDisplaySize(126, 126));
-    this.nextButton.add(this.add.text(-118, 12, "Siguiente", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "22px",
-      fontStyle: "bold",
-      color: "#fff8e9",
-    }).setOrigin(0.5));
+    this.nextButton = window.RosaritoUI.addNextButton(
+      this,
+      SCENE_LAYOUTS.puzzle.nextButton.x,
+      SCENE_LAYOUTS.puzzle.nextButton.y,
+      "Siguiente",
+      () => {
+        gameState.puzzleIndex += 1;
+        if (gameState.puzzleIndex >= gameState.puzzleSet.length) {
+          this.scene.start("ObjectsGame");
+        } else {
+          this.scene.start("PuzzleGame");
+        }
+      },
+      { enabled: false },
+    );
   }
 
   enableNextButton() {
-    this.nextButton.setAlpha(1).setInteractive(new Phaser.Geom.Rectangle(-168, -63, 230, 126), Phaser.Geom.Rectangle.Contains);
-    this.nextButton.on("pointerover", () => {
-      this.nextButton.setScale(1.04);
-      playTone(this, "hover");
-    });
-    this.nextButton.on("pointerout", () => this.nextButton.setScale(1));
-    this.nextButton.on("pointerdown", () => {
-      requestImmersiveMode();
-      playTone(this, "click");
-      gameState.puzzleIndex += 1;
-      if (gameState.puzzleIndex >= gameState.puzzleSet.length) {
-        this.scene.start("ObjectsGame");
-      } else {
-        this.scene.start("PuzzleGame");
-      }
-    });
+    this.nextButton.setEnabled(true);
   }
 
   completePuzzle() {
@@ -1372,28 +1342,18 @@ class ObjectsGameScene extends BaseScene {
   }
 
   createObjectsNextButton() {
-    this.nextButton = this.add.container(SCENE_LAYOUTS.objects.nextButton.x, SCENE_LAYOUTS.objects.nextButton.y).setAlpha(0.42).setDepth(900);
-    this.nextButton.add(this.add.image(0, 0, "ui-button_arrow_right").setDisplaySize(126, 126));
-    this.nextButton.add(this.add.text(-118, 12, "Siguiente", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "22px",
-      fontStyle: "bold",
-      color: "#fff8e9",
-    }).setOrigin(0.5));
+    this.nextButton = window.RosaritoUI.addNextButton(
+      this,
+      SCENE_LAYOUTS.objects.nextButton.x,
+      SCENE_LAYOUTS.objects.nextButton.y,
+      "Siguiente",
+      () => this.scene.start("Final"),
+      { enabled: false },
+    );
   }
 
   enableObjectsNextButton() {
-    this.nextButton.setAlpha(1).setInteractive(new Phaser.Geom.Rectangle(-168, -63, 230, 126), Phaser.Geom.Rectangle.Contains);
-    this.nextButton.on("pointerover", () => {
-      this.nextButton.setScale(1.04);
-      playTone(this, "hover");
-    });
-    this.nextButton.on("pointerout", () => this.nextButton.setScale(1));
-    this.nextButton.on("pointerdown", () => {
-      requestImmersiveMode();
-      playTone(this, "click");
-      this.scene.start("Final");
-    });
+    this.nextButton.setEnabled(true);
   }
 
   completeHiddenObjects() {

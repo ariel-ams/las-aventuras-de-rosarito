@@ -14,6 +14,7 @@ Capturas revisadas:
 - Ultima tanda de verificacion visual: `test-artifacts/roadmap-next-pass-final/`
 - Tanda actual de consistencia UI y objetos: `test-artifacts/ui-consistency-objects-hit/`
 - Tanda actual despues de helpers UI: `test-artifacts/ui-helpers-title-pass/`
+- Tanda despues de helper de boton y portada/quiz: `test-artifacts/cover-quiz-helper-pass-2/`
 
 Cambios ya aplicados en esta ronda:
 
@@ -45,6 +46,8 @@ Pruebas ejecutadas:
 - `tools/capture-screens.ps1 -RunName roadmap-next-pass-final`
 - `tools/capture-screens.ps1 -RunName ui-consistency-objects-hit`
 - `tools/capture-screens.ps1 -RunName ui-helpers-title-pass`
+- `tools/capture-screens.ps1 -RunName next-button-helper-pass`
+- `tools/capture-screens.ps1 -RunName cover-quiz-helper-pass-2`
 
 Resultado funcional:
 
@@ -58,6 +61,7 @@ Resultado funcional:
 - La ultima pasada visual corrigio textos apretados de puzzle/objetos y mejoro el cierre final.
 - La pasada actual corrigio el doble indicador de lista y el click impreciso de objetos.
 - La nueva pasada migro titulos, globos, headers y checklist de puzzle/objetos a helpers compartidos sin cambiar la composicion visual.
+- La pasada actual agrego `addNextButton`, migro botones siguientes de puzzle/objetos y llevo portada/quiz a los helpers de titulo/globos en las zonas de bajo riesgo.
 
 ## Comparacion con la referencia
 
@@ -131,10 +135,11 @@ Riesgo:
 Siguiente iteracion recomendada:
 
 1. Crear helpers `addScreenTitle`, `addNarrativeBubble`, `addMouseHint`, `addSectionHeader`, `addChecklist` y `addNextButton`.
-   - Avance aplicado: ya existen `addScreenTitle`, `addNarrativeBubble`, `addMouseHint`, `addSectionHeader` y `addChecklistFrame`.
+   - Avance aplicado: ya existen `addScreenTitle`, `addNarrativeBubble`, `addMouseHint`, `addSectionHeader`, `addChecklistFrame` y `addNextButton`.
 2. Migrar portada, quiz, puzzle y objetos a esos helpers sin cambiar la composicion final.
-   - Avance aplicado: puzzle y objetos ya usan los helpers nuevos en titulos, globos, headers y checklist.
+   - Avance aplicado: portada y quiz usan helpers en titulos y globos; puzzle y objetos usan helpers en titulos, globos, headers, checklist y boton siguiente.
 3. Repetir capturas y comparar que cada caja mantenga el mismo estilo segun su funcion.
+   - Avance aplicado: capturas `cover-quiz-helper-pass-2` revisadas; el quiz requirio ajustar el auto-fit del globo narrativo para recuperar legibilidad.
 4. Despues de estabilizar helpers, mover coordenadas repetidas a `SCENE_LAYOUTS`.
 5. No crear nuevos sprites de caja o globo hasta decidir si encajan en la biblioteca visual.
 
