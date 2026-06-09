@@ -101,6 +101,7 @@ const ROSARITO_SPRITE = {
 
 const gameState = {
   achievements: [false, false, false],
+  quizPool: [],
   quizSet: [],
   quizIndex: 0,
   donPool: [],
@@ -123,6 +124,10 @@ function shuffle(list) {
 
 function buildGiftPoolFromDones(data) {
   return RosaritoData.buildGiftPoolFromDones(data);
+}
+
+function buildQuizPool(data) {
+  return RosaritoData.buildQuizPool(data);
 }
 
 function buildPuzzlePool(data) {
@@ -187,6 +192,7 @@ class BootScene extends Phaser.Scene {
     MINIGAME2_ASSETS.forEach((key) => this.load.image(`m2-${key}`, `assets/ui/minigame2/${key}.png`));
     MINIGAME1_UPDATE_ASSETS.forEach((key) => this.load.image(`m1-${key}`, `assets/ui/minigame1_update/${key}.png`));
     this.load.json("dones", "src/dones.json");
+    this.load.json("questions", "src/questions.json");
     this.load.json("puzzles", "assets/puzzles/puzzles.json");
     this.load.json("hiddenObjects", "assets/hiddenObjects/objects.json");
     this.load.spritesheet(ROSARITO_SPRITE.key, ROSARITO_SPRITE.path, {
@@ -205,6 +211,7 @@ class BootScene extends Phaser.Scene {
       frameRate: 7,
       repeat: 0,
     });
+    gameState.quizPool = buildQuizPool(this.cache.json.get("questions"));
     gameState.donPool = buildGiftPoolFromDones(this.cache.json.get("dones"));
     gameState.puzzlePool = buildPuzzlePool(this.cache.json.get("puzzles"));
     gameState.hiddenObjectPool = buildHiddenObjectPool(this.cache.json.get("hiddenObjects"));
@@ -1277,7 +1284,9 @@ class ObjectsGameScene extends BaseScene {
       objectY,
       objectWidth + generousHitPadding * 2,
       objectHeight + generousHitPadding * 2,
-    ).setDepth(40).setInteractive({ useHandCursor: true });
+    );
+    const hitAreaSize = hitZone.width * hitZone.height;
+    hitZone.setDepth(40 + Math.max(0, 100000 - hitAreaSize) / 10000).setInteractive({ useHandCursor: true });
     hitZone.setData("object", { ...obj, x: objectX, y: objectY, width: objectWidth, height: objectHeight });
     hitZone.setData("visual", target);
     hitZone.setData("found", false);

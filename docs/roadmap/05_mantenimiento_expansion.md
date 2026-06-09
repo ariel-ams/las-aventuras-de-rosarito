@@ -8,7 +8,8 @@ Definir reglas para que el proyecto pueda crecer: mas preguntas, mas puzzles, ma
 
 Estado ideal:
 
-- Mover preguntas a un JSON dedicado, por ejemplo `assets/quiz/questions.json`.
+- Las preguntas ya viven en `src/questions.json`.
+- `src/data.js` las normaliza con `buildQuizPool()` antes de armar la partida.
 
 Formato sugerido:
 
@@ -17,9 +18,9 @@ Formato sugerido:
   "id": "nacimiento_lugar",
   "question": "En donde nacio Rosario Vera Penaloza?",
   "options": [
-    { "label": "La Rioja", "correct": true, "iconKey": "quiz-icon-rioja" },
-    { "label": "Buenos Aires", "correct": false, "iconKey": "quiz-icon-ciudad" },
-    { "label": "Mendoza", "correct": false, "iconKey": "quiz-icon-montana" }
+    { "label": "La Rioja", "correct": true },
+    { "label": "Buenos Aires", "correct": false },
+    { "label": "Mendoza", "correct": false }
   ],
   "voiceKey": "voice.quiz.nacimiento_lugar"
 }
@@ -31,6 +32,7 @@ Reglas:
 - Marcar una sola correcta.
 - Usar textos cortos.
 - Agregar iconos especificos cuando sea posible.
+- Probar `?scene=quiz` despues de agregar o editar preguntas.
 
 ## Agregar puzzles
 

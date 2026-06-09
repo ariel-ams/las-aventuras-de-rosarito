@@ -114,6 +114,35 @@ function shuffleQuizQuestion(question) {
   };
 }
 
+function normalizeQuizQuestion(question, index) {
+  const rawOptions = Array.isArray(question?.options) ? question.options : [];
+  const objectOptions = rawOptions.filter((option) => typeof option === "object" && option);
+  const options = rawOptions
+    .map((option) => repairText(typeof option === "object" ? option.label : option))
+    .filter(Boolean);
+  let correct = Number(question?.correct);
+  if (objectOptions.length) {
+    const correctOption = objectOptions.find((option) => option.correct);
+    correct = options.indexOf(repairText(correctOption?.label));
+  }
+  if (!repairText(question?.question || question?.pregunta) || options.length < 2 || correct < 0 || correct >= options.length) {
+    return null;
+  }
+  return {
+    id: question?.id || `quiz_${index + 1}`,
+    question: repairText(question?.question || question?.pregunta),
+    options,
+    correct,
+    voiceKey: question?.voiceKey || "",
+  };
+}
+
+function buildQuizPool(data) {
+  const questions = Array.isArray(data) ? data : data?.questions;
+  const parsed = Array.isArray(questions) ? questions.map(normalizeQuizQuestion).filter(Boolean) : [];
+  return parsed.length ? parsed : quizPool.map(normalizeQuizQuestion).filter(Boolean);
+}
+
 function uniqueList(list) {
   return [...new Set(list.filter(Boolean))];
 }
@@ -412,7 +441,7 @@ function loadHiddenObjectAssets(scene, objects, onComplete) {
 
 function resetRunState(gameState) {
   gameState.achievements = [false, false, false];
-  gameState.quizSet = sample(quizPool, 3).map(shuffleQuizQuestion);
+  gameState.quizSet = sample(gameState.quizPool || buildQuizPool(), 3).map(shuffleQuizQuestion);
   gameState.quizIndex = 0;
   gameState.giftSet = [];
   gameState.giftIndex = 0;
@@ -439,7 +468,6 @@ function directSceneFromUrl() {
 }
 
 window.RosaritoData = {
-  quizPool,
   giftPool,
   componentIconKey,
   shuffle,
@@ -448,6 +476,7 @@ window.RosaritoData = {
   repairText,
   normalizeKey,
   titleCase,
+  buildQuizPool,
   buildGiftPoolFromDones,
   buildPuzzlePool,
   buildHiddenObjectPool,

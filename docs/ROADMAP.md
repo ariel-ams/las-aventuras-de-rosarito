@@ -16,6 +16,7 @@ Capturas revisadas:
 - Tanda actual despues de helpers UI: `test-artifacts/ui-helpers-title-pass/`
 - Tanda despues de helper de boton y portada/quiz: `test-artifacts/cover-quiz-helper-pass-2/`
 - Tanda despues de helper de boton principal: `test-artifacts/primary-button-helper-pass/`
+- Tanda despues de preguntas JSON y ajuste de hit areas: `test-artifacts/quiz-json-hitarea-pass/`
 
 Cambios ya aplicados en esta ronda:
 
@@ -32,6 +33,8 @@ Cambios ya aplicados en esta ronda:
 - El globo de instruccion del puzzle y el texto inferior `De su vida real` fueron migrados a `addFittedText`.
 - El globo inferior de objetos se reposiciono y usa `addFittedText`.
 - La pantalla final recibio un primer pulido visual tipo recompensa/album.
+- Las preguntas visibles del quiz ahora viven en `src/questions.json`.
+- El smoke test de objetos detecto solapamiento entre zonas invisibles; las zonas mas pequenas ahora quedan por encima para mejorar el click.
 
 Pruebas ejecutadas:
 
@@ -50,6 +53,7 @@ Pruebas ejecutadas:
 - `tools/capture-screens.ps1 -RunName next-button-helper-pass`
 - `tools/capture-screens.ps1 -RunName cover-quiz-helper-pass-2`
 - `tools/capture-screens.ps1 -RunName primary-button-helper-pass`
+- `tools/capture-screens.ps1 -RunName quiz-json-hitarea-pass`
 
 Resultado funcional:
 
@@ -65,6 +69,8 @@ Resultado funcional:
 - La nueva pasada migro titulos, globos, headers y checklist de puzzle/objetos a helpers compartidos sin cambiar la composicion visual.
 - La pasada actual agrego `addNextButton`, migro botones siguientes de puzzle/objetos y llevo portada/quiz a los helpers de titulo/globos en las zonas de bajo riesgo.
 - La ultima pasada agrego `addPrimaryButton` y dejo los botones largos comunes centralizados sin cambiar el layout visible.
+- La ronda actual movio las preguntas del quiz a `src/questions.json` y agrego normalizacion con `RosaritoData.buildQuizPool`.
+- La ronda actual revalido objetos con zonas solapadas: las zonas pequenas quedan arriba para que el click caiga en el objeto esperado.
 
 ## Comparacion con la referencia
 

@@ -67,6 +67,7 @@ El estado de partida vive en `gameState` dentro de `src/main.js`.
 Campos principales:
 
 - `achievements`: progreso de las tres actividades activas.
+- `quizPool`: preguntas normalizadas desde `src/questions.json`.
 - `quizSet`: preguntas elegidas para la partida actual.
 - `quizIndex`: pregunta actual.
 - `puzzlePool`: lista total de puzzles normalizados.
@@ -292,15 +293,20 @@ Checklist:
 
 ### Preguntas
 
-Las preguntas viven en `quizPool` dentro de `src/data.js`.
+Las preguntas viven en `src/questions.json` y se normalizan con `buildQuizPool()` en `src/data.js`.
 
 Forma actual:
 
-```js
+```json
 {
-  question: "Texto de la pregunta",
-  options: ["Respuesta A", "Respuesta B", "Respuesta C"],
-  correct: 0
+  "id": "nacimiento_lugar",
+  "question": "¿Dónde nació Rosario Vera Peñaloza?",
+  "options": [
+    { "label": "La Rioja", "correct": true },
+    { "label": "Buenos Aires", "correct": false },
+    { "label": "Mendoza", "correct": false }
+  ],
+  "voiceKey": "voice.quiz.nacimiento_lugar"
 }
 ```
 
@@ -310,16 +316,13 @@ Al iniciar una ronda:
 - se mezclan las opciones de cada pregunta;
 - se recalcula el indice `correct`.
 
-Para agregar preguntas hoy:
+Para agregar preguntas:
 
-1. Editar `quizPool` en `src/data.js`.
+1. Editar `src/questions.json`.
 2. Usar textos cortos.
-3. Verificar que `correct` apunte a la respuesta correcta antes de mezclar.
-4. Probar `?scene=quiz`.
-
-Mejora pendiente:
-
-- Migrar preguntas a JSON externo para que no haya que tocar codigo.
+3. Marcar una sola opcion con `correct: true`.
+4. Agregar `voiceKey` si existe una grabacion.
+5. Probar `?scene=quiz`.
 
 ### Puzzles
 

@@ -32,6 +32,7 @@ Esta etapa comenzo con cambios de bajo riesgo:
 - La pregunta del quiz ya usa `addFittedText`, de modo que baja el tamano de fuente si el texto no entra en el panel.
 - `src/layouts.js` ahora expone `PAGE_AREAS` con pagina izquierda, derecha, lomo y safe area.
 - Se agrego `tools/capture-screens.ps1` para generar capturas repetibles.
+- `src/questions.json` es la fuente editable de preguntas del quiz; `src/data.js` solo normaliza y selecciona.
 
 ## Principios de refactor para esta etapa
 
@@ -170,8 +171,9 @@ Observaciones:
 - [x] Migrar portada y quiz a los helpers visuales comunes en titulos y globos.
 - [x] Validar la migracion con `node --check`, smoke tests CDP y capturas `test-artifacts/cover-quiz-helper-pass-2/`.
 - [x] Migrar botones comunes a estilos compartidos con `RosaritoUI.addPrimaryButton`.
+- [x] Separar datos de preguntas a `src/questions.json` y normalizarlos con `RosaritoData.buildQuizPool`.
+- [x] Validar la migracion de preguntas con capturas `test-artifacts/quiz-json-hitarea-pass/`.
 - [ ] Decidir destino de `PrepGameScene`.
-- [ ] Separar datos de preguntas a JSON externo.
 
 ## Riesgos
 

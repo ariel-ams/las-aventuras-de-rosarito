@@ -1,0 +1,54 @@
+{
+  "questions": [
+    {
+      "id": "nacimiento_lugar",
+      "question": "¿Dónde nació Rosario Vera Peñaloza?",
+      "options": [
+        { "label": "La Rioja", "correct": true },
+        { "label": "Buenos Aires", "correct": false },
+        { "label": "Mendoza", "correct": false }
+      ],
+      "voiceKey": "voice.quiz.nacimiento_lugar"
+    },
+    {
+      "id": "cumpleanos_navidad",
+      "question": "¿Qué fecha importante coincide con su cumpleaños?",
+      "options": [
+        { "label": "Pascuas", "correct": false },
+        { "label": "Navidad", "correct": true },
+        { "label": "Día de la primavera", "correct": false }
+      ],
+      "voiceKey": "voice.quiz.cumpleanos_navidad"
+    },
+    {
+      "id": "casa_natal",
+      "question": "¿Dónde se encuentra la casa natal de Rosarito?",
+      "options": [
+        { "label": "Carrizal", "correct": false },
+        { "label": "Malanzán", "correct": false },
+        { "label": "Atiles", "correct": true }
+      ],
+      "voiceKey": "voice.quiz.casa_natal"
+    },
+    {
+      "id": "hermanas",
+      "question": "Rosario era la menor de ¿cuántas hermanas?",
+      "options": [
+        { "label": "4", "correct": true },
+        { "label": "2", "correct": false },
+        { "label": "3", "correct": false }
+      ],
+      "voiceKey": "voice.quiz.hermanas"
+    },
+    {
+      "id": "valor_lugar",
+      "question": "¿Qué lugar ayudó a valorar?",
+      "options": [
+        { "label": "La escuela y el jardín", "correct": true },
+        { "label": "El estudio", "correct": false },
+        { "label": "El aeropuerto", "correct": false }
+      ],
+      "voiceKey": "voice.quiz.valor_lugar"
+    }
+  ]
+}
