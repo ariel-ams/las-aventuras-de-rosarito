@@ -336,20 +336,23 @@ class BaseScene extends Phaser.Scene {
     }).setOrigin(0.5).setDepth(6);
   }
 
-  makeQuizAnswerCard(x, y, option, index, onClick) {
+  makeQuizAnswerCard(x, y, option, index, onClick, iconKey = "") {
     const cardKeys = ["m2-answer_card_green", "m2-answer_card_blue", "m2-answer_card_pink"];
     const iconKeys = ["ui-icon_home", "ui-icon_blackboard", "ui-icon_flower"];
     const card = this.add.container(x, y);
     const bg = this.add.image(0, 0, cardKeys[index % cardKeys.length]).setDisplaySize(155, 230);
-    const icon = this.add.image(0, -52, iconKeys[index % iconKeys.length]).setDisplaySize(82, 68);
-    const text = this.add.text(0, 58, option, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "18px",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 118 },
-      lineSpacing: 4,
-    }).setOrigin(0.5);
+    const icon = this.add.image(0, -52, iconKey || iconKeys[index % iconKeys.length]).setDisplaySize(82, 68);
+    const text = window.RosaritoUI.addFittedText(this, 0, 58, option, "body", {
+      maxWidth: 118,
+      maxHeight: 72,
+      minFontSize: 14,
+      style: {
+        fontSize: option.length > 18 ? "17px" : "19px",
+        align: "center",
+        wordWrap: { width: 118 },
+        lineSpacing: 4,
+      },
+    });
     const heart = this.add.image(0, 110, "m2-heart").setDisplaySize(30, 28);
     card.add([bg, icon, text, heart]);
     card.setDepth(8);
@@ -832,7 +835,7 @@ class QuizGameScene extends BaseScene {
         } else {
           this.feedback("Probemos otra vez", false);
         }
-      });
+      }, q.optionIconKeys?.[i]);
     });
   }
 }

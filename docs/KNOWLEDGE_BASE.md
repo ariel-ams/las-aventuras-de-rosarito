@@ -302,9 +302,9 @@ Forma actual:
   "id": "nacimiento_lugar",
   "question": "¿Dónde nació Rosario Vera Peñaloza?",
   "options": [
-    { "label": "La Rioja", "correct": true },
-    { "label": "Buenos Aires", "correct": false },
-    { "label": "Mendoza", "correct": false }
+    { "label": "La Rioja", "correct": true, "iconKey": "ui-icon_home" },
+    { "label": "Buenos Aires", "correct": false, "iconKey": "ui-icon_blackboard" },
+    { "label": "Mendoza", "correct": false, "iconKey": "ui-icon_flower" }
   ],
   "voiceKey": "voice.quiz.nacimiento_lugar"
 }
@@ -314,6 +314,7 @@ Al iniciar una ronda:
 
 - se eligen 3 preguntas;
 - se mezclan las opciones de cada pregunta;
+- se mezclan tambien los iconos asociados a cada opcion;
 - se recalcula el indice `correct`.
 
 Para agregar preguntas:
@@ -321,8 +322,9 @@ Para agregar preguntas:
 1. Editar `src/questions.json`.
 2. Usar textos cortos.
 3. Marcar una sola opcion con `correct: true`.
-4. Agregar `voiceKey` si existe una grabacion.
-5. Probar `?scene=quiz`.
+4. Agregar `iconKey` cuando exista un icono de UI que represente la respuesta.
+5. Agregar `voiceKey` si existe una grabacion.
+6. Probar `?scene=quiz`.
 
 ### Puzzles
 

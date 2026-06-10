@@ -4,9 +4,9 @@
       "id": "nacimiento_lugar",
       "question": "¿Dónde nació Rosario Vera Peñaloza?",
       "options": [
-        { "label": "La Rioja", "correct": true },
-        { "label": "Buenos Aires", "correct": false },
-        { "label": "Mendoza", "correct": false }
+        { "label": "La Rioja", "correct": true, "iconKey": "ui-icon_home" },
+        { "label": "Buenos Aires", "correct": false, "iconKey": "ui-icon_blackboard" },
+        { "label": "Mendoza", "correct": false, "iconKey": "ui-icon_flower" }
       ],
       "voiceKey": "voice.quiz.nacimiento_lugar"
     },
@@ -14,9 +14,9 @@
       "id": "cumpleanos_navidad",
       "question": "¿Qué fecha importante coincide con su cumpleaños?",
       "options": [
-        { "label": "Pascuas", "correct": false },
-        { "label": "Navidad", "correct": true },
-        { "label": "Día de la primavera", "correct": false }
+        { "label": "Pascuas", "correct": false, "iconKey": "ui-icon_flower" },
+        { "label": "Navidad", "correct": true, "iconKey": "ui-icon_star" },
+        { "label": "Día de la primavera", "correct": false, "iconKey": "ui-icon_flower" }
       ],
       "voiceKey": "voice.quiz.cumpleanos_navidad"
     },
@@ -24,9 +24,9 @@
       "id": "casa_natal",
       "question": "¿Dónde se encuentra la casa natal de Rosarito?",
       "options": [
-        { "label": "Carrizal", "correct": false },
-        { "label": "Malanzán", "correct": false },
-        { "label": "Atiles", "correct": true }
+        { "label": "Carrizal", "correct": false, "iconKey": "ui-icon_home" },
+        { "label": "Malanzán", "correct": false, "iconKey": "ui-icon_blackboard" },
+        { "label": "Atiles", "correct": true, "iconKey": "ui-icon_home" }
       ],
       "voiceKey": "voice.quiz.casa_natal"
     },
@@ -34,9 +34,9 @@
       "id": "hermanas",
       "question": "Rosario era la menor de ¿cuántas hermanas?",
       "options": [
-        { "label": "4", "correct": true },
-        { "label": "2", "correct": false },
-        { "label": "3", "correct": false }
+        { "label": "4", "correct": true, "iconKey": "ui-icon_star" },
+        { "label": "2", "correct": false, "iconKey": "ui-icon_heart" },
+        { "label": "3", "correct": false, "iconKey": "ui-icon_flower" }
       ],
       "voiceKey": "voice.quiz.hermanas"
     },
@@ -44,9 +44,9 @@
       "id": "valor_lugar",
       "question": "¿Qué lugar ayudó a valorar?",
       "options": [
-        { "label": "La escuela y el jardín", "correct": true },
-        { "label": "El estudio", "correct": false },
-        { "label": "El aeropuerto", "correct": false }
+        { "label": "La escuela y el jardín", "correct": true, "iconKey": "ui-icon_blackboard" },
+        { "label": "El estudio", "correct": false, "iconKey": "ui-icon_book" },
+        { "label": "El aeropuerto", "correct": false, "iconKey": "ui-icon_x" }
       ],
       "voiceKey": "voice.quiz.valor_lugar"
     }

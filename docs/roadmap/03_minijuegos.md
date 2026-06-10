@@ -17,16 +17,17 @@ Hacer que cada minijuego se sienta como una pagina ilustrada del mismo libro, co
 
 ### Mejoras propuestas
 
-- Mover preguntas y opciones a JSON para mantenimiento.
+- Preguntas y opciones ya viven en `src/questions.json`.
 - Asociar cada respuesta con iconos especificos, no genericos.
 - Agregar feedback corto por pregunta correcta.
 - Revisar textos con tildes y encoding limpio.
 - Mantener preguntas en una linea o dos como maximo, usando `addFittedText`.
-- Preparar campo `iconKey` por opcion en el futuro JSON.
+- Campo `iconKey` por opcion agregado al JSON; queda pendiente reemplazar iconos genericos por ilustraciones finales cuando existan.
 
 ### Criterios de aceptacion
 
 - Las respuestas aparecen en posiciones distintas entre partidas.
+- Los iconos se mantienen asociados a su respuesta aunque se mezclen las opciones.
 - El texto de pregunta no toca bordes.
 - Cada opcion se entiende visualmente.
 - Las tarjetas no deben quedar demasiado anchas ni pegadas entre si.

@@ -105,33 +105,45 @@ function sample(list, count) {
 }
 
 function shuffleQuizQuestion(question) {
-  const correctAnswer = question.options[question.correct];
-  const options = shuffle(question.options);
+  const pairedOptions = question.options.map((label, index) => ({
+    label,
+    iconKey: question.optionIconKeys?.[index] || "",
+  }));
+  const correctAnswer = pairedOptions[question.correct]?.label;
+  const shuffled = shuffle(pairedOptions);
   return {
     ...question,
-    options,
-    correct: Math.max(0, options.indexOf(correctAnswer)),
+    options: shuffled.map((option) => option.label),
+    optionIconKeys: shuffled.map((option) => option.iconKey),
+    correct: Math.max(0, shuffled.findIndex((option) => option.label === correctAnswer)),
   };
 }
 
 function normalizeQuizQuestion(question, index) {
   const rawOptions = Array.isArray(question?.options) ? question.options : [];
   const objectOptions = rawOptions.filter((option) => typeof option === "object" && option);
-  const options = rawOptions
-    .map((option) => repairText(typeof option === "object" ? option.label : option))
+  const normalizedOptions = rawOptions
+    .map((option) => ({
+      label: repairText(typeof option === "object" ? option.label : option),
+      iconKey: typeof option === "object" ? option.iconKey || "" : "",
+    }))
+    .filter((option) => option.label);
+  const options = normalizedOptions
+    .map((option) => option.label)
     .filter(Boolean);
   let correct = Number(question?.correct);
   if (objectOptions.length) {
     const correctOption = objectOptions.find((option) => option.correct);
     correct = options.indexOf(repairText(correctOption?.label));
   }
-  if (!repairText(question?.question || question?.pregunta) || options.length < 2 || correct < 0 || correct >= options.length) {
+  if (!repairText(question?.question || question?.pregunta) || options.length < 2 || !Number.isInteger(correct) || correct < 0 || correct >= options.length) {
     return null;
   }
   return {
     id: question?.id || `quiz_${index + 1}`,
     question: repairText(question?.question || question?.pregunta),
     options,
+    optionIconKeys: normalizedOptions.map((option) => option.iconKey),
     correct,
     voiceKey: question?.voiceKey || "",
   };

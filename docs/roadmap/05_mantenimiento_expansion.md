@@ -18,9 +18,9 @@ Formato sugerido:
   "id": "nacimiento_lugar",
   "question": "En donde nacio Rosario Vera Penaloza?",
   "options": [
-    { "label": "La Rioja", "correct": true },
-    { "label": "Buenos Aires", "correct": false },
-    { "label": "Mendoza", "correct": false }
+    { "label": "La Rioja", "correct": true, "iconKey": "ui-icon_home" },
+    { "label": "Buenos Aires", "correct": false, "iconKey": "ui-icon_blackboard" },
+    { "label": "Mendoza", "correct": false, "iconKey": "ui-icon_flower" }
   ],
   "voiceKey": "voice.quiz.nacimiento_lugar"
 }
@@ -31,7 +31,8 @@ Reglas:
 - Mantener 3 opciones por pregunta.
 - Marcar una sola correcta.
 - Usar textos cortos.
-- Agregar iconos especificos cuando sea posible.
+- Agregar `iconKey` especifico cuando sea posible.
+- El icono viaja con su respuesta aunque el juego mezcle opciones.
 - Probar `?scene=quiz` despues de agregar o editar preguntas.
 
 ## Agregar puzzles

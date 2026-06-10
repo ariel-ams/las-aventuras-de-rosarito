@@ -17,6 +17,7 @@ Capturas revisadas:
 - Tanda despues de helper de boton y portada/quiz: `test-artifacts/cover-quiz-helper-pass-2/`
 - Tanda despues de helper de boton principal: `test-artifacts/primary-button-helper-pass/`
 - Tanda despues de preguntas JSON y ajuste de hit areas: `test-artifacts/quiz-json-hitarea-pass/`
+- Tanda despues de iconos por respuesta en quiz: `test-artifacts/quiz-icons-pass/`
 
 Cambios ya aplicados en esta ronda:
 
@@ -35,6 +36,8 @@ Cambios ya aplicados en esta ronda:
 - La pantalla final recibio un primer pulido visual tipo recompensa/album.
 - Las preguntas visibles del quiz ahora viven en `src/questions.json`.
 - El smoke test de objetos detecto solapamiento entre zonas invisibles; las zonas mas pequenas ahora quedan por encima para mejorar el click.
+- Las respuestas del quiz ahora pueden declarar `iconKey`; el icono se mantiene asociado a la respuesta despues de mezclar opciones.
+- Las tarjetas de respuesta del quiz usan `addFittedText` para reducir riesgo de texto cortado.
 
 Pruebas ejecutadas:
 
@@ -54,6 +57,7 @@ Pruebas ejecutadas:
 - `tools/capture-screens.ps1 -RunName cover-quiz-helper-pass-2`
 - `tools/capture-screens.ps1 -RunName primary-button-helper-pass`
 - `tools/capture-screens.ps1 -RunName quiz-json-hitarea-pass`
+- `tools/capture-screens.ps1 -RunName quiz-icons-pass`
 
 Resultado funcional:
 
@@ -71,6 +75,7 @@ Resultado funcional:
 - La ultima pasada agrego `addPrimaryButton` y dejo los botones largos comunes centralizados sin cambiar el layout visible.
 - La ronda actual movio las preguntas del quiz a `src/questions.json` y agrego normalizacion con `RosaritoData.buildQuizPool`.
 - La ronda actual revalido objetos con zonas solapadas: las zonas pequenas quedan arriba para que el click caiga en el objeto esperado.
+- La ronda actual agrego `iconKey` por opcion del quiz y auto-fit en textos de tarjetas de respuesta.
 
 ## Comparacion con la referencia
 
@@ -81,7 +86,7 @@ El estado actual ya tiene una direccion visual coherente, pero todavia se nota m
 Nivel de alineacion actual:
 
 - Portada: buena direccion. Ya se entiende como mision del libro, pero las tarjetas todavia son mas simples que la referencia y el objetivo final puede sentirse mas premio/album.
-- Preguntas: buena base visual. Las tarjetas se leen bien; faltan iconos especificos por respuesta y feedback narrativo mas rico.
+- Preguntas: buena base visual. Las tarjetas se leen bien y ya soportan iconos por respuesta; faltan ilustraciones finales mas especificas y feedback narrativo mas rico.
 - Rompecabezas: mecanica corregida. El globo y texto inferior mejoraron; sigue pendiente pulir bandeja/tablero y feedback visual.
 - Objetos: escena derecha fuerte y muy alineada al estilo. El globo inferior fue corregido; falta revalidar en captura y mejorar estado de boton siguiente deshabilitado.
 - Final: ya tiene primer tratamiento de album/recompensa. Sigue pendiente una version mas rica si se quiere que cierre con la misma fuerza que la referencia.
@@ -210,6 +215,7 @@ Acciones:
 - Asociar cada opcion con ilustraciones mas especificas.
 - Reducir texto largo en tarjetas y dejar frases mas cortas.
 - Agregar mini feedback narrativo despues de responder correcto.
+- Avance aplicado: `src/questions.json` ya acepta `iconKey` por opcion, y las tarjetas usan auto-fit para el texto.
 
 Riesgo:
 
