@@ -423,3 +423,26 @@ Estado:
 - Estado del roadmap:
   - Avance aplicado en Etapa 3: componente de pregunta estandarizado.
   - Siguiente paso: extraer coordenadas del bloque de pregunta a `SCENE_LAYOUTS.quiz` para completar la consolidación.
+## Actualizacion de ciclo (2026-08-14, v16)
+
+- Cambio aplicado:
+  - `makeQuizAnswerCard` ahora usa `SCENE_LAYOUTS.quiz.answerCard` para evitar valores embebidos:
+    - claves de sprite por tipo,
+    - tamaños y posiciones de fondo/icono/texto,
+    - texto largo/corto, y
+    - escala hover + corazon.
+  - Se mantiene compatibilidad con iconos por opcion (`iconKey`) y fallback.
+- Pruebas ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5340/index.html" -RunName "roadmap-cycle-continue-v16"`
+  - `puzzle-cdp` con BASE_URL en PowerShell sigue sin inicializar la escena.
+  - `objects-cdp` con BASE_URL en PowerShell sigue sin inicializar la escena.
+- Estado actual del roadmap:
+  - Etapa 3: mejora aplicada en consistencia de tarjetas de quiz.
+  - Pendiente: validar visualmente en navegador interactivo con captura a mayor resolucion para cerrar ajustes de espaciado.
+  - Siguiente paso sugerido: migrar restante de valores visuales hardcodeados en componentes secundarios y consolidar tests manuales de layout.

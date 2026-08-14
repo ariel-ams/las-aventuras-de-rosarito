@@ -385,3 +385,17 @@ Decision vigente:
 
 - Siguiente tarea sugerida:
   - Revisar la captura de portada con navegador interactivo en pantalla completa para cerrar validaciÃ³n estética.
+## Actualizacion de ciclo (2026-08-14, v16)
+
+- `QuizGameScene`:
+  - Los valores visuales de `makeQuizAnswerCard` ahora salen de layout para reducir divergencias futuras (`SCENE_LAYOUTS.quiz.answerCard`).
+- Validaciones:
+  - `node --check src/main.js`, `src/layouts.js`, `src/ui.js`, `src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5340/index.html" -RunName "roadmap-cycle-continue-v16"`
+- Resultado:
+  - El cambio mejora consistencia de configuración.
+  - Los tests de CDP siguen no inicializando escenas en este entorno headless.
+- Siguiente tarea prioritaria:
+  - Revisar en navegador interactivo la captura de `quiz` para confirmar el ajuste de espacios y seguir migrando componentes hardcodeados en minijuegos secundarios.

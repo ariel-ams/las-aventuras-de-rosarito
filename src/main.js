@@ -289,32 +289,54 @@ class BaseScene extends Phaser.Scene {
   }
 
   makeCoverMissionCard(x, y, number, label, iconKey, onClick = null) {
+    const coverLayout = SCENE_LAYOUTS.cover;
+    const cardLayout = coverLayout.missionCard || {};
     const card = this.add.container(x, y);
-    const cardWidth = 118;
-    const cardHeight = 224;
-    const bg = this.add.image(0, 8, "ui-card_arch_filled").setDisplaySize(138, 164);
-    const badge = this.add.image(-50, -70, "ui-icon_flower").setDisplaySize(52, 52);
-    const num = this.add.text(-50, -72, String(number), {
+    const cardBg = (cardLayout.bg || {});
+    const badgeLayout = cardLayout.badge || {};
+    const iconLayout = cardLayout.icon || {};
+    const numberLayout = cardLayout.numberText || {};
+    const labelLayout = cardLayout.labelText || {};
+    const numberOffsetY = numberLayout.offsetY || 0;
+
+    const bg = this.add.image(0, cardLayout.baseOffsetY || 8, cardBg.key || "ui-card_arch_filled")
+      .setDisplaySize(cardBg.width || 138, cardBg.height || 164);
+    const badge = this.add.image(badgeLayout.x || -50, badgeLayout.y || -70, badgeLayout.key || "ui-icon_flower")
+      .setDisplaySize(badgeLayout.width || 52, badgeLayout.height || 52);
+    const num = this.add.text(numberLayout.x || -50, (numberLayout.y || -72) + numberOffsetY, String(number), {
       fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "22px",
-      fontStyle: "bold",
-      color: "#fff8e9",
-    }).setOrigin(0.5);
-    const icon = this.add.image(0, -24, iconKey).setDisplaySize(74, 64);
-    const title = this.add.text(0, 50, label, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "15px",
-      fontStyle: "bold",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 112 },
-      lineSpacing: 0,
-    }).setOrigin(0.5);
-    title.setY(40);
+      fontSize: numberLayout.fontSize || "22px",
+      fontStyle: numberLayout.fontStyle || "bold",
+      color: numberLayout.color || "#fff8e9",
+      align: numberLayout.align || "center",
+    }).setOrigin(numberLayout.origin || 0.5);
+    const icon = this.add.image(iconLayout.x || 0, iconLayout.y || -24, iconKey).setDisplaySize(iconLayout.width || 74, iconLayout.height || 64);
+    const title = window.RosaritoUI.addFittedText(
+      this,
+      labelLayout.x || 0,
+      labelLayout.y || 40,
+      label,
+      "body",
+      {
+        maxWidth: labelLayout.maxWidth || 112,
+        maxHeight: labelLayout.maxHeight || 52,
+        minFontSize: labelLayout.minFontSize || 13,
+        style: {
+          fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+          fontSize: labelLayout.fontSize || "15px",
+          fontStyle: labelLayout.fontStyle || "bold",
+          color: labelLayout.color || "#3e2b22",
+          align: labelLayout.align || "center",
+          wordWrap: { width: labelLayout.wordWrap || 112 },
+          lineSpacing: labelLayout.lineSpacing || 0,
+        },
+      },
+    );
+    title.setOrigin(0.5);
     card.add([bg, badge, num, icon, title]);
-    card.setSize(138, 170).setInteractive({ useHandCursor: true });
+    card.setSize(cardLayout.interactiveWidth || 138, cardLayout.interactiveHeight || 170).setInteractive({ useHandCursor: true });
     card.on("pointerover", () => {
-      card.setScale(1.04);
+      card.setScale(cardLayout.hoverScale || 1.04);
       playTone(this, "hover");
     });
     card.on("pointerout", () => card.setScale(1));
@@ -331,30 +353,39 @@ class BaseScene extends Phaser.Scene {
   }
 
   makeQuizAnswerCard(x, y, option, index, onClick, iconKey = "") {
-    const cardKeys = ["m2-answer_card_green", "m2-answer_card_blue", "m2-answer_card_pink"];
-    const iconKeys = ["ui-icon_home", "ui-icon_blackboard", "ui-icon_flower"];
-    const cardWidth = 118;
-    const cardHeight = 224;
+    const quizLayout = SCENE_LAYOUTS.quiz;
+    const cardConfig = quizLayout.answerCard || {};
+    const cardKeys = cardConfig.cardKeys || ["m2-answer_card_green", "m2-answer_card_blue", "m2-answer_card_pink"];
+    const iconKeys = cardConfig.iconFallbackKeys || ["ui-icon_home", "ui-icon_blackboard", "ui-icon_flower"];
+    const cardWidth = cardConfig.cardWidth || 118;
+    const cardHeight = cardConfig.cardHeight || 224;
+    const iconCfg = cardConfig.iconSize || { x: 0, y: -52, width: 70, height: 58 };
+    const textCfg = cardConfig.textPos || { x: 0, y: 58, maxWidth: 96, maxHeight: 70 };
+    const textStyle = cardConfig.textStyle || {};
+    const heartCfg = cardConfig.heart || { x: 0, y: 110, width: 30, height: 28 };
+    const threshold = cardConfig.fontSizeThreshold || 18;
+    const hoverScale = cardConfig.hoverScale || 1.04;
     const card = this.add.container(x, y);
     const bg = this.add.image(0, 0, cardKeys[index % cardKeys.length]).setDisplaySize(cardWidth, cardHeight);
-    const icon = this.add.image(0, -52, iconKey || iconKeys[index % iconKeys.length]).setDisplaySize(70, 58);
-    const text = window.RosaritoUI.addFittedText(this, 0, 58, option, "body", {
-      maxWidth: 96,
-      maxHeight: 70,
+    const icon = this.add.image(iconCfg.x || 0, iconCfg.y || -52, iconKey || iconKeys[index % iconKeys.length]).setDisplaySize(iconCfg.width || 70, iconCfg.height || 58);
+    const text = window.RosaritoUI.addFittedText(this, textCfg.x || 0, textCfg.y || 58, option, "body", {
+      maxWidth: textCfg.maxWidth || 96,
+      maxHeight: textCfg.maxHeight || 70,
       minFontSize: 13,
       style: {
-        fontSize: option.length > 18 ? "16px" : "17px",
+        fontSize: option.length > threshold ? textStyle.fontSizeSmall || "16px" : textStyle.fontSizeLarge || "17px",
         align: "center",
-        wordWrap: { width: 104 },
-        lineSpacing: 4,
+        wordWrap: { width: textCfg.width || 104 },
+        lineSpacing: textStyle.lineSpacing || 4,
+        color: textStyle.color || "#4a3026",
       },
     });
-    const heart = this.add.image(0, 110, "m2-heart").setDisplaySize(30, 28);
+    const heart = this.add.image(heartCfg.x || 0, heartCfg.y || 110, "m2-heart").setDisplaySize(heartCfg.width || 30, heartCfg.height || 28);
     card.add([bg, icon, text, heart]);
     card.setDepth(8);
     card.setSize(cardWidth, cardHeight).setInteractive({ useHandCursor: true });
     card.on("pointerover", () => {
-      card.setScale(1.04);
+      card.setScale(hoverScale);
       playTone(this, "hover");
     });
     card.on("pointerout", () => card.setScale(1));
