@@ -282,3 +282,45 @@
 - Estado actual:
   - Avance: `FinalScene` mejoró su consistencia con helper para el badge del contador de estrellas.
   - Pendiente: evaluar `FinalScene` `closing.message` para decidir si migrarlo a un contenedor de texto estandarizado adicional.
+
+## Actualización de ronda (2026-08-14, v30)
+
+- Cambios aplicados:
+  - `src/ui.js`:
+    - Se agregó `RosaritoUI.drawAchievementStrip(scene, stripLayout, achievements)` para unificar visualmente la franja de objetivos completados.
+  - `src/main.js`:
+    - `FinalScene` utiliza `drawAchievementStrip` para pintar `SCENE_LAYOUTS.final.achievementStrip`.
+  - `src/layouts.js`:
+    - Ajuste de dimensiones/tipografía en `SCENE_LAYOUTS.final.bodyPanel`.
+    - Aumento del área útil para `SCENE_LAYOUTS.final.closing.message`.
+
+- Verificaciones ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+
+- Estado de la ronda:
+  - Avance aplicado en consistencia visual de la escena final sin cambios de gameplay.
+  - Pendiente recomendado: validar manualmente `final.png` en navegador visible para cerrar con confianza el ajuste de jerarquía.
+
+## Actualización de ronda (2026-08-14, v31)
+
+- Cambios aplicados:
+  - Ejecutamos verificación completa en una tanda nueva de capturas (`roadmap-cycle-continue-v31`) con portada, minijuegos y final.
+  - Se validó que los cambios de `FinalScene` siguen estable (`drawAchievementStrip` y ajustes de texto en layout).
+
+- Verificaciones ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs` *(en este entorno: `Puzzle scene did not initialize`)*
+  - `node --check tools/objects-cdp-test.mjs` *(en este entorno: `Objects scene did not initialize`)*
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5410/index.html" -RunName "roadmap-cycle-continue-v31"`
+
+- Estado de la ronda:
+  - Consistencia visual de cierre y textos de final mantiene avance.
+  - Próximo objetivo: continuar con consistencia global de cajas de texto/controles entre pantallas (iteración siguiente, sin cambios de lógica).

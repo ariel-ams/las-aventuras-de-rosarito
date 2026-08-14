@@ -1741,30 +1741,7 @@ class FinalScene extends BaseScene {
       .setDepth(finalLayout.bodyPanel.divider.depth);
 
     const strip = finalLayout.achievementStrip || {};
-    if (strip.enabled !== false && Array.isArray(strip.items)) {
-      strip.items.forEach((entry, index) => {
-        const achieved = gameState.achievements[index] === true;
-        const icon = this.add.image(entry.x, entry.y, entry.key)
-          .setDisplaySize(entry.size || 42, entry.size || 42)
-          .setDepth(entry.depth || finalLayout.bodyPanel.depth || 5);
-        icon.setTint(achieved ? (entry.activeTint || strip.activeTint || 0x8e5295) : (entry.inactiveTint || strip.inactiveTint || 0x9c8c99));
-        icon.setAlpha(achieved ? (entry.activeAlpha ?? strip.activeAlpha ?? 1) : (entry.inactiveAlpha ?? strip.inactiveAlpha ?? 0.35));
-        if (achieved) {
-          const checkKey = entry.checkKey || strip.checkKey;
-          if (checkKey) {
-            this.add.image(
-              entry.x + (entry.checkOffsetX ?? strip.checkOffsetX ?? 14),
-              entry.y + (entry.checkOffsetY ?? strip.checkOffsetY ?? -16),
-              checkKey,
-            )
-              .setDisplaySize(entry.checkSize || strip.checkSize || 22, entry.checkSize || strip.checkSize || 22)
-              .setTint(entry.checkTint || strip.checkTint || 0x4f8553)
-              .setDepth((entry.depth || finalLayout.bodyPanel.depth || 5) + 1)
-              .setAlpha(entry.checkAlpha ?? strip.checkAlpha ?? 0.92);
-          }
-        }
-      });
-    }
+    window.RosaritoUI.drawAchievementStrip(this, strip, gameState.achievements);
 
     const starCountLayout = finalLayout.star.counter || {};
     const totalStars = Number(starCountLayout.max || gameState.achievements.length || 3);

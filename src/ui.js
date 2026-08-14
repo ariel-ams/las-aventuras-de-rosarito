@@ -597,6 +597,48 @@ function drawStarCounter(scene, x = 1048, y = 96, value = 0, maxValue = 3) {
   }).setOrigin(0.5).setDepth(6);
 }
 
+function drawAchievementStrip(scene, stripLayout = {}, achievements = []) {
+  const strip = stripLayout || {};
+  if (!strip || strip.enabled === false || !Array.isArray(strip.items)) {
+    return [];
+  }
+
+  const results = [];
+  strip.items.forEach((entry, index) => {
+    if (!entry || !entry.key) return;
+
+    const achieved = achievements[index] === true;
+    const size = entry.size || 42;
+    const icon = scene.add
+      .image(entry.x, entry.y, entry.key)
+      .setDisplaySize(size, size)
+      .setDepth(entry.depth || strip.depth || 6)
+      .setTint(achieved ? (entry.activeTint || strip.activeTint || 0x8e5295) : (entry.inactiveTint || strip.inactiveTint || 0x9c8c99))
+      .setAlpha(achieved ? (entry.activeAlpha ?? strip.activeAlpha ?? 1) : (entry.inactiveAlpha ?? strip.inactiveAlpha ?? 0.35));
+
+    results.push(icon);
+
+    if (achieved) {
+      const checkKey = entry.checkKey || strip.checkKey;
+      if (checkKey) {
+        const check = scene.add
+          .image(
+            entry.x + (entry.checkOffsetX ?? strip.checkOffsetX ?? 14),
+            entry.y + (entry.checkOffsetY ?? strip.checkOffsetY ?? -16),
+            checkKey,
+          )
+          .setDisplaySize(entry.checkSize || strip.checkSize || 22, entry.checkSize || strip.checkSize || 22)
+          .setTint(entry.checkTint || strip.checkTint || 0x4f8553)
+          .setDepth((entry.depth || strip.depth || 6) + 1)
+          .setAlpha(entry.checkAlpha ?? strip.checkAlpha ?? 0.92);
+        results.push(check);
+      }
+    }
+  });
+
+  return results;
+}
+
 function createFeedback(scene, message, good = true) {
   const safeMessage = typeof message === "string" && message.trim().length > 0 ? message : "";
   window.RosaritoAudio.playTone(scene, good ? "success" : "error");
@@ -638,6 +680,7 @@ window.RosaritoUI = {
   addPrimaryButton,
   drawProgress,
   drawStarCounter,
+  drawAchievementStrip,
   createFeedback,
 };
 }());

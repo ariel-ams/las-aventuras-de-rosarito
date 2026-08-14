@@ -664,3 +664,42 @@ Estado:
 - Estado del roadmap:
   - Cierre parcial de la etapa 1 de consistencia visual para `CoverScene` (containeres de narrativa y botón de misión).
   - `FinalScene` sigue como próxima prioridad para el ajuste fino de jerarquía de texto y espaciado de paneles sin cambiar lógica de juego.
+
+## Actualización de ciclo (2026-08-14, v30)
+
+- Cambios aplicados:
+  - `src/ui.js`
+    - Se agregó `RosaritoUI.drawAchievementStrip(scene, stripLayout, achievements)` para centralizar el render del bloque de metas cumplidas.
+    - El bloque queda más reutilizable y consistente con el resto de helpers de UI.
+  - `src/main.js`
+    - `FinalScene` migró el render de la franja de logros al helper `RosaritoUI.drawAchievementStrip` para evitar lógica visual embebida.
+  - `src/layouts.js`
+    - Se ajustaron tamaños de contenedor y tipografía en `SCENE_LAYOUTS.final.bodyPanel`.
+    - Se amplió el espacio de texto final en `SCENE_LAYOUTS.final.closing.message`.
+- Verificación:
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node --check src/layouts.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+- Estado actual:
+  - Avance en la consistencia de contenedores de `FinalScene` sin alterar gameplay.
+  - Siguiente paso: validar manualmente `final.png` en navegador visible para confirmar jerarquía/tamaño de textos.
+
+## Actualización de ciclo (2026-08-14, v31)
+
+- Cambios aplicados:
+  - Se volvió a ejecutar el ciclo de validación visual completo con la tanda `v31`.
+  - Se generaron capturas actualizadas en `test-artifacts/roadmap-cycle-continue-v31` (cover, quiz, puzzle, objects, final, mobile-landscape, mobile-portrait).
+- Verificación:
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node --check src/layouts.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs` *(falla en este entorno: `Puzzle scene did not initialize`)*
+  - `node --check tools/objects-cdp-test.mjs` *(falla en este entorno: `Objects scene did not initialize`)*
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5410/index.html" -RunName "roadmap-cycle-continue-v31"`
+- Estado actual:
+  - FinalScene mantiene consistencia visual mejorada y cierre de textos sin cambios de gameplay.
+  - Siguiente objetivo: comenzar la revisión final de consistencia visual global de la etapa siguiente (ajuste de diferencias de paneles entre escenas).
