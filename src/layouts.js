@@ -453,7 +453,7 @@ const SCENE_LAYOUTS = {
     starCounter: { x: 1130, y: 84 },
     feedback: {
       correct: "¡Imagen completa!",
-      incorrect: "Casi! Mira la guía y prueba otra vez.",
+      incorrect: "Casi. Mira la guía y prueba otra vez.",
     },
     rosarito: { x: 170, y: 480, scale: 0.48, depth: 8 },
     shadow: { x: 170, y: 650, width: 142, height: 26, color: 0x5b3f2d, alpha: 0.18, depth: 2 },
@@ -870,6 +870,7 @@ const SCENE_LAYOUTS = {
       successPanel: {
         x: 896,
         y: 626,
+        showY: 610,
         depth: 850,
         boxKey: "ui-label_long_cream",
         boxWidth: 350,

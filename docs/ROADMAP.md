@@ -703,3 +703,49 @@ Estado:
 - Estado actual:
   - FinalScene mantiene consistencia visual mejorada y cierre de textos sin cambios de gameplay.
   - Siguiente objetivo: comenzar la revisión final de consistencia visual global de la etapa siguiente (ajuste de diferencias de paneles entre escenas).
+
+## Actualización de ciclo (2026-08-14, v32)
+
+- Ajustes aplicados:
+  - Se eliminó el valor hardcodeado de posición final del panel de mensaje de éxito en objetos.
+  - `completeHiddenObjects` ahora lee la posición de desenlace desde `SCENE_LAYOUTS.objects.searchScene.successPanel.showY`, con fallback seguro al layout actual.
+  - `src/layouts.js` quedó saneado en textos con tildes dentro de `SCENE_LAYOUTS` (cover/puzzle/objects/final) para unificar calidad visual y evitar mojibake.
+- Pruebas ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+- Estado visual de esta pasada:
+  - `test-artifacts/roadmap-cycle-continue-v32/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v32/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v32/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v32/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v32/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v32/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v32/mobile-portrait.png`
+- Estado actual:
+  - Gameplay sin cambios funcionales.
+  - Se ganó consistencia de feedback visual de éxito en objetos y estabilidad de configuración.
+  - Próximo objetivo:
+    - Revisar espaciado de paneles principales en portada/final con una corrida visual adicional y cerrar el checklist de consistencia global.
+
+## Actualización de ciclo (2026-08-14, v33)
+
+- Ajustes aplicados:
+  - Se corrigió el texto del checklist de objetos para evitar el carácter mojibake (`¿Puedes encontrarlos?`).
+  - Se mantuvo la unificación de `completeHiddenObjects` hacia `SCENE_LAYOUTS.objects.searchScene.successPanel.showY` y no se introdujeron valores hardcodeados nuevos.
+  - Se cerró una revisión de consistencia de texto de `src/layouts.js` luego de quitar el salto de línea raro en `layout` (sin cambios funcionales de juego).
+- Pruebas ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs` (sintaxis OK; ejecución runtime con `Puzzle scene did not initialize` en este entorno de Edge headless)
+  - `node --check tools/objects-cdp-test.mjs` (sintaxis OK; ejecución runtime con `Objects scene did not initialize` en este entorno de Edge headless)
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5450/index.html" -RunName "roadmap-cycle-continue-v33"`
+- Resultado:
+  - La corrida se ejecutó, pero las capturas en este entorno quedaron inválidas (PNG de 0px de ancho), por lo que no son válidas para revisión de estética fina.
+  - Se mantiene la necesidad de verificación visual manual en navegador interactivo para esta iteración.
+- Estado actual:
+  - Gameplay y consistencia textual no regresaron.
+  - Checklist de consistencia global aún en curso; próximo paso: migrar a una validación manual de espaciado de paneles en portada/final y agregar un ajuste explícito de contenedores si aplica.

@@ -1680,12 +1680,14 @@ class ObjectsGameScene extends BaseScene {
 
   completeHiddenObjects() {
     const objectsLayout = SCENE_LAYOUTS.objects;
+    const searchScene = SCENE_LAYOUTS.objects.searchScene || {};
+    const completeY = searchScene.successPanel?.showY ?? searchScene.successPanel?.y ?? 610;
     const objectFeedback = objectsLayout.feedback || {};
     this.stopObjectHintLoop();
     gameState.achievements[2] = true;
     this.celebrateRosarito();
     this.feedback(objectFeedback.complete || "", true);
-    this.tweens.add({ targets: this.successPanel, alpha: 1, y: 610, duration: 280, ease: "Back.easeOut" });
+    this.tweens.add({ targets: this.successPanel, alpha: 1, y: completeY, duration: 280, ease: "Back.easeOut" });
     this.enableObjectsNextButton();
   }
 }
