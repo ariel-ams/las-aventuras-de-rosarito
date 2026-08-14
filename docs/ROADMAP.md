@@ -23,6 +23,7 @@ Capturas revisadas:
 - Tanda nueva del ciclo actual: `test-artifacts/roadmap-cycle-continue/`
 - Tanda nueva del ciclo actual (v2): `test-artifacts/roadmap-cycle-continue-v2/`
 - Tanda nueva del ciclo actual (v3): `test-artifacts/roadmap-cycle-continue-v3/`
+- Tanda nueva del ciclo actual (v22): `test-artifacts/roadmap-cycle-continue-v22/`
 
 Cambios ya aplicados en esta ronda:
 
@@ -574,3 +575,31 @@ Estado:
 - Próximos pasos sugeridos:
   - Revisar en navegador no-headless el recorte de contenedores de botones/preguntas tras esta actualización.
   - Completar la migración visual completa de `CoverScene` y `FinalScene` para eliminar posibles textos con caracteres de codificación y consolidar progresivamente paneles de progreso.
+
+## Actualización de ciclo (2026-08-14, v22)
+
+- Cambios implementados:
+  - Se centralizo `LAYOUT.progress` en `src/layouts.js` para ubicar y estilizar el bloque de progreso desde configuración:
+    - posicion (x, y),
+    - tamaño y separación de estrellas,
+    - total de etapas,
+    - tint/alpha de inactivo,
+    - key de sprite.
+  - `drawProgress` en `src/ui.js` consume `LAYOUT.progress` (ya no usa números hardcodeados).
+  - `drawStarCounter` ahora recibe `maxValue` para mostrar un conteo con límite configurable.
+  - `BaseScene.drawStarCounter` usa fallback a `gameState.achievements.length` cuando no recibe maximo.
+  - Se desactivo el numero embebido en la carta de portada (`SCENE_LAYOUTS.cover.missionCard.numberText.show = false`) y `makeCoverMissionCard` respeta esa bandera.
+- Pruebas ejecutadas en esta ronda:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5390/index.html" -RunName "roadmap-cycle-continue-v22"`
+  - `node tools/puzzle-cdp-test.mjs` *(intermitente en Edge headless: `Puzzle scene did not initialize`)*
+  - `node tools/objects-cdp-test.mjs` *(intermitente en Edge headless: `Objects scene did not initialize`)*
+- Estado de roadmap:
+  - Avance aplicado a la Etapa 1 y 2: menos valores hardcodeados en componentes de progreso, y consistencia visual sin cambio de gameplay.
+  - Siguiente foco recomendado:
+    - migrar configuraciones equivalentes de cover/final a `SCENE_LAYOUTS`,
+    - completar el cierre visual del bloque de objetivo del final,
+    - revisar en navegador interactivo los bordes de preguntas/panels tras el ajuste de progreso.

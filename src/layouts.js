@@ -19,6 +19,16 @@ const LAYOUT = {
   book: { x: WIDTH / 2, y: HEIGHT / 2, width: WIDTH, height: HEIGHT },
   pageTurn: { x: WIDTH / 2 + 20, y: 378, scale: 2.04, frameDelay: 105 },
   rosarito: { x: 1010, y: 458, scale: 0.38 },
+  progress: {
+    x: 825,
+    y: 96,
+    size: 54,
+    spacing: 90,
+    total: 3,
+    inactiveTint: 0xd0c2b0,
+    inactiveAlpha: 0.58,
+    starKey: "ui-star_full",
+  },
   base: {
     audioButton: { x: 56, y: 690, key: "ui-button_audio", width: 82, height: 82, depth: 10 },
     grass: { x: 52, y: 86, key: "ui-grass_large", scale: 0.64, alpha: 0.92, depth: 3 },
@@ -175,6 +185,7 @@ const SCENE_LAYOUTS = {
       numberText: {
         x: -50,
         y: -72,
+        show: false,
         fontSize: "22px",
         fontStyle: "bold",
         color: "#fff8e9",

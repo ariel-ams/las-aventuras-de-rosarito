@@ -103,7 +103,13 @@ Estado: iniciado.
 
 ## Ultima evidencia de prueba
 
-- Carpeta: `test-artifacts/cover-quiz-helper-pass-2/`
+- Carpeta: `test-artifacts/roadmap-cycle-continue-v22/`
 - Smoke test: `node tools/puzzle-cdp-test.mjs`
 - Resultado esperado del puzzle: `ok: true`, `pieces: 4`, `lockedCount >= 1`, `missingTextures: []`.
 - Smoke test de objetos: `node tools/objects-cdp-test.mjs`, resultado esperado `ok: true`, `found: 4`.
+
+## Seguimiento de iteracion actual (v22)
+
+- Etapa 1: se agregó `LAYOUT.progress` y se redujeron hardcodes de progreso.
+- Etapa 2: se habilitó configuración compartida de elementos de portada (sin texto embebido en la misión).
+- Etapa 3: funcional sin cambios; objetivo sigue siendo pulir el acabado visual en Cover y Final.

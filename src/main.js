@@ -318,13 +318,14 @@ class BaseScene extends Phaser.Scene {
       .setDisplaySize(cardBg.width || 138, cardBg.height || 164);
     const badge = this.add.image(badgeLayout.x || -50, badgeLayout.y || -70, badgeLayout.key || "ui-icon_flower")
       .setDisplaySize(badgeLayout.width || 52, badgeLayout.height || 52);
-    const num = this.add.text(numberLayout.x || -50, (numberLayout.y || -72) + numberOffsetY, String(number), {
+    const showNumber = numberLayout.show !== false;
+    const num = showNumber ? this.add.text(numberLayout.x || -50, (numberLayout.y || -72) + numberOffsetY, String(number), {
       ...defaultNumberStyle,
       fontSize: numberLayout.fontSize || "22px",
       fontStyle: numberLayout.fontStyle || "bold",
       color: numberLayout.color || "#fff8e9",
       align: numberLayout.align || "center",
-    }).setOrigin(numberLayout.origin || 0.5);
+    }).setOrigin(numberLayout.origin || 0.5) : null;
     const icon = this.add.image(iconLayout.x || 0, iconLayout.y || -24, iconKey).setDisplaySize(iconLayout.width || 74, iconLayout.height || 64);
     const title = window.RosaritoUI.addFittedText(
       this,
@@ -348,7 +349,10 @@ class BaseScene extends Phaser.Scene {
       },
     );
     title.setOrigin(0.5);
-    card.add([bg, badge, num, icon, title]);
+    card.add([bg, badge]);
+    if (num) card.add(num);
+    card.add(icon);
+    card.add(title);
     card.setSize(cardLayout.interactiveWidth || 138, cardLayout.interactiveHeight || 170).setInteractive({ useHandCursor: true });
     card.on("pointerover", () => {
       card.setScale(cardLayout.hoverScale || 1.04);
@@ -363,8 +367,9 @@ class BaseScene extends Phaser.Scene {
     return card;
   }
 
-  drawStarCounter(x = 1048, y = 96, value = 0) {
-    return window.RosaritoUI.drawStarCounter(this, x, y, value);
+  drawStarCounter(x = 1048, y = 96, value = 0, maxValue = 3) {
+    const count = Number.isFinite(maxValue) ? maxValue : (Array.isArray(gameState.achievements) ? gameState.achievements.length : 3);
+    return window.RosaritoUI.drawStarCounter(this, x, y, value, count);
   }
 
   makeQuizAnswerCard(x, y, option, index, onClick, iconKey = "") {

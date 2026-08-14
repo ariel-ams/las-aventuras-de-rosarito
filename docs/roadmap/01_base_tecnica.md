@@ -174,6 +174,9 @@ Observaciones:
 - [x] Separar datos de preguntas a `src/questions.json` y normalizarlos con `RosaritoData.buildQuizPool`.
 - [x] Validar la migracion de preguntas con capturas `test-artifacts/quiz-json-hitarea-pass/`.
 - [x] Remover `PrepGameScene` del flujo activo (pantalla de dones) en `src/main.js`.
+- [x] Externalizar `LAYOUT.progress` en `src/layouts.js` para unificar la UI de progreso.
+- [x] Reemplazar hardcodes de contador/progreso en `src/ui.js` y `src/main.js`.
+- [x] Hacer configurable la renderización de número en carta de misión via `SCENE_LAYOUTS`.
 
 ## Riesgos
 

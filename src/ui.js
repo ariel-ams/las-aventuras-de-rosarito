@@ -523,18 +523,30 @@ function addPrimaryButton(scene, x, y, label, onClick, options = {}) {
 }
 
 function drawProgress(scene, gameState) {
-  for (let i = 0; i < 3; i += 1) {
-    const x = 825 + i * 90;
-    const active = gameState.achievements[i] || i === gameState.achievements.filter(Boolean).length;
-    const star = scene.add.image(x, 96, "ui-star_full").setDisplaySize(54, 54);
-    if (!active) star.setTint(0xd0c2b0).setAlpha(0.58);
+  const progressLayout = window.RosaritoLayouts?.progress || {};
+  const achievements = Array.isArray(gameState?.achievements) ? gameState.achievements : [];
+  const total = Number.isFinite(progressLayout.total) ? progressLayout.total : achievements.length || 3;
+  const completed = achievements.filter(Boolean).length;
+  const x = progressLayout.x || 825;
+  const y = progressLayout.y || 96;
+  const size = progressLayout.size || 54;
+  const spacing = progressLayout.spacing || 90;
+  const inactiveTint = progressLayout.inactiveTint || 0xd0c2b0;
+  const inactiveAlpha = Object.is(progressLayout.inactiveAlpha, undefined) ? 0.58 : progressLayout.inactiveAlpha;
+
+  const starKey = progressLayout.starKey || "ui-star_full";
+  for (let i = 0; i < total; i += 1) {
+    const starX = x + i * spacing;
+    const active = achievements[i] || i === completed;
+    const star = scene.add.image(starX, y, starKey).setDisplaySize(size, size);
+    if (!active) star.setTint(inactiveTint).setAlpha(inactiveAlpha);
   }
 }
 
-function drawStarCounter(scene, x = 1048, y = 96, value = 0) {
+function drawStarCounter(scene, x = 1048, y = 96, value = 0, maxValue = 3) {
   scene.add.image(x, y, "ui-label_long_cream").setDisplaySize(98, 44).setDepth(5);
   scene.add.image(x - 32, y - 1, "ui-star_full").setDisplaySize(34, 34).setDepth(6);
-  addFittedText(scene, x + 20, y, `${value}/3`, "body", {
+  addFittedText(scene, x + 20, y, `${value}/${maxValue}`, "body", {
     maxWidth: 48,
     maxHeight: 28,
     minFontSize: 18,
