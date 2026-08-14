@@ -23,7 +23,7 @@ Capturas revisadas:
 - Tanda nueva del ciclo actual: `test-artifacts/roadmap-cycle-continue/`
 - Tanda nueva del ciclo actual (v2): `test-artifacts/roadmap-cycle-continue-v2/`
 - Tanda nueva del ciclo actual (v3): `test-artifacts/roadmap-cycle-continue-v3/`
-- Tanda nueva del ciclo actual (v22): `test-artifacts/roadmap-cycle-continue-v22/`
+- Tanda nueva del ciclo actual (v24): `test-artifacts/roadmap-cycle-continue-v24/`
 
 Cambios ya aplicados en esta ronda:
 
@@ -54,6 +54,7 @@ Cambios ya aplicados en esta ronda:
 - `src/questions.json` quedÃƒÂ³ normalizado a UTF-8 y con tildes limpias en texto visible.
 - `src/main.js` conserva `addNextButton` y no depende de transiciones de pÃƒÂ¡gina para avanzar.
 - `.gitignore` se actualizÃƒÂ³ para ignorar `assets/audio/voice/` y `remove_background.py`.
+- `src/main.js` y `src/layouts.js` ahora toman del layout la posición del check de respuesta correcta y el efecto de hint de objetos.
 
 Pruebas ejecutadas:
 
@@ -80,6 +81,7 @@ Pruebas ejecutadas:
 - `tools/capture-screens.ps1 -RunName roadmap-followup-3`
 - `tools/capture-screens.ps1 -RunName roadmap-cycle-continue`
 - `tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v3`
+- `tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5370/index.html" -RunName roadmap-cycle-continue-v24`
 - `BASE_URL=http://127.0.0.1:5322/index.html node tools/puzzle-cdp-test.mjs` *(en este entorno de pruebas, la escena no siempre inicializa de forma confiable en Edge headless)*
 - `BASE_URL=http://127.0.0.1:5322/index.html node tools/objects-cdp-test.mjs` *(en este entorno de pruebas, la escena no siempre inicializa de forma confiable en Edge headless)*
 - `BASE_URL=http://127.0.0.1:5330/index.html node tools/puzzle-cdp-test.mjs` *(en este entorno de pruebas, la escena no inicializa de forma consistente en Edge headless aun con reintentos y flags de arranque)*

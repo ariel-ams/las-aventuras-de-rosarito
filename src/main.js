@@ -774,7 +774,13 @@ class QuizGameScene extends BaseScene {
       this.makeQuizAnswerCard(SCENE_LAYOUTS.quiz.answerStart.x + i * SCENE_LAYOUTS.quiz.answerGap, SCENE_LAYOUTS.quiz.answerStart.y, option, i, (card) => {
         if (i === q.correct) {
           card.disableInteractive();
-          card.add(this.add.image(58, -104, "ui-icon_check").setDisplaySize(42, 42));
+          const markLayout = panelLayout.correctMark || {};
+          const markX = markLayout.x ?? 58;
+          const markY = markLayout.y ?? -104;
+          const markKey = markLayout.key || "ui-icon_check";
+          const markWidth = markLayout.width || 42;
+          const markHeight = markLayout.height || 42;
+          card.add(this.add.image(markX, markY, markKey).setDisplaySize(markWidth, markHeight));
           this.feedback(quizFeedback.correct || "Respuesta correcta", true);
           gameState.quizIndex += 1;
           if (gameState.quizIndex >= gameState.quizSet.length) {
@@ -1604,19 +1610,29 @@ class ObjectsGameScene extends BaseScene {
     const entry = pending[this.objectHintIndex % pending.length];
     this.objectHintIndex += 1;
     if (!entry?.target) return;
+    const pulseLayout = (SCENE_LAYOUTS.objects.searchScene && SCENE_LAYOUTS.objects.searchScene.pulse) || {};
+    const pulseSize = pulseLayout.size || 48;
+    const pulseKey = pulseLayout.key || "ui-icon_sparkles";
+    const pulseDepth = pulseLayout.depth || 24;
+    const pulseTint = pulseLayout.tint || 0xf2cf6e;
+    const pulseAlphaTo = pulseLayout.alphaTo ?? 0.88;
+    const pulseAlphaFrom = pulseLayout.alphaFrom ?? 0;
+    const pulseScale = pulseLayout.scaleTo || 1.3;
+    const pulseRise = pulseLayout.rise ?? -9;
+    const pulseDuration = pulseLayout.duration || 700;
     const x = entry.target.x;
     const y = entry.target.y;
-    this.objectHintPulse = this.add.image(x, y, "ui-icon_sparkles")
-      .setDisplaySize(48, 48)
-      .setDepth(24)
-      .setAlpha(0)
-      .setTint(0xf2cf6e);
+    this.objectHintPulse = this.add.image(x, y, pulseKey)
+      .setDisplaySize(pulseSize, pulseSize)
+      .setDepth(pulseDepth)
+      .setAlpha(pulseAlphaFrom)
+      .setTint(pulseTint);
     this.tweens.add({
       targets: this.objectHintPulse,
-      alpha: 0.88,
-      scale: 1.3,
-      y: y - 9,
-      duration: 700,
+      alpha: pulseAlphaTo,
+      scale: pulseScale,
+      y: y + pulseRise,
+      duration: pulseDuration,
       ease: "Sine.easeInOut",
       yoyo: true,
       onComplete: () => {

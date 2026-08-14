@@ -135,3 +135,44 @@
     - revisar `CoverScene`/`FinalScene` para que texto y bordes compartan misma biblioteca visual,
     - eliminar cualquier número/fallback estático no centralizado,
     - validar en captura interactiva que no haya recortes de contenido.
+
+## Seguimiento de iteración (2026-08-14, v24)
+
+- Cambios aplicados:
+  - `src/main.js`
+    - Corrección de hardcodes restantes en la pregunta de `QuizGameScene`:
+      - El marcador de respuesta correcta (`ui-icon_check`) ahora se coloca leyendo `SCENE_LAYOUTS.quiz.questionPanel.correctMark`.
+      - Se mantiene el mismo punto visual por defecto (`x: 58`, `y: -104`, `width/height: 42`) pero ahora configurable.
+    - Mejora de hint/pulso en objetos (`ObjectsGameScene`):
+      - El pulso de búsqueda ahora usa parámetros de `SCENE_LAYOUTS.objects.searchScene.pulse` (`size`, `key`, `tint`, `depth`, `alphaFrom`, `alphaTo`, `scaleTo`, `rise`, `duration`).
+      - Se elimina el acoplamiento directo a números mágicos en escena.
+
+  - `src/layouts.js` (continuación)
+    - Ya existente la configuración de `SCENE_LAYOUTS.quiz.questionPanel.correctMark` y `SCENE_LAYOUTS.objects.searchScene.pulse`.
+
+- Verificación ejecutada:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5370/index.html" -RunName "roadmap-cycle-continue-v24"`
+  - `BASE_URL=http://127.0.0.1:5370/index.html node tools/puzzle-cdp-test.mjs` (`Puzzle scene did not initialize` en este entorno Edge headless)
+  - `BASE_URL=http://127.0.0.1:5370/index.html node tools/objects-cdp-test.mjs` (`Objects scene did not initialize` en este entorno Edge headless)
+
+- Resultado:
+  - Evidencia visual disponible en:
+    - `test-artifacts/roadmap-cycle-continue-v24/cover.png`
+    - `test-artifacts/roadmap-cycle-continue-v24/quiz.png`
+    - `test-artifacts/roadmap-cycle-continue-v24/puzzle.png`
+    - `test-artifacts/roadmap-cycle-continue-v24/objects.png`
+    - `test-artifacts/roadmap-cycle-continue-v24/final.png`
+    - `test-artifacts/roadmap-cycle-continue-v24/mobile-landscape.png`
+    - `test-artifacts/roadmap-cycle-continue-v24/mobile-portrait.png`
+  - En este run, las capturas generadas por Edge headless quedaron en archivos de bajo peso y no permiten validación visual fina (se recomienda validar manualmente en navegador visible).
+
+- Próximo objetivo de esta fase:
+  - Aplicar la misma consolidación de constantes visuales faltantes en escenas secundarias (si quedan valores hardcode en objetos de overlay/completado),
+  - Reforzar test de interacción de `showQuestion` (orden de respuestas aleatorio y recorte/encuadre de texto en tarjetas),
+  - Ejecutar validación manual en navegador normal y volver a registrar resultados visuales confiables.
