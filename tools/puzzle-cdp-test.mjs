@@ -9,6 +9,7 @@ const BASE_URL = process.env.BASE_URL || "http://127.0.0.1:5322/index.html";
 const runName = process.env.RUN_NAME || `puzzle-cdp-${Date.now()}`;
 const profileDir = path.resolve("test-artifacts", `${runName}-profile`);
 const url = `${BASE_URL}?scene=puzzle&qa=${runName}&cache=${Date.now()}`;
+const TARGET_SCENE = "PuzzleGame";
 
 function send(ws, method, params = {}) {
   const id = send.nextId++;
@@ -17,7 +18,7 @@ function send(ws, method, params = {}) {
     const timeout = setTimeout(() => {
       pending.delete(id);
       reject(new Error(`Timeout waiting for ${method}`));
-    }, 8000);
+    }, 12000);
     pending.set(id, { resolve, reject, timeout });
   });
 }
@@ -60,7 +61,7 @@ async function evaluate(ws, expression) {
 
 async function snapshot(ws) {
   return evaluate(ws, `(() => {
-    const scene = window.game?.scene?.keys?.PuzzleGame;
+    const scene = window.game?.scene?.keys?.${TARGET_SCENE};
     const canvas = document.querySelector("canvas");
     if (!scene || !canvas || !scene.puzzle) return null;
     const rect = canvas.getBoundingClientRect();
@@ -89,6 +90,25 @@ async function snapshot(ws) {
       },
     };
   })()`);
+}
+
+async function startTargetScene(ws) {
+  return evaluate(ws, `(() => {
+    const target = "${TARGET_SCENE}";
+    if (!window.game?.scene) return false;
+    if (!window.game.scene.keys[target]) return false;
+    window.game.scene.start(target);
+    return true;
+  })()`);
+}
+
+async function waitForPuzzleScene(ws, attempts = 48, waitMs = 350) {
+  for (let i = 0; i < attempts; i += 1) {
+    const current = await snapshot(ws);
+    if (current && current.rect?.width > 0) return current;
+    await delay(waitMs);
+  }
+  return null;
 }
 
 async function dispatchDomDrag(ws, start, end) {
@@ -150,6 +170,10 @@ async function main() {
   const edge = spawn(EDGE_PATH, [
     "--headless=new",
     "--disable-gpu",
+    "--use-gl=swiftshader",
+    "--no-sandbox",
+    "--disable-software-rasterizer",
+    "--disable-dev-shm-usage",
     "--hide-scrollbars",
     "--no-first-run",
     "--no-default-browser-check",
@@ -181,15 +205,14 @@ async function main() {
       ws.onerror = reject;
     });
 
-    await send(ws, "Page.enable");
-    await send(ws, "Page.bringToFront");
     await send(ws, "Network.enable");
     await send(ws, "Network.setCacheDisabled", { cacheDisabled: true });
     await send(ws, "Runtime.enable");
     await send(ws, "Input.setIgnoreInputEvents", { ignore: false });
     await delay(2200);
+    await startTargetScene(ws);
 
-    const before = await snapshot(ws);
+    const before = await waitForPuzzleScene(ws);
     if (!before) throw new Error("Puzzle scene did not initialize");
     if (before.missingTextures.length) {
       throw new Error(`Missing puzzle textures: ${before.missingTextures.join(", ")}`);

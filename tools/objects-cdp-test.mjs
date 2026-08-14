@@ -9,6 +9,7 @@ const BASE_URL = process.env.BASE_URL || "http://127.0.0.1:5322/index.html";
 const runName = process.env.RUN_NAME || `objects-cdp-${Date.now()}`;
 const profileDir = path.resolve("test-artifacts", `${runName}-profile`);
 const url = `${BASE_URL}?scene=objects&qa=${runName}&cache=${Date.now()}`;
+const TARGET_SCENE = "ObjectsGame";
 
 const pending = new Map();
 
@@ -19,7 +20,7 @@ function send(ws, method, params = {}) {
     const timeout = setTimeout(() => {
       pending.delete(id);
       reject(new Error(`Timeout waiting for ${method}`));
-    }, 8000);
+    }, 12000);
     pending.set(id, { resolve, reject, timeout });
   });
 }
@@ -60,7 +61,7 @@ async function evaluate(ws, expression) {
 
 async function snapshot(ws) {
   return evaluate(ws, `(() => {
-    const scene = window.game?.scene?.keys?.ObjectsGame;
+    const scene = window.game?.scene?.keys?.${TARGET_SCENE};
     const canvas = document.querySelector("canvas");
     if (!scene || !canvas || !scene.sceneBounds) return null;
     const rect = canvas.getBoundingClientRect();
@@ -82,7 +83,8 @@ async function snapshot(ws) {
       const item = scene.checkItems.get(object.id);
       return {
         id: object.id,
-        text: item?.check?.text || "",
+        checked: Boolean(item?.check?.getData && item.check.getData("checked")),
+        checkedAlpha: item?.check?.alpha ?? 0,
         rowAlpha: item?.row?.alpha ?? 1,
       };
     });
@@ -98,6 +100,25 @@ async function snapshot(ws) {
         height: rect.height,
       },
     };
+  })()`);
+}
+
+async function waitForObjectsScene(ws, attempts = 48, waitMs = 350) {
+  for (let i = 0; i < attempts; i += 1) {
+    const current = await snapshot(ws);
+    if (current && current.rect?.width > 0) return current;
+    await delay(waitMs);
+  }
+  return null;
+}
+
+async function startTargetScene(ws) {
+  return evaluate(ws, `(() => {
+    const target = "${TARGET_SCENE}";
+    if (!window.game?.scene) return false;
+    if (!window.game.scene.keys[target]) return false;
+    window.game.scene.start(target);
+    return true;
   })()`);
 }
 
@@ -139,6 +160,10 @@ async function main() {
   const edge = spawn(EDGE_PATH, [
     "--headless=new",
     "--disable-gpu",
+    "--use-gl=swiftshader",
+    "--no-sandbox",
+    "--disable-software-rasterizer",
+    "--disable-dev-shm-usage",
     "--hide-scrollbars",
     "--no-first-run",
     "--no-default-browser-check",
@@ -170,21 +195,20 @@ async function main() {
       ws.onerror = reject;
     });
 
-    await send(ws, "Page.enable");
-    await send(ws, "Page.bringToFront");
     await send(ws, "Network.enable");
     await send(ws, "Network.setCacheDisabled", { cacheDisabled: true });
     await send(ws, "Runtime.enable");
     await send(ws, "Input.setIgnoreInputEvents", { ignore: false });
     await delay(2200);
+    await startTargetScene(ws);
 
-    const before = await snapshot(ws);
+    const before = await waitForObjectsScene(ws);
     if (!before) throw new Error("Objects scene did not initialize");
     if (before.zones.length !== before.activeCount) {
       throw new Error(`Expected ${before.activeCount} hit zones, found ${before.zones.length}`);
     }
-    if (before.checks.some((check) => check.text)) {
-      throw new Error(`Checklist should start without duplicate check text: ${JSON.stringify(before.checks)}`);
+    if (before.checks.some((check) => check.checked || check.checkedAlpha > 0.05)) {
+      throw new Error(`Checklist should start unchecked: ${JSON.stringify(before.checks)}`);
     }
 
     for (const zone of before.zones) {
@@ -196,7 +220,7 @@ async function main() {
     if (after.found !== after.activeCount) {
       throw new Error(`Expected all objects found. found=${after.found}, active=${after.activeCount}, zones=${JSON.stringify(after.zones)}`);
     }
-    if (after.checks.some((check) => !check.text)) {
+    if (after.checks.some((check) => !check.checked)) {
       throw new Error(`Expected every checklist row to be checked: ${JSON.stringify(after.checks)}`);
     }
 

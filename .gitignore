@@ -25,6 +25,10 @@ test-artifacts/
 screenshots/
 captures/
 
+# Local scratch assets / exploratory audio
+assets/audio/voice/
+remove_background.py
+
 # Temporary image-processing output
 *.tmp
 *.temp

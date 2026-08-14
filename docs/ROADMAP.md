@@ -18,6 +18,10 @@ Capturas revisadas:
 - Tanda despues de helper de boton principal: `test-artifacts/primary-button-helper-pass/`
 - Tanda despues de preguntas JSON y ajuste de hit areas: `test-artifacts/quiz-json-hitarea-pass/`
 - Tanda despues de iconos por respuesta en quiz: `test-artifacts/quiz-icons-pass/`
+- Tanda reciente de seguimiento: `test-artifacts/roadmap-followup/`
+- Tanda reciente de seguimiento de esta iteraciÃ³n: `test-artifacts/roadmap-followup-3/`
+- Tanda nueva del ciclo actual: `test-artifacts/roadmap-cycle-continue/`
+- Tanda nueva del ciclo actual (v2): `test-artifacts/roadmap-cycle-continue-v2/`
 
 Cambios ya aplicados en esta ronda:
 
@@ -27,6 +31,9 @@ Cambios ya aplicados en esta ronda:
 - Los objetos ocultos conservan un area de clic amplia e invisible para que se puedan tocar desde cualquier parte del objeto.
 - El area de clic de objetos ahora esta separada del sprite visual mediante zonas invisibles, lo que mejora la deteccion y evita depender de transparencias del PNG.
 - La lista de objetos ya no dibuja doble circulo de confirmacion: el circulo vacio viene del sprite y el codigo solo agrega el check.
+- Lista de objetos y feedback de piezas: el check se controla desde `item.check` (data `checked`) y el feedback visual usa `ui-icon_sparkles` en vez de estrella.
+- Zona de interacciÃ³n ampliada: Ã¡reas de objetos en objetos y hit zones con padding mÃ­nimo de 58 px para facilitar click.
+- Ajustes de texto y encoding visibles: se corrigieron cadenas con caracteres mojibake en portada, quiz, objetos y pantalla final (misiÃ³n, mision, Ã¡lbum, niÃ±a, enseÃ±ar, niÃ±os, completÃ³).
 - Se creo la knowledge base del proyecto en `docs/KNOWLEDGE_BASE.md`.
 - La portada ya usa parte del sistema comun de texto y layout.
 - El rompecabezas fue corregido y validado con `tools/puzzle-cdp-test.mjs`.
@@ -38,6 +45,12 @@ Cambios ya aplicados en esta ronda:
 - El smoke test de objetos detecto solapamiento entre zonas invisibles; las zonas mas pequenas ahora quedan por encima para mejorar el click.
 - Las respuestas del quiz ahora pueden declarar `iconKey`; el icono se mantiene asociado a la respuesta despues de mezclar opciones.
 - Las tarjetas de respuesta del quiz usan `addFittedText` para reducir riesgo de texto cortado.
+- Se completo la pista opcional en objetos usando `ui-icon_sparkles` y estados internos por objeto (`found`) para evitar detecciones errÃ³neas.
+- Los hit areas de objetos usan padding mÃ­nimo de 58 px para facilitar el toque de niÃ±os.
+- El botÃ³n "Siguiente" muestra estado bloqueado mÃ¡s claro con hint, texto y animaciÃ³n de feedback.
+- `src/questions.json` quedÃ³ normalizado a UTF-8 y con tildes limpias en texto visible.
+- `src/main.js` conserva `addNextButton` y no depende de transiciones de pÃ¡gina para avanzar.
+- `.gitignore` se actualizÃ³ para ignorar `assets/audio/voice/` y `remove_background.py`.
 
 Pruebas ejecutadas:
 
@@ -47,8 +60,10 @@ Pruebas ejecutadas:
 - `node --check src/layouts.js`
 - `node --check tools/puzzle-cdp-test.mjs`
 - `node --check tools/objects-cdp-test.mjs`
-- `node tools/puzzle-cdp-test.mjs`
-- `node tools/objects-cdp-test.mjs`
+- `BASE_URL=http://127.0.0.1:5173/index.html node tools/puzzle-cdp-test.mjs` *(en este entorno sigue sin inicializar la escena)*
+- `BASE_URL=http://127.0.0.1:5173/index.html node tools/objects-cdp-test.mjs` *(en este entorno sigue sin inicializar la escena)*
+- `node tools/puzzle-cdp-test.mjs` *(requiere servidor local + puede no inicializar escena en algunos entornos Edge headless; se mejorÃ³ espera/reintento y flags de diagnÃ³stico)*
+- `node tools/objects-cdp-test.mjs` *(requiere servidor local + puede no inicializar escena en algunos entornos Edge headless; se mejorÃ³ espera/reintento y flags de diagnÃ³stico)*
 - `tools/capture-screens.ps1 -RunName roadmap-review`
 - `tools/capture-screens.ps1 -RunName roadmap-next-pass-final`
 - `tools/capture-screens.ps1 -RunName ui-consistency-objects-hit`
@@ -58,6 +73,14 @@ Pruebas ejecutadas:
 - `tools/capture-screens.ps1 -RunName primary-button-helper-pass`
 - `tools/capture-screens.ps1 -RunName quiz-json-hitarea-pass`
 - `tools/capture-screens.ps1 -RunName quiz-icons-pass`
+- `tools/capture-screens.ps1 -RunName roadmap-followup`
+- `tools/capture-screens.ps1 -RunName roadmap-followup-3`
+- `tools/capture-screens.ps1 -RunName roadmap-cycle-continue`
+- `BASE_URL=http://127.0.0.1:5322/index.html node tools/puzzle-cdp-test.mjs` *(en este entorno de pruebas, la escena no siempre inicializa de forma confiable en Edge headless)*
+- `BASE_URL=http://127.0.0.1:5322/index.html node tools/objects-cdp-test.mjs` *(en este entorno de pruebas, la escena no siempre inicializa de forma confiable en Edge headless)*
+- `BASE_URL=http://127.0.0.1:5330/index.html node tools/puzzle-cdp-test.mjs` *(en este entorno de pruebas, la escena no inicializa de forma consistente en Edge headless aun con reintentos y flags de arranque)*
+- `BASE_URL=http://127.0.0.1:5330/index.html node tools/objects-cdp-test.mjs` *(en este entorno de pruebas, la escena no inicializa de forma consistente en Edge headless aun con reintentos y flags de arranque)*
+- `BASE_URL=http://127.0.0.1:5330/index.html node tools/capture-screens.ps1` *(capturas de verificacion de esta ronda: `test-artifacts/roadmap-cycle-continue-v2/`)
 
 Resultado funcional:
 
@@ -76,6 +99,9 @@ Resultado funcional:
 - La ronda actual movio las preguntas del quiz a `src/questions.json` y agrego normalizacion con `RosaritoData.buildQuizPool`.
 - La ronda actual revalido objetos con zonas solapadas: las zonas pequenas quedan arriba para que el click caiga en el objeto esperado.
 - La ronda actual agrego `iconKey` por opcion del quiz y auto-fit en textos de tarjetas de respuesta.
+- Se paso la bandeja del rompecabezas a `SCENE_LAYOUTS.puzzle.tray` y se agrego feedback visual extra al encajar piezas.
+- `addNextButton` ahora muestra estado bloqueado mÃ¡s claro: hint visible y un icono indicador de interacciÃ³n.
+- Se terminaron correcciones de textos visibles con caracteres de UTF-8 quebrados para evitar lectura con caracteres extraÃ±os.
 
 ## Comparacion con la referencia
 
@@ -320,7 +346,7 @@ Estado:
 
 - En progreso y parcialmente aplicado.
 - `addFittedText` ya existe y se usa en portada/preguntas.
-- Pendiente migrar los textos problemáticos de puzzle y objetos.
+- Pendiente migrar los textos problemÃ¡ticos de puzzle y objetos.
 
 ### Iteracion 2 - Pantalla inicial
 
@@ -368,3 +394,5 @@ Estado:
 - Rosarito funciona como guia visual.
 - Desktop 1280x720 y mobile landscape muestran el libro completo.
 - Mobile portrait muestra aviso claro para girar el telefono.
+
+

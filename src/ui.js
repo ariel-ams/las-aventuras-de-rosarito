@@ -222,6 +222,8 @@ function addNextButton(scene, x, y, label, onClick, options = {}) {
     hoverArrowSize = 138,
     labelX = -118,
     labelY = 12,
+    disabledHint = "Completa para continuar",
+    disabledTextColor = "#6e3e73",
     hitArea = new Phaser.Geom.Rectangle(-168, -63, 230, 126),
   } = options;
   let isEnabled = enabled;
@@ -231,14 +233,49 @@ function addNextButton(scene, x, y, label, onClick, options = {}) {
     ...TEXT_STYLES.button,
     fontSize: "22px",
   }).setOrigin(0.5);
-  button.add([arrow, text]);
+  const status = scene.add.text(labelX, 44, "", {
+    ...TEXT_STYLES.body,
+    fontSize: "16px",
+    fontStyle: "bold",
+    color: disabledTextColor,
+  }).setOrigin(0.5);
+  const statusHint = scene.add.image(labelX + 72, 28, "ui-icon_tap")
+    .setDisplaySize(24, 24)
+    .setTint(0x9a5a9f)
+    .setAlpha(0.95);
+  button.add([arrow, text, status, statusHint]);
   button.setSize(hitArea.width, hitArea.height).setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
+  let statusPulse = null;
 
-  button.setEnabled = (nextEnabled = true) => {
+  button.setEnabled = (nextEnabled = true, disabledText = disabledHint) => {
     isEnabled = nextEnabled;
-    button.setAlpha(isEnabled ? 1 : 0.42);
+    button.setAlpha(isEnabled ? 1 : 0.46);
     button.setScale(1);
+    arrow.setTint(isEnabled ? 0xffffff : 0x9d95a8);
+    text.setAlpha(isEnabled ? 1 : 0.8);
+    status.setAlpha(isEnabled ? 0 : 1);
+    statusHint.setAlpha(isEnabled ? 0 : 0.85);
+    status.setText(isEnabled ? "" : disabledText);
+    status.setColor(isEnabled ? "#6c6c6c" : disabledTextColor);
+    statusHint.setTexture(isEnabled ? "ui-icon_tap" : "ui-icon_exclaim");
+    statusHint.setTint(isEnabled ? 0x9a5a9f : 0xc98f2d);
+    statusHint.setScale(isEnabled ? 1 : 1.1);
     if (button.input) button.input.enabled = isEnabled;
+    if (statusPulse) {
+      statusPulse.remove();
+      statusPulse = null;
+    }
+    if (!isEnabled) {
+      statusPulse = scene.tweens.add({
+        targets: statusHint,
+        alpha: 0.45,
+        yoyo: true,
+        duration: 650,
+        repeat: -1,
+      });
+    } else {
+      statusHint.setAlpha(0);
+    }
     return button;
   };
 
@@ -320,23 +357,21 @@ function drawProgress(scene, gameState) {
     const active = gameState.achievements[i] || i === gameState.achievements.filter(Boolean).length;
     const star = scene.add.image(x, 96, "ui-star_full").setDisplaySize(54, 54);
     if (!active) star.setTint(0xd0c2b0).setAlpha(0.58);
-    scene.add.text(x, 94, String(i + 1), {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "21px",
-      fontStyle: "bold",
-      color: "#3e2b22",
-    }).setOrigin(0.5);
   }
 }
 
 function drawStarCounter(scene, x = 1048, y = 96, value = 0) {
   scene.add.image(x, y, "ui-label_long_cream").setDisplaySize(98, 44).setDepth(5);
   scene.add.image(x - 32, y - 1, "ui-star_full").setDisplaySize(34, 34).setDepth(6);
-  scene.add.text(x + 20, y, `${value}/3`, {
-    fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-    fontSize: "23px",
-    fontStyle: "bold",
-    color: "#3e2b22",
+  addFittedText(scene, x + 20, y, `${value}/3`, "body", {
+    maxWidth: 48,
+    maxHeight: 28,
+    minFontSize: 18,
+    style: {
+      fontSize: "23px",
+      fontStyle: "bold",
+      color: "#3e2b22",
+    },
   }).setOrigin(0.5).setDepth(6);
 }
 
@@ -346,13 +381,17 @@ function createFeedback(scene, message, good = true) {
   const panel = scene.add.container(window.RosaritoLayouts.WIDTH / 2, 145).setDepth(1000);
   panel.add(scene.add.image(0, 0, good ? "ui-speech_large_lilac" : "ui-speech_large_cream").setDisplaySize(690, 126));
   panel.add(scene.add.image(-292, -2, good ? "ui-icon_check" : "ui-icon_x").setDisplaySize(54, 54));
-  panel.add(scene.add.text(35, 0, message, {
-    fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-    fontSize: "22px",
-    fontStyle: "bold",
-    color: "#3e2b22",
-    align: "center",
-    wordWrap: { width: 565 },
+  panel.add(addFittedText(scene, 35, 0, message, "body", {
+    maxWidth: 565,
+    maxHeight: 72,
+    minFontSize: 18,
+    style: {
+      fontSize: "22px",
+      fontStyle: "bold",
+      color: "#3e2b22",
+      align: "center",
+      wordWrap: { width: 565 },
+    },
   }).setOrigin(0.5));
   scene.tweens.add({ targets: panel, y: 120, alpha: 0, delay: 850, duration: 500, onComplete: () => panel.destroy() });
   return panel;

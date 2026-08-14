@@ -32,7 +32,7 @@
     },
     {
       "id": "hermanas",
-      "question": "Rosario era la menor de ¿cuántas hermanas?",
+      "question": "¿Rosario era la menor de cuántas hermanas?",
       "options": [
         { "label": "4", "correct": true, "iconKey": "ui-icon_star" },
         { "label": "2", "correct": false, "iconKey": "ui-icon_heart" },

@@ -235,21 +235,31 @@ class BaseScene extends Phaser.Scene {
         playTone(this, "click");
         if (this.currentVoiceKey) playAudioKey(this, `voice.${this.currentVoiceKey}`);
       });
-    this.add.text(112, 70, title, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "34px",
-      fontStyle: "bold",
-      color: "#3e2b22",
-      wordWrap: { width: 450 },
-    });
+    if (title) {
+      window.RosaritoUI.addFittedText(this, 112, 70, title, "title", {
+        maxWidth: 450,
+        maxHeight: 56,
+        minFontSize: 26,
+        style: {
+          fontSize: "34px",
+          color: "#3e2b22",
+          stroke: "#f6e2ba",
+          strokeThickness: 3,
+        },
+      }).setOrigin(0, 0.5);
+    }
     if (subtitle) {
-      this.add.text(112, 128, subtitle, {
-        fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-        fontSize: "22px",
-        color: "#5d4437",
-        lineSpacing: 8,
-        wordWrap: { width: 430 },
-      });
+      window.RosaritoUI.addFittedText(this, 112, 128, subtitle, "body", {
+        maxWidth: 430,
+        maxHeight: 64,
+        minFontSize: 16,
+        style: {
+          fontSize: "22px",
+          color: "#5d4437",
+          lineSpacing: 8,
+          wordWrap: { width: 430 },
+        },
+      }).setOrigin(0, 0.5);
     }
     this.rosaritoSprite = this.add.sprite(LAYOUT.rosarito.x, LAYOUT.rosarito.y, ROSARITO_SPRITE.key, 0)
       .setScale(LAYOUT.rosarito.scale)
@@ -259,17 +269,6 @@ class BaseScene extends Phaser.Scene {
 
   drawProgress() {
     return window.RosaritoUI.drawProgress(this, gameState);
-    for (let i = 0; i < 4; i += 1) {
-      const x = 770 + i * 76;
-      const star = this.add.image(x, 96, "ui-icon_star").setDisplaySize(50, 50);
-      if (!gameState.achievements[i]) star.setTint(0xd0c2b0).setAlpha(0.65);
-      this.add.text(x, 94, String(i + 1), {
-        fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-        fontSize: "18px",
-        fontStyle: "bold",
-        color: "#3e2b22",
-      }).setOrigin(0.5);
-    }
   }
 
   celebrateRosarito() {
@@ -327,13 +326,6 @@ class BaseScene extends Phaser.Scene {
 
   drawStarCounter(x = 1048, y = 96, value = 0) {
     return window.RosaritoUI.drawStarCounter(this, x, y, value);
-    this.add.image(x, y, "ui-score_star_panel").setDisplaySize(118, 88).setDepth(5);
-    this.add.text(x + 13, y, String(value), {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "30px",
-      fontStyle: "bold",
-      color: "#3e2b22",
-    }).setOrigin(0.5).setDepth(6);
   }
 
   makeQuizAnswerCard(x, y, option, index, onClick, iconKey = "") {
@@ -374,13 +366,16 @@ class BaseScene extends Phaser.Scene {
   makeChoiceCard(x, y, label, onClick, width = 230, color = COLORS.violet, voiceText = "") {
     const card = this.add.container(x, y);
     const bg = this.add.image(0, 0, "ui-panel_task_floral").setDisplaySize(width, 86);
-    const text = this.add.text(0, 0, label, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "23px",
-      fontStyle: "bold",
-      color: "#4a3026",
-      align: "center",
-      wordWrap: { width: width - 22 },
+    const text = window.RosaritoUI.addFittedText(this, 0, 0, label, "button", {
+      maxWidth: width - 22,
+      maxHeight: 58,
+      minFontSize: 12,
+      style: {
+        fontSize: "23px",
+        color: "#4a3026",
+        align: "center",
+        wordWrap: { width: width - 22 },
+      },
     }).setOrigin(0.5);
     card.add([bg, text]);
     card.setSize(width, 86).setInteractive({ useHandCursor: true });
@@ -405,14 +400,18 @@ class BaseScene extends Phaser.Scene {
     const card = this.add.container(x, y).setDepth(8);
     const bg = this.add.image(0, 0, cardKey).setDisplaySize(230, 110);
     const icon = this.add.image(18, -26, componentIconKey(labelText)).setDisplaySize(44, 44);
-    const label = this.add.text(18, 27, labelText, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: labelSize,
-      fontStyle: "bold",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 160 },
-      lineSpacing: 0,
+    const label = window.RosaritoUI.addFittedText(this, 18, 27, labelText, "body", {
+      maxWidth: 160,
+      maxHeight: 44,
+      minFontSize: 12,
+      style: {
+        fontSize: labelSize,
+        fontStyle: "bold",
+        color: "#3e2b22",
+        align: "center",
+        wordWrap: { width: 160 },
+        lineSpacing: 0,
+      },
     }).setOrigin(0.5);
     card.add([bg, icon, label]);
     card.setSize(230, 110).setInteractive({ useHandCursor: true });
@@ -432,20 +431,6 @@ class BaseScene extends Phaser.Scene {
 
   feedback(message, good = true) {
     return window.RosaritoUI.createFeedback(this, message, good);
-    playTone(this, good ? "success" : "error");
-    playAudioKey(this, good ? "voice.feedback.success" : "voice.feedback.error");
-    const panel = this.add.container(WIDTH / 2, 145).setDepth(1000);
-    panel.add(this.add.image(0, 0, good ? "ui-speech_large_lilac" : "ui-speech_large_cream").setDisplaySize(690, 126));
-    panel.add(this.add.image(-292, -2, good ? "ui-icon_check" : "ui-icon_x").setDisplaySize(54, 54));
-    panel.add(this.add.text(35, 0, message, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "22px",
-      fontStyle: "bold",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 565 },
-    }).setOrigin(0.5));
-    this.tweens.add({ targets: panel, y: 120, alpha: 0, delay: 850, duration: 500, onComplete: () => panel.destroy() });
   }
 
   narrateScreen(key) {
@@ -509,12 +494,18 @@ class CoverScene extends BaseScene {
 
     this.drawStarCounter(SCENE_LAYOUTS.cover.starCounter.x, SCENE_LAYOUTS.cover.starCounter.y, gameState.achievements.filter(Boolean).length);
     this.add.image(rightPage.x + 254, 112, "ui-speech_large_lilac").setDisplaySize(300, 98).setDepth(5);
-    this.add.text(860, 112, "Tu mision", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "42px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-    }).setOrigin(0.5).setDepth(6);
+    window.RosaritoUI.addFittedText(this, 860, 112, "Tu misión", "title", {
+      maxWidth: 220,
+      maxHeight: 52,
+      minFontSize: 34,
+      depth: 6,
+      style: {
+        fontSize: "42px",
+        fontStyle: "bold",
+        color: "#6a3d8f",
+        align: "center",
+      },
+    });
     this.add.image(860, 232, "ui-speech_large_cream").setDisplaySize(440, 138).setAlpha(0.9).setDepth(4);
     window.RosaritoUI.addFittedText(this, 860, 226, "Completa las actividades para conocer la vida y el legado de Rosarito.", "body", {
       maxWidth: 340,
@@ -543,13 +534,19 @@ class CoverScene extends BaseScene {
     this.add.image(858, 605, "ui-notebook_panel").setDisplaySize(420, 144).setDepth(4);
     this.add.image(708, 606, "ui-icon_book").setDisplaySize(84, 72).setDepth(5);
     this.add.image(1014, 605, "ui-star_full").setDisplaySize(80, 80).setDepth(5);
-    this.add.text(846, 570, "Gran objetivo", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "26px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-    }).setOrigin(0.5).setDepth(5);
-    window.RosaritoUI.addFittedText(this, 848, 615, "Completa las actividades y gana el album de Rosarito.", "body", {
+    window.RosaritoUI.addFittedText(this, 846, 570, "Gran objetivo", "title", {
+      maxWidth: 210,
+      maxHeight: 48,
+      minFontSize: 20,
+      depth: 5,
+      style: {
+        fontSize: "26px",
+        fontStyle: "bold",
+        color: "#6a3d8f",
+        align: "center",
+      },
+    });
+    window.RosaritoUI.addFittedText(this, 848, 615, "Completa las actividades y gana el álbum de Rosarito.", "body", {
       maxWidth: 235,
       maxHeight: 54,
       minFontSize: 15,
@@ -591,22 +588,31 @@ class PrepGameScene extends BaseScene {
     this.add.image(196, 84, "m1-minigame1_update_04").setDisplaySize(230, 50).setDepth(4).setFlipX(true);
     this.add.image(512, 84, "m1-minigame1_update_05").setDisplaySize(230, 50).setDepth(4);
     this.add.image(358, 122, "m1-minigame1_update_03").setDisplaySize(42, 40).setDepth(5);
-    this.add.text(354, 82, "Los dones de Rosarito", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "46px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-      stroke: "#f6e2ba",
-      strokeThickness: 4,
-      align: "center",
-    }).setOrigin(0.5).setDepth(6);
-    this.add.text(354, 165, "Observa el don y toca solo los\ncomponentes correctos.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "26px",
-      color: "#3e2b22",
-      align: "center",
-      lineSpacing: 4,
-    }).setOrigin(0.5).setDepth(6);
+    window.RosaritoUI.addFittedText(this, 354, 82, "Los dones de Rosarito", "title", {
+      maxWidth: 290,
+      maxHeight: 78,
+      minFontSize: 28,
+      depth: 6,
+      style: {
+        fontSize: "46px",
+        fontStyle: "bold",
+        color: "#6a3d8f",
+        align: "center",
+        stroke: "#f6e2ba",
+        strokeThickness: 4,
+      },
+    }).setOrigin(0.5);
+    window.RosaritoUI.addFittedText(this, 354, 165, "Observa el don y toca solo los\ncomponentes correctos.", "body", {
+      maxWidth: 290,
+      maxHeight: 62,
+      minFontSize: 19,
+      depth: 6,
+      style: {
+        fontSize: "26px",
+        align: "center",
+        lineSpacing: 4,
+      },
+    }).setOrigin(0.5);
     this.add.image(90, 424, "m1-minigame1_update4_27").setDisplaySize(150, 130).setDepth(3);
     this.add.image(530, 676, "m1-minigame1_update4_28").setDisplaySize(146, 112).setDepth(3);
   }
@@ -614,53 +620,79 @@ class PrepGameScene extends BaseScene {
   showGift() {
     const gift = gameState.giftSet[gameState.giftIndex];
     this.add.image(354, 236, "m1-minigame1_update_07").setDisplaySize(350, 62).setDepth(5);
-    this.add.text(354, 236, `Don ${gameState.giftIndex + 1} de 3`, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "31px",
-      fontStyle: "bold",
-      color: "#3e2b22",
-    }).setOrigin(0.5).setDepth(6);
+    window.RosaritoUI.addFittedText(this, 354, 236, `Don ${gameState.giftIndex + 1} de ${gameState.giftSet.length}`, "body", {
+      maxWidth: 312,
+      maxHeight: 52,
+      minFontSize: 22,
+      depth: 6,
+      style: {
+        fontSize: "31px",
+        fontStyle: "bold",
+        color: "#3e2b22",
+      },
+    }).setOrigin(0.5);
     this.add.image(632, 244, "ui-icon_sparkles").setDisplaySize(56, 56).setDepth(6);
 
     this.add.image(354, 412, "m1-minigame1_update_10").setDisplaySize(520, 244).setDepth(5);
     const giftTitleSize = gift.name.length > 28 ? "29px" : "34px";
     const giftPromptSize = gift.prompt.length > 66 ? "21px" : "24px";
-    this.add.text(354, 368, gift.name, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: giftTitleSize,
-      fontStyle: "bold",
-      color: "#6a3d8f",
-      wordWrap: { width: 420 },
-      align: "center",
-      lineSpacing: 2,
-    }).setOrigin(0.5).setDepth(6);
+    window.RosaritoUI.addFittedText(this, 354, 368, gift.name, "title", {
+      maxWidth: 420,
+      maxHeight: 52,
+      minFontSize: 20,
+      depth: 6,
+      style: {
+        fontSize: giftTitleSize,
+        fontStyle: "bold",
+        color: "#6a3d8f",
+        wordWrap: { width: 420 },
+        align: "center",
+        lineSpacing: 2,
+      },
+    }).setOrigin(0.5);
     this.add.image(354, 424, "m1-minigame1_update4_03").setDisplaySize(150, 36).setDepth(6);
-    this.add.text(354, 472, gift.prompt, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: giftPromptSize,
-      color: "#3e2b22",
-      wordWrap: { width: 405 },
-      align: "center",
-      lineSpacing: 3,
-    }).setOrigin(0.5).setDepth(6);
+    window.RosaritoUI.addFittedText(this, 354, 472, gift.prompt, "body", {
+      maxWidth: 405,
+      maxHeight: 56,
+      minFontSize: 14,
+      depth: 6,
+      style: {
+        fontSize: giftPromptSize,
+        color: "#3e2b22",
+        wordWrap: { width: 405 },
+        align: "center",
+        lineSpacing: 3,
+      },
+    }).setOrigin(0.5);
     this.add.image(354, 590, "m1-minigame1_update_15").setDisplaySize(330, 64).setDepth(5);
-    this.add.text(354, 590, "Imagen del don", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "24px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-    }).setOrigin(0.5).setDepth(6);
+    window.RosaritoUI.addFittedText(this, 354, 590, "Imagen del don", "title", {
+      maxWidth: 260,
+      maxHeight: 46,
+      minFontSize: 18,
+      depth: 6,
+      style: {
+        fontSize: "24px",
+        fontStyle: "bold",
+        color: "#6a3d8f",
+        align: "center",
+      },
+    }).setOrigin(0.5);
 
     this.add.image(900, 184, "m1-minigame1_update4_01").setDisplaySize(190, 28).setDepth(4);
     this.add.image(900, 184, "m1-minigame1_update4_02").setDisplaySize(190, 28).setDepth(4).setFlipX(true);
-    this.add.text(900, 184, "Componentes del don", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "34px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-      align: "center",
-      wordWrap: { width: 410 },
-    }).setOrigin(0.5).setDepth(6);
+    window.RosaritoUI.addFittedText(this, 900, 184, "Componentes del don", "title", {
+      maxWidth: 380,
+      maxHeight: 60,
+      minFontSize: 20,
+      depth: 6,
+      style: {
+        fontSize: "34px",
+        fontStyle: "bold",
+        color: "#6a3d8f",
+        align: "center",
+        wordWrap: { width: 380 },
+      },
+    }).setOrigin(0.5);
     this.add.image(900, 222, "m1-minigame1_update_03").setDisplaySize(34, 32).setDepth(6);
     this.add.image(900, 400, "m1-minigame1_update2_02").setDisplaySize(560, 320).setDepth(4);
 
@@ -673,15 +705,20 @@ class PrepGameScene extends BaseScene {
     });
     this.add.image(890, 612, "m1-minigame1_update2_07").setDisplaySize(440, 82).setDepth(5);
     this.add.image(700, 606, "m1-minigame1_update3_02").setDisplaySize(76, 76).setDepth(6);
-    this.add.text(910, 610, `Elige ${gift.correct.length} objetos\ncorrectos.`, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "26px",
-      fontStyle: "bold",
-      color: "#3e2b22",
-      wordWrap: { width: 260 },
-      align: "center",
-      lineSpacing: 2,
-    }).setOrigin(0.5).setDepth(6);
+    window.RosaritoUI.addFittedText(this, 910, 610, `Elige ${gift.correct.length} objetos\ncorrectos.`, "body", {
+      maxWidth: 260,
+      maxHeight: 68,
+      minFontSize: 18,
+      depth: 6,
+      style: {
+        fontSize: "26px",
+        fontStyle: "bold",
+        color: "#3e2b22",
+        wordWrap: { width: 260 },
+        align: "center",
+        lineSpacing: 2,
+      },
+    }).setOrigin(0.5);
   }
 
   pickGiftObject(option, gift, card) {
@@ -738,7 +775,7 @@ class QuizGameScene extends BaseScene {
       ],
     });
 
-    window.RosaritoUI.addNarrativeBubble(this, 410, 338, "Cuando Rosarito era nina, vivio momentos especiales que la ayudaron a sonar en grande.", {
+    window.RosaritoUI.addNarrativeBubble(this, 410, 338, "Cuando Rosarito era niña, vivió momentos especiales que la ayudaron a soñar en grande.", {
       key: "m2-speech_narrative",
       width: 244,
       height: 168,
@@ -770,12 +807,17 @@ class QuizGameScene extends BaseScene {
     this.drawStarCounter(SCENE_LAYOUTS.quiz.starCounter.x, SCENE_LAYOUTS.quiz.starCounter.y, gameState.achievements.filter(Boolean).length);
     this.add.image(864, 92, "m2-header_responde").setDisplaySize(380, 74).setDepth(5);
     this.add.image(884, 188, "m2-instruction_banner").setDisplaySize(430, 62).setDepth(4);
-    this.add.text(884, 186, "Haz clic en la respuesta correcta.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "22px",
-      color: "#3e2b22",
-      align: "center",
-    }).setOrigin(0.5).setDepth(5);
+    window.RosaritoUI.addFittedText(this, 884, 186, "Haz clic en la respuesta correcta.", "body", {
+      maxWidth: 300,
+      maxHeight: 58,
+      minFontSize: 16,
+      depth: 5,
+      style: {
+        fontSize: "22px",
+        color: "#3e2b22",
+        align: "center",
+      },
+    }).setOrigin(0.5);
     this.add.image(884, 225, "m2-heart").setDisplaySize(30, 28).setDepth(5);
     this.add.image(1142, 140, "m2-leaves").setDisplaySize(70, 48).setDepth(3).setAngle(16);
     this.add.image(1100, 646, "m2-plant_lavender").setDisplaySize(46, 96).setDepth(3);
@@ -787,26 +829,36 @@ class QuizGameScene extends BaseScene {
     const q = gameState.quizSet[gameState.quizIndex];
     this.add.image(884, 310, "m2-question_panel").setDisplaySize(470, 78).setDepth(5);
     this.add.image(650, 310, "ui-icon_flower").setDisplaySize(74, 74).setDepth(6);
-    this.add.text(650, 302, String(gameState.quizIndex + 1), {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "34px",
-      fontStyle: "bold",
-      color: "#fff8e9",
-      stroke: "#6a3d8f",
-      strokeThickness: 3,
-    }).setOrigin(0.5).setDepth(7);
+    window.RosaritoUI.addFittedText(this, 650, 302, String(gameState.quizIndex + 1), "button", {
+      maxWidth: 72,
+      maxHeight: 34,
+      minFontSize: 18,
+      depth: 7,
+      style: {
+        fontSize: "34px",
+        fontStyle: "bold",
+        color: "#fff8e9",
+        stroke: "#6a3d8f",
+        strokeThickness: 3,
+      },
+    }).setOrigin(0.5);
     this.add.graphics()
       .fillStyle(0x77559a, 0.94)
       .fillRoundedRect(1064, 260, 78, 48, 20)
       .lineStyle(3, 0xf3d36d, 0.95)
       .strokeRoundedRect(1064, 260, 78, 48, 20)
       .setDepth(6);
-    this.add.text(1103, 284, `${gameState.quizIndex + 1}/3`, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "22px",
-      fontStyle: "bold",
-      color: "#fff8e9",
-    }).setOrigin(0.5).setDepth(7);
+    window.RosaritoUI.addFittedText(this, 1103, 284, `${gameState.quizIndex + 1}/3`, "body", {
+      maxWidth: 78,
+      maxHeight: 34,
+      minFontSize: 16,
+      depth: 7,
+      style: {
+        fontSize: "22px",
+        fontStyle: "bold",
+        color: "#fff8e9",
+      },
+    }).setOrigin(0.5);
     window.RosaritoUI.addFittedText(this, 888, 310, q.question, "question", {
       maxWidth: 350,
       maxHeight: 64,
@@ -852,12 +904,16 @@ class PuzzleGameScene extends BaseScene {
     this.done = 0;
     this.puzzle = gameState.puzzleSet[gameState.puzzleIndex] || gameState.puzzlePool[0];
     if (!this.puzzle) {
-      this.add.text(590, 360, "Agrega imagenes en assets/puzzles/source para jugar.", {
-        fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-        fontSize: "28px",
-        color: "#3e2b22",
-        align: "center",
-        wordWrap: { width: 640 },
+      window.RosaritoUI.addFittedText(this, 590, 360, "Agrega im�genes en assets/puzzles/source para jugar.", "body", {
+        maxWidth: 640,
+        maxHeight: 100,
+        minFontSize: 20,
+        style: {
+          fontSize: "28px",
+          color: "#3e2b22",
+          align: "center",
+          wordWrap: { width: 640 },
+        },
       }).setOrigin(0.5);
       return;
     }
@@ -878,12 +934,17 @@ class PuzzleGameScene extends BaseScene {
   drawPuzzleStoryPage() {
     this.add.ellipse(170, 650, 142, 26, 0x5b3f2d, 0.18).setDepth(2);
     this.add.image(370, 94, "ui-label_long_cream").setDisplaySize(164, 52).setTint(0x8c63a8).setAlpha(0.86).setDepth(4);
-    this.add.text(370, 94, "Juego 2", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "26px",
-      fontStyle: "bold",
-      color: "#fff8e9",
-    }).setOrigin(0.5).setDepth(5);
+    window.RosaritoUI.addFittedText(this, 370, 94, "Juego 2", "button", {
+      maxWidth: 130,
+      maxHeight: 50,
+      minFontSize: 18,
+      depth: 5,
+      style: {
+        fontSize: "26px",
+        fontStyle: "bold",
+        color: "#fff8e9",
+      },
+    }).setOrigin(0.5);
     window.RosaritoUI.addScreenTitle(this, [
       { x: 352, y: 142, text: "El rompecabezas", fontSize: "43px" },
       { x: 365, y: 205, text: "de Rosario", fontSize: "48px" },
@@ -895,7 +956,7 @@ class PuzzleGameScene extends BaseScene {
       ],
     });
 
-    window.RosaritoUI.addNarrativeBubble(this, 408, 340, "Vamos a armar la imagen de Rosario Vera Penaloza!", {
+    window.RosaritoUI.addNarrativeBubble(this, 408, 340, "Vamos a armar la imagen de Rosario Vera Peñaloza!", {
       width: 300,
       height: 132,
       depth: 7,
@@ -923,12 +984,17 @@ class PuzzleGameScene extends BaseScene {
     this.add.image(275, 648, "ui-notebook_panel").setDisplaySize(360, 116).setDepth(5).setAlpha(0.96);
     this.add.image(174, 644, this.puzzle.previewKey).setDisplaySize(118, 82).setDepth(6).setAlpha(0.92);
     this.add.image(356, 606, "ui-label_long_cream").setDisplaySize(150, 46).setTint(0x8c63a8).setDepth(6);
-    this.add.text(356, 606, "De su vida real", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "16px",
-      fontStyle: "bold",
-      color: "#fff8e9",
-    }).setOrigin(0.5).setDepth(7);
+    window.RosaritoUI.addFittedText(this, 356, 606, "De su vida real", "body", {
+      maxWidth: 132,
+      maxHeight: 36,
+      minFontSize: 12,
+      depth: 7,
+      style: {
+        fontSize: "16px",
+        fontStyle: "bold",
+        color: "#fff8e9",
+      },
+    }).setOrigin(0.5);
     window.RosaritoUI.addFittedText(this, 366, 656, this.puzzle.title || this.puzzle.description, "body", {
       maxWidth: 168,
       maxHeight: 56,
@@ -994,18 +1060,28 @@ class PuzzleGameScene extends BaseScene {
   }
 
   drawPuzzleTray(board) {
+    const trayLayout = SCENE_LAYOUTS.puzzle.tray;
+    const slotCount = trayLayout.slotCount || 4;
+    const slotY = trayLayout.slotY;
+    const slotSpacing = trayLayout.slotSpacing;
+    const slotStartX = trayLayout.x + trayLayout.slotMargin;
+    const slotYAbs = trayLayout.y + slotY;
     const tray = this.add.graphics().setDepth(4);
-    tray.fillStyle(0xffeed0, 0.9);
-    tray.fillRoundedRect(660, 590, 470, 108, 20);
-    tray.lineStyle(3, 0xd4a76d, 0.8);
-    tray.strokeRoundedRect(660, 590, 470, 108, 20);
-    tray.lineStyle(2, 0xe7c18d, 0.58);
-    tray.strokeRoundedRect(672, 602, 446, 84, 14);
-    this.add.image(690, 606, "ui-icon_sparkles").setDisplaySize(32, 32).setDepth(5).setAlpha(0.78);
-    this.add.image(1090, 682, "ui-flower_cluster_bottom").setDisplaySize(84, 48).setDepth(5);
+    tray.fillStyle(0xffeed0, 0.94);
+    tray.fillRoundedRect(trayLayout.x, trayLayout.y, trayLayout.width, trayLayout.height, 20);
+    tray.lineStyle(3, 0xd4a76d, 0.84);
+    tray.strokeRoundedRect(trayLayout.x, trayLayout.y, trayLayout.width, trayLayout.height, 20);
+    tray.lineStyle(2, 0xe7c18d, 0.6);
+    tray.strokeRoundedRect(trayLayout.x + 12, trayLayout.y + 12, trayLayout.width - 24, trayLayout.height - 24, 14);
+    this.add.image(trayLayout.x + 30, trayLayout.y + 16, "ui-icon_sparkles").setDisplaySize(34, 34).setDepth(5).setAlpha(0.8);
+    this.add.image(trayLayout.x + trayLayout.width - 90, trayLayout.y + trayLayout.height - 26, "ui-flower_cluster_bottom").setDisplaySize(84, 48).setDepth(5);
     this.traySlots = shuffle([
-      { x: 704, y: 644 }, { x: 806, y: 644 }, { x: 908, y: 644 }, { x: 1010, y: 644 },
+      { x: slotStartX, y: slotYAbs },
+      { x: slotStartX + slotSpacing, y: slotYAbs },
+      { x: slotStartX + slotSpacing * 2, y: slotYAbs },
+      { x: slotStartX + slotSpacing * 3, y: slotYAbs },
     ]);
+    this.traySlots = this.traySlots.slice(0, slotCount);
     this.trayScale = board.scale * 0.4;
   }
 
@@ -1066,7 +1142,31 @@ class PuzzleGameScene extends BaseScene {
         duration: 220,
         ease: "Back.easeOut",
       });
-      this.add.star(data.targetX + 36, data.targetY - 34, 5, 7, 15, COLORS.gold).setStrokeStyle(2, 0x8a6534).setDepth(31);
+      const sparkle = this.add.image(data.targetX, data.targetY, "ui-icon_sparkles")
+        .setDisplaySize(34, 34)
+        .setDepth(31)
+        .setAlpha(0.92);
+      this.tweens.add({
+        targets: sparkle,
+        alpha: 0,
+        y: data.targetY - 14,
+        scale: 1.18,
+        duration: 360,
+        ease: "Cubic.easeOut",
+        onComplete: () => sparkle.destroy(),
+      });
+      const boardPulse = this.add.image(board.x, board.y, "ui-icon_sparkles")
+        .setDepth(6)
+        .setDisplaySize(28, 28)
+        .setAlpha(0.65);
+      this.tweens.add({
+        targets: boardPulse,
+        scale: 3.6,
+        alpha: 0,
+        duration: 360,
+        ease: "Cubic.easeOut",
+        onComplete: () => boardPulse.destroy(),
+      });
       this.done += 1;
       playTone(this, "success");
       if (this.done === 4) this.completePuzzle();
@@ -1124,12 +1224,20 @@ class ObjectsGameScene extends BaseScene {
     this.narrateScreen("objects");
     this.found = 0;
     this.activeObjects = gameState.hiddenObjectSet.length ? gameState.hiddenObjectSet : selectHiddenObjects(gameState.hiddenObjectPool);
+    this.hiddenObjectStates = new Map();
+    this.objectHintIndex = 0;
+    this.objectHintTimer = null;
+    this.objectHintPulse = null;
     this.checkItems = new Map();
     this.drawObjectsStoryPage();
     this.drawSearchScene();
     this.createObjectsNextButton();
     this.activeObjects.forEach((obj, index) => this.drawChecklistItem(obj, index));
     this.activeObjects.forEach((obj) => this.drawHiddenObject(obj));
+    this.startObjectHintLoop();
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.stopObjectHintLoop();
+    });
   }
 
   drawObjectsStoryPage() {
@@ -1145,7 +1253,7 @@ class ObjectsGameScene extends BaseScene {
       ],
     });
 
-    window.RosaritoUI.addNarrativeBubble(this, 420, 294, "Encuentra los objetos que usaba Rosario en su mision de ensenar a muchos ninos.", {
+    window.RosaritoUI.addNarrativeBubble(this, 420, 294, "Encuentra los objetos que usaba Rosario en su misión de enseñar a muchos niños.", {
       width: 288,
       height: 150,
       depth: 7,
@@ -1213,13 +1321,17 @@ class ObjectsGameScene extends BaseScene {
     this.successPanel = this.add.container(896, 626).setAlpha(0).setDepth(850);
     this.successPanel.add(this.add.image(0, 0, "ui-label_long_cream").setDisplaySize(350, 80));
     this.successPanel.add(this.add.image(-152, -2, "m2-heart").setDisplaySize(28, 26));
-    this.successPanel.add(this.add.text(18, 0, "Que bien! Rosario usaba estos objetos para ensenar con amor.", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "18px",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 285 },
-      lineSpacing: 2,
+    this.successPanel.add(window.RosaritoUI.addFittedText(this, 18, 0, "¡Qué bien! Rosario usaba estos objetos para enseñar con amor.", {
+      maxWidth: 285,
+      maxHeight: 66,
+      minFontSize: 14,
+      style: {
+        fontSize: "18px",
+        color: "#3e2b22",
+        align: "center",
+        wordWrap: { width: 285 },
+        lineSpacing: 2,
+      },
     }).setOrigin(0.5));
   }
 
@@ -1228,19 +1340,24 @@ class ObjectsGameScene extends BaseScene {
     const row = this.add.container(452, y).setDepth(8);
     row.add(this.add.image(0, 0, "hidden-ui-list_row").setDisplaySize(266, 50).setAlpha(0.48));
     row.add(this.add.image(-104, 0, obj.iconKey).setDisplaySize(38, 38));
-    const label = this.add.text(-55, 0, obj.label, {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "18px",
-      color: "#3e2b22",
-      wordWrap: { width: 148 },
+    const label = window.RosaritoUI.addFittedText(this, -55, 0, obj.label, "body", {
+      maxWidth: 148,
+      maxHeight: 42,
+      minFontSize: 12,
+      style: {
+        fontSize: "18px",
+        color: "#3e2b22",
+        wordWrap: { width: 148 },
+        align: "left",
+      },
     }).setOrigin(0, 0.5);
-    const check = this.add.text(112, 0, "○", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "28px",
-      fontStyle: "bold",
-      color: "#b4864c",
-    }).setOrigin(0.5);
-    check.setText("");
+    const check = this.add.image(112, 0, "ui-icon_check")
+      .setDisplaySize(30, 30)
+      .setAlpha(0)
+      .setTint(0x4f8553)
+      .setOrigin(0.5);
+    check.text = "";
+    check.setData("checked", false);
     row.add([label, check]);
     this.checkItems.set(obj.id, { row, label, check });
   }
@@ -1254,7 +1371,7 @@ class ObjectsGameScene extends BaseScene {
     const target = this.add.container(objectX, objectY).setDepth(12);
     const sprite = this.add.image(0, 0, obj.spriteKey).setDisplaySize(objectWidth, objectHeight);
     target.add(sprite);
-    const hitPadding = Math.max(obj.hitPadding, 48);
+    const hitPadding = Math.max(obj.hitPadding || 0, 58);
     target.setSize(objectWidth + hitPadding * 2, objectHeight + hitPadding * 2);
     target.setInteractive(new Phaser.Geom.Rectangle(
       -target.width / 2,
@@ -1281,7 +1398,7 @@ class ObjectsGameScene extends BaseScene {
     });
     target.disableInteractive();
 
-    const generousHitPadding = Math.max(obj.hitPadding || 0, 28);
+    const generousHitPadding = Math.max(obj.hitPadding || 0, 58);
     const hitZone = this.add.zone(
       objectX,
       objectY,
@@ -1308,6 +1425,7 @@ class ObjectsGameScene extends BaseScene {
       requestImmersiveMode();
       this.findHiddenObject(hitZone);
     });
+    this.hiddenObjectStates.set(obj.id, { target, hitZone, found: false });
   }
 
   findHiddenObject(target) {
@@ -1315,22 +1433,89 @@ class ObjectsGameScene extends BaseScene {
     const obj = target.getData("object");
     const visual = target.getData("visual") || target;
     target.setData("found", true);
+    const state = this.hiddenObjectStates.get(obj.id);
+    if (state) {
+      state.found = true;
+      state.target.setData("found", true);
+      state.hitZone.setData("found", true);
+      state.hitZone.disableInteractive();
+    }
     target.disableInteractive();
     playTone(this, "success");
     playAudioKey(this, `voice.object.${obj.label}`);
     this.found += 1;
     const item = this.checkItems.get(obj.id);
     if (item) {
-      item.check.setText("✓").setColor("#5d8f55");
-      item.check.setText("✓").setColor("#5d8f55");
+      item.check.setData("checked", true);
+      item.check.setAlpha(1).setScale(0.7);
+      this.tweens.add({ targets: item.check, alpha: 1, scale: 0.9, duration: 140, yoyo: true });
       item.label.setAlpha(0.58);
       item.row.setAlpha(0.82);
     }
     this.tweens.add({ targets: visual, scale: 1.16, alpha: 0.54, yoyo: true, duration: 180, onComplete: () => visual.setAlpha(0.56) });
-    this.add.star(obj.x + obj.width / 2, obj.y - obj.height / 2, 5, 8, 18, COLORS.gold).setStrokeStyle(2, 0x8a6534).setDepth(25);
+    const objectFeedback = this.add.image(obj.x + obj.width / 2, obj.y - obj.height / 2, "ui-icon_sparkles")
+      .setDisplaySize(42, 42)
+      .setDepth(25)
+      .setAlpha(0.9);
+    this.tweens.add({ targets: objectFeedback, alpha: 0, y: obj.y - obj.height / 2 - 8, scale: 1.12, duration: 360, ease: "Cubic.easeOut" });
     if (this.found >= this.activeObjects.length) {
       this.completeHiddenObjects();
     }
+  }
+
+  startObjectHintLoop() {
+    this.stopObjectHintLoop();
+    this.time.delayedCall(900, this.pulsePendingObjectHint, [], this);
+    this.objectHintTimer = this.time.addEvent({
+      delay: 2400,
+      loop: true,
+      callback: this.pulsePendingObjectHint,
+      callbackScope: this,
+    });
+  }
+
+  stopObjectHintLoop() {
+    if (this.objectHintTimer) {
+      this.objectHintTimer.remove(false);
+      this.objectHintTimer = null;
+    }
+    if (this.objectHintPulse) {
+      this.objectHintPulse.remove();
+      this.objectHintPulse.destroy();
+      this.objectHintPulse = null;
+    }
+  }
+
+  pulsePendingObjectHint() {
+    const pending = this.activeObjects
+      .map((obj) => this.hiddenObjectStates.get(obj.id))
+      .filter((entry) => entry && !entry.found);
+    if (!pending.length || !this.scene.isActive("ObjectsGame")) return;
+    const entry = pending[this.objectHintIndex % pending.length];
+    this.objectHintIndex += 1;
+    if (!entry?.target) return;
+    const x = entry.target.x;
+    const y = entry.target.y;
+    this.objectHintPulse = this.add.image(x, y, "ui-icon_sparkles")
+      .setDisplaySize(48, 48)
+      .setDepth(24)
+      .setAlpha(0)
+      .setTint(0xf2cf6e);
+    this.tweens.add({
+      targets: this.objectHintPulse,
+      alpha: 0.88,
+      scale: 1.3,
+      y: y - 9,
+      duration: 700,
+      ease: "Sine.easeInOut",
+      yoyo: true,
+      onComplete: () => {
+        if (this.objectHintPulse) {
+          this.objectHintPulse.destroy();
+          this.objectHintPulse = null;
+        }
+      },
+    });
   }
 
   createObjectsNextButton() {
@@ -1349,6 +1534,7 @@ class ObjectsGameScene extends BaseScene {
   }
 
   completeHiddenObjects() {
+    this.stopObjectHintLoop();
     gameState.achievements[2] = true;
     this.celebrateRosarito();
     this.feedback("Encontraste todos los objetos!", true);
@@ -1370,14 +1556,19 @@ class FinalScene extends BaseScene {
     this.add.image(330, 106, "ui-flower_cluster_left").setDisplaySize(96, 62).setDepth(4).setAngle(-8);
     this.add.image(465, 136, "ui-flower_cluster_bottom").setDisplaySize(94, 58).setDepth(4);
     this.add.image(310, 132, "ui-speech_large_lilac").setDisplaySize(430, 136).setDepth(5);
-    this.add.text(310, 132, "Objetivos cumplidos", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "34px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-    }).setOrigin(0.5).setDepth(6);
+    window.RosaritoUI.addFittedText(this, 310, 132, "Objetivos cumplidos", "title", {
+      maxWidth: 360,
+      maxHeight: 52,
+      minFontSize: 24,
+      depth: 6,
+      style: {
+        fontSize: "34px",
+        fontStyle: "bold",
+        color: "#6a3d8f",
+      },
+    }).setOrigin(0.5);
     this.add.image(315, 332, "ui-speech_large_cream").setDisplaySize(420, 216).setAlpha(0.95).setDepth(4);
-    window.RosaritoUI.addFittedText(this, 315, 322, "Las tres estrellas estan encendidas. Rosarito ya completo sus recuerdos, su rompecabezas y sus objetos de ensenanza.", "body", {
+    window.RosaritoUI.addFittedText(this, 315, 322, "Las tres estrellas están encendidas. Rosarito ya completó sus recuerdos, su rompecabezas y sus objetos de enseñanza.", "body", {
       maxWidth: 330,
       maxHeight: 140,
       minFontSize: 21,
@@ -1391,21 +1582,31 @@ class FinalScene extends BaseScene {
     this.add.image(315, 456, "ui-divider_heart_purple").setDisplaySize(200, 46).setDepth(5);
 
     this.add.image(794, 354, "ui-star_full").setDisplaySize(236, 236).setDepth(5);
-    this.add.text(794, 354, "3/3", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "62px",
-      fontStyle: "bold",
-      color: "#3e2b22",
-    }).setOrigin(0.5).setDepth(6);
+    window.RosaritoUI.addFittedText(this, 794, 354, "3/3", "title", {
+      maxWidth: 124,
+      maxHeight: 68,
+      minFontSize: 38,
+      depth: 6,
+      style: {
+        fontSize: "62px",
+        fontStyle: "bold",
+        color: "#3e2b22",
+      },
+    }).setOrigin(0.5);
 
     this.add.image(778, 590, "ui-notebook_panel").setDisplaySize(360, 132).setDepth(4).setAlpha(0.98);
     this.add.image(642, 590, "ui-icon_book").setDisplaySize(84, 72).setDepth(5);
-    this.add.text(792, 558, "Album de Rosarito", {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
-      fontSize: "25px",
-      fontStyle: "bold",
-      color: "#6a3d8f",
-    }).setOrigin(0.5).setDepth(5);
+    window.RosaritoUI.addFittedText(this, 792, 558, "�lbum de Rosarito", "title", {
+      maxWidth: 260,
+      maxHeight: 48,
+      minFontSize: 18,
+      depth: 5,
+      style: {
+        fontSize: "25px",
+        fontStyle: "bold",
+        color: "#6a3d8f",
+      },
+    }).setOrigin(0.5);
     window.RosaritoUI.addFittedText(this, 800, 604, "Gracias por ayudar a recordar su historia.", "body", {
       maxWidth: 220,
       maxHeight: 48,
@@ -1446,3 +1647,4 @@ window.addEventListener("load", () => {
   }
   window.game = new Phaser.Game(config);
 });
+

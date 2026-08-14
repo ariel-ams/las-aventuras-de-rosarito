@@ -46,6 +46,16 @@ const SCENE_LAYOUTS = {
   puzzle: {
     starCounter: { x: 1130, y: 84 },
     board: { x: 885, y: 365, size: 390 },
+    tray: {
+      x: 660,
+      y: 590,
+      width: 470,
+      height: 108,
+      slotY: 54,
+      slotSpacing: 102,
+      slotCount: 4,
+      slotMargin: 44,
+    },
     nextButton: { x: 1095, y: 675 },
   },
   objects: {
