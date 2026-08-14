@@ -572,13 +572,22 @@ function drawProgress(scene, gameState) {
   const spacing = progressLayout.spacing || 90;
   const inactiveTint = progressLayout.inactiveTint || 0xd0c2b0;
   const inactiveAlpha = Object.is(progressLayout.inactiveAlpha, undefined) ? 0.58 : progressLayout.inactiveAlpha;
+  const showCurrent = progressLayout.showCurrent !== false;
+  const currentTint = progressLayout.currentTint || 0xf0bd4e;
+  const currentAlpha = Object.is(progressLayout.currentAlpha, undefined) ? 0.82 : progressLayout.currentAlpha;
 
   const starKey = progressLayout.starKey || "ui-star_full";
   for (let i = 0; i < total; i += 1) {
     const starX = x + i * spacing;
-    const active = achievements[i] || i === completed;
+    const completedStar = achievements[i];
+    const isCurrent = showCurrent && !completedStar && i === completed && completed < total;
     const star = scene.add.image(starX, y, starKey).setDisplaySize(size, size);
-    if (!active) star.setTint(inactiveTint).setAlpha(inactiveAlpha);
+    if (!completedStar && !isCurrent) {
+      star.setTint(inactiveTint).setAlpha(inactiveAlpha);
+    }
+    if (isCurrent) {
+      star.setTint(currentTint).setAlpha(currentAlpha);
+    }
   }
 }
 

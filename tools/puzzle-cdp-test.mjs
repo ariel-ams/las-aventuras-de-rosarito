@@ -47,6 +47,19 @@ async function waitForDebuggerTarget() {
   throw new Error("No CDP page target found");
 }
 
+async function waitForSceneManager(ws, attempts = 140, waitMs = 200) {
+  for (let i = 0; i < attempts; i += 1) {
+    const state = await evaluate(ws, `(() => ({
+      hasGame: Boolean(window.game),
+      hasSceneManager: Boolean(window.game?.scene),
+      hasScenes: Boolean(window.game?.scene?.scenes?.length),
+    }))()`);
+    if (state.hasGame && state.hasSceneManager && state.hasScenes) return state;
+    await delay(waitMs);
+  }
+  return null;
+}
+
 async function evaluate(ws, expression) {
   const result = await send(ws, "Runtime.evaluate", {
     expression,
@@ -61,9 +74,22 @@ async function evaluate(ws, expression) {
 
 async function snapshot(ws) {
   return evaluate(ws, `(() => {
-    const scene = window.game?.scene?.keys?.${TARGET_SCENE};
+    const manager = window.game?.scene;
+    const candidates = ["${TARGET_SCENE}", "${TARGET_SCENE}Scene"];
+    let scene = null;
+    for (const candidate of candidates) {
+      const byKey = manager?.getScene?.(candidate);
+      if (byKey) {
+        scene = byKey;
+        break;
+      }
+    }
+    if (!scene) {
+      scene = (manager?.scenes || []).find((item) => item?.scene?.key === "${TARGET_SCENE}") || null;
+    }
     const canvas = document.querySelector("canvas");
-    if (!scene || !canvas || !scene.puzzle) return null;
+    if (!window.game || !window.game?.scene || !scene || !canvas) return null;
+    if (!(manager?.isActive?.(scene.scene.key) || scene?.scene?.isActive?.())) return null;
     const rect = canvas.getBoundingClientRect();
     const pieces = scene.children.list
       .filter((item) => item.getData && item.getData("piece"))
@@ -80,6 +106,7 @@ async function snapshot(ws) {
     ]).filter((key) => !scene.textures.exists(key));
     return {
       done: scene.done,
+      sceneKey: scene?.scene?.key || scene?.sceneKey || null,
       pieces,
       missingTextures,
       rect: {
@@ -95,14 +122,27 @@ async function snapshot(ws) {
 async function startTargetScene(ws) {
   return evaluate(ws, `(() => {
     const target = "${TARGET_SCENE}";
-    if (!window.game?.scene) return false;
-    if (!window.game.scene.keys[target]) return false;
-    window.game.scene.start(target);
+    const manager = window.game?.scene;
+    if (!manager) return false;
+    const candidates = [target, target + "Scene"];
+    let selected = null;
+    for (const candidate of candidates) {
+      const scene = manager.getScene?.(candidate);
+      if (scene) {
+        selected = scene;
+        break;
+      }
+    }
+    if (!selected) {
+      selected = (manager.scenes || []).find((item) => item?.scene?.key === target);
+    }
+    if (!selected) return false;
+    manager.start(selected.scene.key);
     return true;
   })()`);
 }
 
-async function waitForPuzzleScene(ws, attempts = 48, waitMs = 350) {
+async function waitForPuzzleScene(ws, attempts = 72, waitMs = 350) {
   for (let i = 0; i < attempts; i += 1) {
     const current = await snapshot(ws);
     if (current && current.rect?.width > 0) return current;
@@ -209,11 +249,23 @@ async function main() {
     await send(ws, "Network.setCacheDisabled", { cacheDisabled: true });
     await send(ws, "Runtime.enable");
     await send(ws, "Input.setIgnoreInputEvents", { ignore: false });
-    await delay(2200);
+    await waitForSceneManager(ws);
     await startTargetScene(ws);
 
     const before = await waitForPuzzleScene(ws);
-    if (!before) throw new Error("Puzzle scene did not initialize");
+    if (!before) {
+      const debug = await evaluate(ws, `(() => ({
+        hasGame: Boolean(window.game),
+        isBooted: Boolean(window.game?.isBooted),
+        sceneManagerExists: Boolean(window.game?.scene),
+        activeScene: window.game?.scene?.isActive?.(window.game?.scene?.current) || null,
+        currentScene: document.body.dataset.scene || null,
+        sceneKeys: window.game?.scene ? (window.game.scene.scenes || []).map((scene) => scene?.scene?.key).filter(Boolean) : [],
+        sceneManagerKeys: window.game?.scene ? Object.keys(window.game.scene.keys || {}) : [],
+        url: window.location.href,
+      }))()`);
+      throw new Error(`Puzzle scene did not initialize. Debug: ${JSON.stringify(debug)}`);
+    }
     if (before.missingTextures.length) {
       throw new Error(`Missing puzzle textures: ${before.missingTextures.join(", ")}`);
     }

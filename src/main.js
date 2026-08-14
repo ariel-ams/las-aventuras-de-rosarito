@@ -955,6 +955,17 @@ class PuzzleGameScene extends BaseScene {
     const boardStyle = puzzleLayout.boardStyle || {};
     board.scale = board.size / 512;
     const half = board.size / 2;
+    const boardFrame = boardStyle.frame || {};
+    if (boardFrame.key) {
+      this.add.image(board.x, board.y, boardFrame.key)
+        .setDisplaySize(
+          board.size + (boardFrame.widthPadding || 22) * 2,
+          board.size + (boardFrame.heightPadding || 16) * 2
+        )
+        .setDepth(boardFrame.depth || (boardStyle.frameDepth || 4) - 1)
+        .setAlpha(boardFrame.alpha ?? 0.92)
+        .setTint(boardFrame.tint || 0xffffff);
+    }
     const frame = this.add.graphics().setDepth(boardStyle.frameDepth || 4);
     frame.fillStyle(boardStyle.sizeColor || 0xb992d6, boardStyle.sizeAlpha ?? 0.78);
     frame.fillRoundedRect(board.x - half - (boardStyle.cornerPadding || 14), board.y - half - (boardStyle.cornerPadding || 14), board.size + ((boardStyle.cornerPadding || 14) * 2), board.size + ((boardStyle.cornerPadding || 14) * 2), boardStyle.boardRadius || 22);
@@ -972,6 +983,41 @@ class PuzzleGameScene extends BaseScene {
     frame.strokeRoundedRect(board.x - half - ((boardStyle.innerCornerPadding || 5)), board.y - half - ((boardStyle.innerCornerPadding || 5)), board.size + ((boardStyle.innerCornerPadding || 5) * 2), board.size + ((boardStyle.innerCornerPadding || 5) * 2), boardStyle.innerRadius || 16);
     this.add.rectangle(board.x, board.y, board.size, board.size, boardStyle.fillColor || 0xf7e5c4, boardStyle.fillAlpha ?? 0.62).setDepth(boardStyle.fillDepth || 4);
     this.add.image(board.x, board.y, puzzle.previewKey).setDisplaySize(board.size, board.size).setAlpha(boardStyle.previewAlpha ?? 0.22).setDepth(boardStyle.previewDepth || 5);
+    const sideRivet = boardStyle.sideRivet || {};
+    if (sideRivet.key) {
+      const size = sideRivet.size || 30;
+      const offsetX = sideRivet.offsetX || 12;
+      const offsetY = sideRivet.offsetY || 12;
+      this.add.image(board.x - half + offsetX, board.y - half + offsetY, sideRivet.key)
+        .setDisplaySize(size, size)
+        .setDepth((boardStyle.fillDepth || 4) + 2)
+        .setAlpha(sideRivet.alpha ?? 0.8);
+      this.add.image(board.x + half - offsetX, board.y - half + offsetY, sideRivet.key)
+        .setDisplaySize(size, size)
+        .setDepth((boardStyle.fillDepth || 4) + 2)
+        .setAlpha(sideRivet.alpha ?? 0.8)
+        .setFlipX(true);
+      this.add.image(board.x - half + offsetX, board.y + half - offsetY, sideRivet.key)
+        .setDisplaySize(size, size)
+        .setDepth((boardStyle.fillDepth || 4) + 2)
+        .setAlpha(sideRivet.alpha ?? 0.8)
+        .setFlipY(true);
+      this.add.image(board.x + half - offsetX, board.y + half - offsetY, sideRivet.key)
+        .setDisplaySize(size, size)
+        .setDepth((boardStyle.fillDepth || 4) + 2)
+        .setAlpha(sideRivet.alpha ?? 0.8)
+        .setFlipX(true)
+        .setFlipY(true);
+    }
+    const topRivet = boardStyle.topRivet || {};
+    if (topRivet.key) {
+      const topRivetSize = topRivet.size || 42;
+      this.add.image(board.x, board.y - half - (topRivet.offsetY || 10), topRivet.key)
+        .setDisplaySize(topRivetSize, topRivetSize)
+        .setDepth((boardStyle.fillDepth || 4) + 3)
+        .setAlpha(topRivet.alpha ?? 0.75)
+        .setAngle(-10);
+    }
     this.drawPuzzleSlotLines(board);
     return board;
   }

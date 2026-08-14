@@ -25,6 +25,8 @@ Capturas revisadas:
 - Tanda nueva del ciclo actual (v3): `test-artifacts/roadmap-cycle-continue-v3/`
 - Tanda nueva del ciclo actual (v24): `test-artifacts/roadmap-cycle-continue-v24/`
 - Tanda nueva del ciclo actual (v25): `test-artifacts/roadmap-cycle-continue-v25/`
+- Tanda nueva del ciclo actual (v36): `test-artifacts/roadmap-cycle-continue-v36/`
+- Tanda nueva del ciclo actual (v38): `test-artifacts/roadmap-cycle-continue-v38/`
 
 Cambios ya aplicados en esta ronda:
 
@@ -93,6 +95,9 @@ Pruebas ejecutadas:
 - `BASE_URL=http://127.0.0.1:5330/index.html node tools/puzzle-cdp-test.mjs` *(en este entorno de pruebas, la escena no inicializa de forma consistente en Edge headless aun con reintentos y flags de arranque)*
 - `BASE_URL=http://127.0.0.1:5330/index.html node tools/objects-cdp-test.mjs` *(en este entorno de pruebas, la escena no inicializa de forma consistente en Edge headless aun con reintentos y flags de arranque)*
 - `BASE_URL=http://127.0.0.1:5330/index.html node tools/capture-screens.ps1` *(capturas de verificacion de esta ronda: `test-artifacts/roadmap-cycle-continue-v2/`)
+- `BASE_URL=http://127.0.0.1:5511/index.html node tools/capture-screens.ps1` *(capturas de verificacion de esta ronda: `test-artifacts/roadmap-cycle-continue-v36/`)*
+- `BASE_URL=http://127.0.0.1:5511/index.html node tools/puzzle-cdp-test.mjs` *(en este entorno sigue sin inicializar la escena del rompecabezas)*
+- `BASE_URL=http://127.0.0.1:5511/index.html node tools/objects-cdp-test.mjs` *(en este entorno sigue sin inicializar la escena de objetos)*
 
 Resultado funcional:
 
@@ -114,6 +119,31 @@ Resultado funcional:
 - Se paso la bandeja del rompecabezas a `SCENE_LAYOUTS.puzzle.tray` y se agrego feedback visual extra al encajar piezas.
 - `addNextButton` ahora muestra estado bloqueado mÃƒÂ¡s claro: hint visible y un icono indicador de interacciÃƒÂ³n.
 - Se terminaron correcciones de textos visibles con caracteres de UTF-8 quebrados para evitar lectura con caracteres extraÃƒÂ±os.
+- `src/layouts.js` subió los labels de las tarjetas iniciales para mejorar separación visual.
+- `src/ui.js` separó el estado de progreso completado del estado actual en la barra de estrellas para evitar indicadores ambiguos.
+
+Progreso de este ciclo (v38):
+
+- Se reforzó el layout del tablero de rompecabezas con marco floral y remates de esquina (`SCENE_LAYOUTS.puzzle.boardStyle.frame` y `sideRivet/topRivet`), sumado a mayor relleno visual.
+- El progreso principal ahora distingue mejor estado completado/pendiente con `showCurrent` configurable (`LAYOUT.progress`), por defecto ocultando el estado “actual”.
+- Se mejoró la robustez sintáctica y diagnóstica de tests CDP (`tools/puzzle-cdp-test.mjs`, `tools/objects-cdp-test.mjs`) para reportar estado de escenas y fallback de llaves de escena.
+- Pruebas del ciclo:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5603/index.html" -RunName "roadmap-cycle-continue-v38"`
+  - `BASE_URL=http://127.0.0.1:5603/index.html node tools/puzzle-cdp-test.mjs` (continúa sin inicializar en Edge headless en este entorno)
+  - `BASE_URL=http://127.0.0.1:5603/index.html node tools/objects-cdp-test.mjs` (continúa sin inicializar en Edge headless en este entorno)
+
+Próxima iteración sugerida (v39):
+
+- Cerrar pendientes de unificación visual de pantalla:
+  - portada, quiz, puzzle y objetos con el mismo sistema de contenedores de texto/paneles;
+  - revisar visualmente `v38` en navegador visible para confirmar texto dentro de contenedor y jerarquía.
+- Avanzar con consistencia de `CoverScene` y `FinalScene` usando componentes de layout compartidos para evitar nuevos hardcodeos.
+- Mantener el objetivo de CDP, priorizando un marker de debug más explícito si persiste la inestabilidad de la escena en headless.
 
 ## Comparacion con la referencia
 
@@ -749,3 +779,71 @@ Estado:
 - Estado actual:
   - Gameplay y consistencia textual no regresaron.
   - Checklist de consistencia global aún en curso; próximo paso: migrar a una validación manual de espaciado de paneles en portada/final y agregar un ajuste explícito de contenedores si aplica.
+
+## Actualización de ciclo (2026-08-14, v34)
+
+- Ajustes aplicados en esta vuelta:
+  - Se unificó el texto visible en `src/layouts.js` en escenas principales (`cover`, `quiz`, `puzzle`, `objects`, `final`) corrigiendo caracteres de codificación a UTF-8 real.
+  - Se reforzó el espaciado de contenedores en pantalla final para reducir riesgo de recorte:
+    - `SCENE_LAYOUTS.final.closing.message` con mayor `maxWidth`, `maxHeight` y `lineSpacing`.
+    - `SCENE_LAYOUTS.final.closing.title` con `maxWidth`/`maxHeight` más amplios y mejor margen interno.
+    - `SCENE_LAYOUTS.cover.missionSummary.description` con mayor ancho máximo y `wordWrap` consistente.
+  - Se mantuvo sin cambios funcionales el flujo de juego.
+- Pruebas ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node --check src/layouts.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs` (sintaxis OK)
+  - `node --check tools/objects-cdp-test.mjs` (sintaxis OK)
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5488/index.html" -RunName "roadmap-cycle-continue-v34"`
+  - `node tools/puzzle-cdp-test.mjs` con `BASE_URL=http://127.0.0.1:5488/index.html` (**no inicializa escena en Edge headless intermitente**)
+  - `node tools/objects-cdp-test.mjs` con `BASE_URL=http://127.0.0.1:5488/index.html` (**Objects scene did not initialize**)
+- Evidencia:
+  - `test-artifacts/roadmap-cycle-continue-v34/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v34/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v34/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v34/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v34/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v34/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v34/mobile-portrait.png`
+- Estado actual:
+  - Se redujo significativamente el riesgo de texto roto/incrustado por acentos en layout.
+  - Siguiente objetivo técnico:
+    - Validar visualmente en navegador interactivo (no-headless) el ajuste de paneles portadas/final y corregir recortes puntuales si persisten.
+
+## Actualización de ciclo (2026-08-14, v35)
+
+- Ajustes aplicados:
+  - Se limpiaron manualmente los textos con mojibake restantes en `src/layouts.js`:
+    - Títulos y copys de portada, preguntas, rompecabezas, objetos y final.
+    - Mensajes de éxito de objetos/rompecabezas y texto principal de la pantalla final.
+    - Frases como “Tu misión”, “Álbum de Rosarito”, “¡Qué bien!” y “¿Puedes encontrarlos?” quedaron con acentuación correcta en layout.
+  - No hubo cambios de gameplay ni en secuencia de escenas.
+
+- Pruebas ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node --check src/layouts.js`
+  - `node --check src/data.js`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5510/index.html" -RunName "roadmap-cycle-continue-v35"`
+  - `node tools/puzzle-cdp-test.mjs` con `BASE_URL=http://127.0.0.1:5510/index.html` (sigue `Puzzle scene did not initialize` en este entorno de Edge headless)
+  - `node tools/objects-cdp-test.mjs` con `BASE_URL=http://127.0.0.1:5510/index.html` (sigue `Objects scene did not initialize`)
+
+- Evidencia:
+  - `test-artifacts/roadmap-cycle-continue-v35/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v35/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v35/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v35/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v35/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v35/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v35/mobile-portrait.png`
+
+- Estado actual:
+  - Se mantiene estable el juego.
+  - Persisten limitaciones del entorno de prueba para validación visual fina:
+    - Capturas de `capture-screens.ps1` quedan en tamaño de archivo pequeño en este entorno (revisión manual con navegador visible recomendada).
+    - Los tests CDP de escenas siguen sin inicializar por restricciones de Edge headless.
+  - Siguiente objetivo:
+    - Confirmar en navegador visible los ajustes de texto del v35 en portada/preguntas/rompecabezas/objetos/final.
+    - Definir si continuamos con pulido visual del rompecabezas (mesa/tray/borde) como siguiente punto del roadmap.
