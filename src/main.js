@@ -513,11 +513,8 @@ class CoverScene extends BaseScene {
       maxWidth: coverLayout.missionSummary.title.maxWidth,
       maxHeight: coverLayout.missionSummary.title.maxHeight,
       minFontSize: coverLayout.missionSummary.title.minFontSize,
-      depth: 5,
-      style: {
-        fontSize: "22px",
-        wordWrap: { width: coverLayout.missionSummary.title.maxWidth },
-      },
+      depth: coverLayout.missionSummary.title.depth,
+      style: coverLayout.missionSummary.title.style,
     });
     this.add.image(coverLayout.missionSummary.icon.x, coverLayout.missionSummary.icon.y, coverLayout.missionSummary.icon.key)
       .setDisplaySize(coverLayout.missionSummary.icon.width, coverLayout.missionSummary.icon.height)
@@ -555,11 +552,8 @@ class CoverScene extends BaseScene {
       maxWidth: coverLayout.missionSummary.description.maxWidth,
       maxHeight: coverLayout.missionSummary.description.maxHeight,
       minFontSize: coverLayout.missionSummary.description.minFontSize,
-      depth: 5,
-      style: {
-        fontSize: "17px",
-        wordWrap: { width: coverLayout.missionSummary.description.maxWidth },
-      },
+      depth: coverLayout.missionSummary.description.depth,
+      style: coverLayout.missionSummary.description.style,
     });
 
     const start = this.makeButton(coverLayout.startButton.x, coverLayout.startButton.y, "Comenzar", () => {
@@ -1236,25 +1230,27 @@ class ObjectsGameScene extends BaseScene {
   }
 
   drawChecklistItem(obj, index) {
-    const y = 456 + index * 48;
-    const row = this.add.container(452, y).setDepth(8);
-    row.add(this.add.image(0, 0, "hidden-ui-list_row").setDisplaySize(266, 50).setAlpha(0.48));
-    row.add(this.add.image(-104, 0, obj.iconKey).setDisplaySize(38, 38));
-    const label = window.RosaritoUI.addFittedText(this, -55, 0, obj.label, "body", {
-      maxWidth: 148,
-      maxHeight: 42,
-      minFontSize: 12,
-      style: {
+    const checklistLayout = SCENE_LAYOUTS.objects.checklist;
+    const itemLayout = checklistLayout.item || {};
+    const y = (itemLayout.startY || 456) + index * (itemLayout.spacing || 48);
+    const row = this.add.container(checklistLayout.x, y).setDepth(8);
+    row.add(this.add.image(0, 0, "hidden-ui-list_row").setDisplaySize(itemLayout.width || 266, itemLayout.height || 50).setAlpha(0.48));
+    row.add(this.add.image(itemLayout.iconX || -104, itemLayout.labelY || 0, obj.iconKey).setDisplaySize(itemLayout.iconW || 38, itemLayout.iconH || 38));
+    const label = window.RosaritoUI.addFittedText(this, itemLayout.labelX || -55, itemLayout.labelY || 0, obj.label, "body", {
+      maxWidth: itemLayout.labelMaxWidth || 148,
+      maxHeight: itemLayout.labelMaxHeight || 42,
+      minFontSize: itemLayout.labelMinFont || 12,
+      style: itemLayout.labelStyle || {
         fontSize: "18px",
         color: "#3e2b22",
         wordWrap: { width: 148 },
         align: "left",
       },
     }).setOrigin(0, 0.5);
-    const check = this.add.image(112, 0, "ui-icon_check")
-      .setDisplaySize(30, 30)
+    const check = this.add.image(itemLayout.checkX || 112, itemLayout.labelY || 0, "ui-icon_check")
+      .setDisplaySize(itemLayout.checkSize || 30, itemLayout.checkSize || 30)
       .setAlpha(0)
-      .setTint(0x4f8553)
+      .setTint(itemLayout.checkTint || 0x4f8553)
       .setOrigin(0.5);
     check.text = "";
     check.setData("checked", false);
@@ -1471,81 +1467,92 @@ class FinalScene extends BaseScene {
   }
 
   create() {
+    const finalLayout = SCENE_LAYOUTS.final;
     this.createBook("", "");
-    this.rosaritoSprite.setPosition(1030, 468).setScale(0.34).setDepth(8);
+    this.rosaritoSprite.setPosition(finalLayout.rosarito.x, finalLayout.rosarito.y)
+      .setScale(finalLayout.rosarito.scale)
+      .setDepth(finalLayout.rosarito.depth);
     this.celebrateRosarito();
     this.narrateScreen("final");
-    this.add.image(330, 106, "ui-flower_cluster_left").setDisplaySize(96, 62).setDepth(4).setAngle(-8);
-    this.add.image(465, 136, "ui-flower_cluster_bottom").setDisplaySize(94, 58).setDepth(4);
-    this.add.image(310, 132, "ui-speech_large_lilac").setDisplaySize(430, 136).setDepth(5);
-    window.RosaritoUI.addFittedText(this, 310, 132, "Objetivos cumplidos", "title", {
-      maxWidth: 360,
-      maxHeight: 52,
-      minFontSize: 24,
-      depth: 6,
-      style: {
-        fontSize: "34px",
-        fontStyle: "bold",
-        color: "#6a3d8f",
-      },
+
+    this.add.image(finalLayout.flowers.topLeft.x, finalLayout.flowers.topLeft.y, finalLayout.flowers.topLeft.key)
+      .setDisplaySize(finalLayout.flowers.topLeft.width, finalLayout.flowers.topLeft.height)
+      .setDepth(finalLayout.flowers.topLeft.depth)
+      .setAngle(finalLayout.flowers.topLeft.angle);
+    this.add.image(finalLayout.flowers.topRight.x, finalLayout.flowers.topRight.y, finalLayout.flowers.topRight.key)
+      .setDisplaySize(finalLayout.flowers.topRight.width, finalLayout.flowers.topRight.height)
+      .setDepth(finalLayout.flowers.topRight.depth);
+
+    this.add.image(finalLayout.headingPanel.x, finalLayout.headingPanel.y, finalLayout.headingPanel.key)
+      .setDisplaySize(finalLayout.headingPanel.width, finalLayout.headingPanel.height)
+      .setDepth(finalLayout.headingPanel.depth);
+    window.RosaritoUI.addFittedText(this, finalLayout.headingPanel.text.x, finalLayout.headingPanel.text.y, finalLayout.text.title, "title", {
+      maxWidth: finalLayout.headingPanel.text.maxWidth,
+      maxHeight: finalLayout.headingPanel.text.maxHeight,
+      minFontSize: finalLayout.headingPanel.text.minFontSize,
+      depth: finalLayout.headingPanel.text.depth,
+      style: finalLayout.headingPanel.text.style,
     }).setOrigin(0.5);
-    this.add.image(315, 332, "ui-speech_large_cream").setDisplaySize(420, 216).setAlpha(0.95).setDepth(4);
-    window.RosaritoUI.addFittedText(this, 315, 322, "Las tres estrellas estÃƒÆ’Ã‚Â¡n encendidas. Rosarito ya completÃƒÆ’Ã‚Â³ sus recuerdos, su rompecabezas y sus objetos de enseÃƒÆ’Ã‚Â±anza.", "body", {
-      maxWidth: 330,
-      maxHeight: 140,
-      minFontSize: 21,
-      depth: 5,
-      style: {
-        fontSize: "27px",
-        wordWrap: { width: 330 },
-        lineSpacing: 7,
-      },
+
+    this.add.image(finalLayout.bodyPanel.x, finalLayout.bodyPanel.y, finalLayout.bodyPanel.key)
+      .setDisplaySize(finalLayout.bodyPanel.width, finalLayout.bodyPanel.height)
+      .setAlpha(0.95)
+      .setDepth(finalLayout.bodyPanel.depth);
+    window.RosaritoUI.addFittedText(this, finalLayout.bodyPanel.text.x, finalLayout.bodyPanel.text.y, finalLayout.text.body, "body", {
+      maxWidth: finalLayout.bodyPanel.text.maxWidth,
+      maxHeight: finalLayout.bodyPanel.text.maxHeight,
+      minFontSize: finalLayout.bodyPanel.text.minFontSize,
+      depth: finalLayout.bodyPanel.text.depth,
+      style: finalLayout.bodyPanel.text.style,
     });
-    this.add.image(315, 456, "ui-divider_heart_purple").setDisplaySize(200, 46).setDepth(5);
+    this.add.image(finalLayout.bodyPanel.divider.x, finalLayout.bodyPanel.divider.y, finalLayout.bodyPanel.divider.key)
+      .setDisplaySize(finalLayout.bodyPanel.divider.width, finalLayout.bodyPanel.divider.height)
+      .setDepth(finalLayout.bodyPanel.divider.depth);
 
-    this.add.image(794, 354, "ui-star_full").setDisplaySize(236, 236).setDepth(5);
-    window.RosaritoUI.addFittedText(this, 794, 354, "3/3", "title", {
-      maxWidth: 124,
-      maxHeight: 68,
-      minFontSize: 38,
-      depth: 6,
-      style: {
-        fontSize: "62px",
-        fontStyle: "bold",
-        color: "#3e2b22",
-      },
+    this.add.image(finalLayout.star.x, finalLayout.star.y, finalLayout.star.key)
+      .setDisplaySize(finalLayout.star.width, finalLayout.star.height)
+      .setDepth(finalLayout.star.depth);
+    window.RosaritoUI.addFittedText(this, finalLayout.star.counter.x, finalLayout.star.counter.y, finalLayout.star.counter.text, "title", {
+      maxWidth: finalLayout.star.counter.maxWidth,
+      maxHeight: finalLayout.star.counter.maxHeight,
+      minFontSize: finalLayout.star.counter.minFontSize,
+      depth: finalLayout.star.counter.depth,
+      style: finalLayout.star.counter.style,
     }).setOrigin(0.5);
 
-    this.add.image(778, 590, "ui-notebook_panel").setDisplaySize(360, 132).setDepth(4).setAlpha(0.98);
-    this.add.image(642, 590, "ui-icon_book").setDisplaySize(84, 72).setDepth(5);
-    window.RosaritoUI.addFittedText(this, 792, 558, "ÃƒÆ’Ã‚Âlbum de Rosarito", "title", {
-      maxWidth: 260,
-      maxHeight: 48,
-      minFontSize: 18,
-      depth: 5,
-      style: {
-        fontSize: "25px",
-        fontStyle: "bold",
-        color: "#6a3d8f",
-      },
+    this.add.image(finalLayout.closing.panel.x, finalLayout.closing.panel.y, finalLayout.closing.panel.key)
+      .setDisplaySize(finalLayout.closing.panel.width, finalLayout.closing.panel.height)
+      .setDepth(finalLayout.closing.panel.depth)
+      .setAlpha(finalLayout.closing.panel.alpha);
+    this.add.image(finalLayout.closing.book.x, finalLayout.closing.book.y, finalLayout.closing.book.key)
+      .setDisplaySize(finalLayout.closing.book.width, finalLayout.closing.book.height)
+      .setDepth(finalLayout.closing.book.depth);
+    window.RosaritoUI.addFittedText(this, finalLayout.closing.title.x, finalLayout.closing.title.y, finalLayout.closing.title.text, "title", {
+      maxWidth: finalLayout.closing.title.maxWidth,
+      maxHeight: finalLayout.closing.title.maxHeight,
+      minFontSize: finalLayout.closing.title.minFontSize,
+      depth: finalLayout.closing.title.depth,
+      style: finalLayout.closing.title.style,
     }).setOrigin(0.5);
-    window.RosaritoUI.addFittedText(this, 800, 604, "Gracias por ayudar a recordar su historia.", "body", {
-      maxWidth: 220,
-      maxHeight: 48,
-      minFontSize: 16,
-      depth: 5,
-      style: {
-        fontSize: "19px",
-        wordWrap: { width: 220 },
-      },
+    window.RosaritoUI.addFittedText(this, finalLayout.closing.message.x, finalLayout.closing.message.y, finalLayout.closing.message.text, "body", {
+      maxWidth: finalLayout.closing.message.maxWidth,
+      maxHeight: finalLayout.closing.message.maxHeight,
+      minFontSize: finalLayout.closing.message.minFontSize,
+      depth: finalLayout.closing.message.depth,
+      style: finalLayout.closing.message.style,
     });
-    this.add.image(1090, 598, "ui-flower_cluster_bottom").setDisplaySize(94, 58).setDepth(9);
-    this.add.image(1000, 510, "ui-icon_sparkles").setDisplaySize(42, 42).setDepth(9);
 
-    this.makeButton(975, 710, "Jugar de nuevo", () => {
+    this.add.image(finalLayout.flowers.bottom.x, finalLayout.flowers.bottom.y, finalLayout.flowers.bottom.key)
+      .setDisplaySize(finalLayout.flowers.bottom.width, finalLayout.flowers.bottom.height)
+      .setDepth(finalLayout.flowers.bottom.depth);
+    this.add.image(finalLayout.sparkle.x, finalLayout.sparkle.y, finalLayout.sparkle.key)
+      .setDisplaySize(finalLayout.sparkle.width, finalLayout.sparkle.height)
+      .setDepth(finalLayout.sparkle.depth);
+
+    this.makeButton(finalLayout.restart.x, finalLayout.restart.y, finalLayout.restart.label, () => {
       resetRun();
-      this.scene.start("Cover");
-    }, 270).setDepth(10);
+      this.scene.start(finalLayout.restart.targetScene);
+    }, finalLayout.restart.width).setDepth(10);
   }
 }
 

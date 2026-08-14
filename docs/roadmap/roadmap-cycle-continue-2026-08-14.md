@@ -1,41 +1,86 @@
-# IteraciÛn: roadmap-cycle-continue (2026-08-14)
+Ôªø# Iteraci√≥n: roadmap-cycle-continue (2026-08-14)
 
 ## Resultados ejecutados
 
 - Tests de sintaxis: `node --check` sobre `src/main.js`, `src/ui.js`, `src/data.js`, `src/layouts.js`, `tools/puzzle-cdp-test.mjs`, `tools/objects-cdp-test.mjs`.
 - Ejecutados CDP:
-  - `node tools/puzzle-cdp-test.mjs` -> falla de inicializaciÛn en este entorno Edge headless (`Puzzle scene did not initialize`).
-  - `node tools/objects-cdp-test.mjs` -> falla de inicializaciÛn en este entorno (`Objects scene did not initialize`).
+  - `node tools/puzzle-cdp-test.mjs` -> falla de inicializaci√≥n en este entorno Edge headless (`Puzzle scene did not initialize`).
+  - `node tools/objects-cdp-test.mjs` -> falla de inicializaci√≥n en este entorno (`Objects scene did not initialize`).
 - Ejecutadas capturas: `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5315/index.html" -RunName "roadmap-cycle-continue-v4"`.
 - Estado funcional observado:
-  - Cobertura de cÛdigo y estructura de escenas permanecen consistentes.
+  - Cobertura de c√≥digo y estructura de escenas permanecen consistentes.
   - Ajustes visuales del ciclo aplicado en minijuego de preguntas y rompecabezas.
 
-## Cambios aplicados en esta iteraciÛn
+## Cambios aplicados en esta iteraci√≥n
 
 1) `src/ui.js`
-- Mejora del botÛn `Siguiente` cuando est· deshabilitado:
-  - Texto de estado en dos lÌneas (`Completa para continuar` + `Toque en pantalla`).
-  - Hint m·s explÌcito con Ìcono de bloqueo y anillo de foco.
-  - Pulso visual m·s suave para reforzar que a˙n no est· activo.
+- Mejora del bot√≥n `Siguiente` cuando est√° deshabilitado:
+  - Texto de estado en dos l√≠neas (`Completa para continuar` + `Toque en pantalla`).
+  - Hint m√°s expl√≠cito con √≠cono de bloqueo y anillo de foco.
+  - Pulso visual m√°s suave para reforzar que a√∫n no est√° activo.
 
 2) `src/main.js`
-- Tarjetas de respuestas del minijuego de preguntas m·s compactas:
+- Tarjetas de respuestas del minijuego de preguntas m√°s compactas:
   - Ancho de tarjeta `142 -> 132`.
   - Icono `76x63 -> 70x58`.
   - Ancho de texto de ajuste `118 -> 112`.
 - Bandeja inferior del rompecabezas reforzada visualmente:
   - Panel floral base.
-  - DecoraciÛn + contornos de slot por cada posiciÛn.
-  - Glow suave en slot para orientar colocaciÛn.
+  - Decoraci√≥n + contornos de slot por cada posici√≥n.
+  - Glow suave en slot para orientar colocaci√≥n.
 
 ## Hallazgos de la ronda
 
-- Los tests CDP de objetos y puzzle contin˙an inestables en el entorno de Edge headless, por lo que las capturas autom·ticas quedan con resoluciÛn baja en este run.
-- La ejecuciÛn en navegador local quedÛ activa para diagnÛstico manual.
+- Los tests CDP de objetos y puzzle contin√∫an inestables en el entorno de Edge headless, por lo que las capturas autom√°ticas quedan con resoluci√≥n baja en este run.
+- La ejecuci√≥n en navegador local qued√≥ activa para diagn√≥stico manual.
 
-## PrÛximos pendientes sugeridos
+## Pr√≥ximos pendientes sugeridos
 
-- Re-ejecutar CDP en navegador con mejor soporte de inicializaciÛn (Playwright o Chromium alterno).
-- Revisar una vez m·s capturas en desktop y mÛvil para confirmar que el ajuste de pistas/feedback no recorte globos ni textos.
+- Re-ejecutar CDP en navegador con mejor soporte de inicializaci√≥n (Playwright o Chromium alterno).
+- Revisar una vez m√°s capturas en desktop y m√≥vil para confirmar que el ajuste de pistas/feedback no recorte globos ni textos.
 - Finalizar el cierre de la etapa con commit/push y luego continuar con la limpieza de consistencia de cajas de texto global (unificar contenedores entre pantallas restantes).
+
+## Actualizaci√É¬≥n de ronda (2026-08-14, v14)
+
+- Aplicado:
+  - `FinalScene` migrada a layout compartido (`SCENE_LAYOUTS.final`).
+  - `ObjectsGameScene.drawChecklistItem` consume `SCENE_LAYOUTS.objects.checklist.item`.
+  - Correcci√É¬≥n de textos UTF-8 reportados como mojibake en narrativa final y de objetos.
+
+- Verificaci√É¬≥n:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `node tools/puzzle-cdp-test.mjs` (sin inicializar en este entorno headless)
+  - `node tools/objects-cdp-test.mjs` (sin inicializar en este entorno headless)
+  - `powershell -File tools/capture-screens.ps1 -RunName "roadmap-cycle-continue-v14"`
+
+- Resultado √É¬∫til:
+  - Se mantiene la arquitectura estable para flujo y layout.
+  - Persisten dos pendientes de calidad visual: revisar capturas con navegador normal y cerrar validaci√É¬≥n de consistencia final/CoverScene
+
+## Actualizaci√É∆í√Ç¬≥n de ronda (2026-08-14, v15)
+
+- Cambios aplicados:
+  - Centralizamos al layout de escena los estilos y profundidad del bloque `missionSummary` en `CoverScene`.
+  - `CoverScene` deja de usar estilos hardcodeados para texto del resumen:
+    - se toman `maxWidth`, `maxHeight`, `minFontSize`, `depth` y `style` desde `SCENE_LAYOUTS.cover.missionSummary`.
+  - Esto reduce riesgo de recortes por divergencia de tipograf√É∆í√Ç¬≠a entre pantallas.
+
+- Validaciones ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -RunName "roadmap-cycle-continue-v15"`
+
+- Estado actual de iteraci√É∆í√Ç¬≥n:
+  - Pendiente de revisar visualmente `cover.png` en navegador normal para validar jerarqu√É∆í√Ç¬≠a final del resumen.
+  - Mantener el ciclo con cierre de consistencia global en la siguiente pasada.
+
+

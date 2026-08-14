@@ -93,7 +93,7 @@ const SCENE_LAYOUTS = {
       title: {
         x: 860,
         y: 112,
-        text: "Tu misiÃ³n",
+        text: "Tu misión",
         maxWidth: 220,
         maxHeight: 52,
         minFontSize: 34,
@@ -127,7 +127,7 @@ const SCENE_LAYOUTS = {
       description: {
         x: 848,
         y: 615,
-        text: "Completa las actividades y gana el Ã¡lbum de Rosarito.",
+        text: "Completa las actividades y gana el álbum de Rosarito.",
         maxWidth: 235,
         maxHeight: 54,
         minFontSize: 15,
@@ -189,7 +189,7 @@ const SCENE_LAYOUTS = {
     narrative: {
       x: 410,
       y: 338,
-      text: "Cuando Rosarito era niÃ±a, viviÃ³ momentos especiales que la ayudaron a soÃ±ar en grande.",
+      text: "Cuando Rosarito era niña, vivió momentos especiales que la ayudaron a soñar en grande.",
       options: {
         key: "m2-speech_narrative",
         width: 244,
@@ -304,7 +304,7 @@ const SCENE_LAYOUTS = {
     rosarito: { x: 170, y: 480, scale: 0.48, depth: 8 },
     shadow: { x: 170, y: 650, width: 142, height: 26, color: 0x5b3f2d, alpha: 0.18, depth: 2 },
     noPuzzle: {
-      text: "Agrega imÃ¡genes en assets/puzzles/source para jugar.",
+      text: "Agrega imágenes en assets/puzzles/source para jugar.",
       x: 590,
       y: 360,
       options: {
@@ -335,7 +335,7 @@ const SCENE_LAYOUTS = {
     narrative: {
       x: 408,
       y: 340,
-      text: "Â¡Vamos a armar la imagen de Rosario Vera PeÃ±aloza!",
+      text: "¡Vamos a armar la imagen de Rosario Vera Peñaloza!",
       options: {
         key: "m2-speech_narrative",
         width: 300,
@@ -516,6 +516,29 @@ const SCENE_LAYOUTS = {
       headerY: 383,
       titleY: 392,
       title: "¿Puedes encontrarlos?",
+      item: {
+        startY: 456,
+        spacing: 48,
+        width: 266,
+        height: 50,
+        iconX: -104,
+        iconW: 38,
+        iconH: 38,
+        labelX: -55,
+        labelY: 0,
+        labelMaxWidth: 148,
+        labelMaxHeight: 42,
+        labelMinFont: 12,
+        labelStyle: {
+          fontSize: "18px",
+          color: "#3e2b22",
+          wordWrap: { width: 148 },
+          align: "left",
+        },
+        checkX: 112,
+        checkSize: 30,
+        checkTint: 0x4f8553,
+      },
     },
     searchScene: {
       fills: {
@@ -560,9 +583,180 @@ const SCENE_LAYOUTS = {
     sceneBounds: { x: 902, y: 378, width: 520, height: 430 },
     nextButton: { x: 1095, y: 675 },
   },
+  final: {
+    rosarito: { x: 1030, y: 468, scale: 0.34, depth: 8 },
+    flowers: {
+      topLeft: {
+        x: 330,
+        y: 106,
+        key: "ui-flower_cluster_left",
+        width: 96,
+        height: 62,
+        depth: 4,
+        angle: -8,
+      },
+      topRight: {
+        x: 465,
+        y: 136,
+        key: "ui-flower_cluster_bottom",
+        width: 94,
+        height: 58,
+        depth: 4,
+      },
+      bottom: {
+        x: 1090,
+        y: 598,
+        key: "ui-flower_cluster_bottom",
+        width: 94,
+        height: 58,
+        depth: 9,
+      },
+    },
+    sparkle: {
+      x: 1000,
+      y: 510,
+      key: "ui-icon_sparkles",
+      width: 42,
+      height: 42,
+      depth: 9,
+    },
+    headingPanel: {
+      x: 310,
+      y: 132,
+      key: "ui-speech_large_lilac",
+      width: 430,
+      height: 136,
+      depth: 5,
+      text: {
+        x: 310,
+        y: 132,
+        maxWidth: 360,
+        maxHeight: 52,
+        minFontSize: 24,
+        depth: 6,
+        style: {
+          fontSize: "34px",
+          fontStyle: "bold",
+          color: "#6a3d8f",
+        },
+      },
+    },
+    bodyPanel: {
+      x: 315,
+      y: 332,
+      key: "ui-speech_large_cream",
+      width: 420,
+      height: 216,
+      depth: 4,
+      text: {
+        x: 315,
+        y: 322,
+        maxWidth: 330,
+        maxHeight: 140,
+        minFontSize: 21,
+        depth: 5,
+        style: {
+          fontSize: "27px",
+          color: "#3e2b22",
+          align: "center",
+          wordWrap: { width: 330 },
+          lineSpacing: 7,
+        },
+      },
+      divider: {
+        x: 315,
+        y: 456,
+        key: "ui-divider_heart_purple",
+        width: 200,
+        height: 46,
+        depth: 5,
+      },
+    },
+    star: {
+      x: 794,
+      y: 354,
+      key: "ui-star_full",
+      width: 236,
+      height: 236,
+      depth: 5,
+      counter: {
+        x: 794,
+        y: 354,
+        text: "3/3",
+        maxWidth: 124,
+        maxHeight: 68,
+        minFontSize: 38,
+        depth: 6,
+        style: {
+          fontSize: "62px",
+          fontStyle: "bold",
+          color: "#3e2b22",
+        },
+      },
+    },
+    closing: {
+      panel: {
+        x: 778,
+        y: 590,
+        key: "ui-notebook_panel",
+        width: 360,
+        height: 132,
+        depth: 4,
+        alpha: 0.98,
+      },
+      book: {
+        x: 642,
+        y: 590,
+        key: "ui-icon_book",
+        width: 84,
+        height: 72,
+        depth: 5,
+      },
+      title: {
+        x: 792,
+        y: 558,
+        text: "Álbum de Rosarito",
+        maxWidth: 260,
+        maxHeight: 48,
+        minFontSize: 18,
+        depth: 5,
+        style: {
+          fontSize: "25px",
+          fontStyle: "bold",
+          color: "#6a3d8f",
+        },
+      },
+      message: {
+        x: 800,
+        y: 604,
+        text: "Gracias por ayudar a recordar su historia.",
+        maxWidth: 220,
+        maxHeight: 48,
+        minFontSize: 16,
+        depth: 5,
+        style: {
+          fontSize: "19px",
+          color: "#3e2b22",
+          wordWrap: { width: 220 },
+        },
+      },
+    },
+    text: {
+      title: "Objetivos cumplidos",
+      body: "Las tres estrellas están encendidas. Rosarito ya completó sus recuerdos, su rompecabezas y sus objetos de enseñanza.",
+    },
+    restart: {
+      x: 975,
+      y: 710,
+      width: 270,
+      label: "Jugar de nuevo",
+      targetScene: "Cover",
+    },
+  },
 };
 
 window.RosaritoLayouts = { WIDTH, HEIGHT, COLORS, LAYOUT, PAGE_AREAS, SCENE_LAYOUTS };
 }());
+
 
 

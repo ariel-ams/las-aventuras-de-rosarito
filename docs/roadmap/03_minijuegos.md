@@ -346,3 +346,42 @@ Decision vigente:
 
 - Nota para siguiente ciclo:
   - Mantener esta etapa de consistencia para `CoverScene` y revisar el bloque de texto de `FinalScene` (acento mojibake y escalado de subtÃ­tulos) en la prÃ³xima pasada.
+
+## ActualizaciÃ³n del ciclo (2026-08-14, v13)
+
+- Cambios implementados:
+  - Se terminÃ³ de centralizar `FinalScene` bajo `SCENE_LAYOUTS.final`, eliminando posiciones y estilos literales en ese bloque.
+  - Se actualizÃ³ el render de `ObjectsGameScene.drawChecklistItem` para consumir `SCENE_LAYOUTS.objects.checklist.item`.
+  - Se corrigieron textos con codificaciÃ³n errÃ³nea pendientes en layout de objetos y final (mensaje de misiÃ³n y texto de cierre), dejando UTF-8 limpio para esos bloques.
+  - Se ajustÃ³ el reemplazo de la escena final para usar `restart.targetScene` y layout de botÃ³n como metadato.
+
+- ValidaciÃ³n aplicada:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `node tools/puzzle-cdp-test.mjs` (*intermitente: no inicializa en este entorno headless*).
+  - `node tools/objects-cdp-test.mjs` (*intermitente: no inicializa en este entorno headless*).
+  - `powershell -File tools/capture-screens.ps1 -RunName "roadmap-cycle-continue-v14"`
+
+- Resultados visuales:
+  - Generadas capturas de `cover`, `quiz`, `puzzle`, `objects`, `final`, `mobile-landscape` y `mobile-portrait`.
+  - En este entorno, los PNG quedaron con peso bajo (render headless muy liviano), por lo que conviene una revisiÃ³n manual con navegador interactivo para cerrar evaluaciÃ³n estÃ©tica.
+
+- Pendiente siguiente:
+  - Completar revisiÃ³n visual de `FinalScene` y `CoverScene` con navegador normal y confirmar si hay recorte de texto o jerarquÃ­a de botÃ³n final.
+  - Mantener una corrida de CDP en motor alterno si vuelve a haber fallos intermitentes de inicializaciÃ³n.
+## Actualización del ciclo (2026-08-14, v15)
+
+- Centralización de consistencia UI:
+  - `CoverScene` migró los estilos de texto del bloque `missionSummary` a `SCENE_LAYOUTS.cover.missionSummary`.
+  - Se eliminÃ³ estilo incrustado en `src/main.js` para tÃ­tulo y descripciÃ³n del bloque de objetivo.
+
+- Estado de calidad tras esta ronda:
+  - Mejora de consistencia del texto (mismos estilos compartidos con la configuración de layout).
+  - Se mantiene estable la estructura de minijuegos y flujos existentes.
+
+- Siguiente tarea sugerida:
+  - Revisar la captura de portada con navegador interactivo en pantalla completa para cerrar validaciÃ³n estética.
