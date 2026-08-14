@@ -331,12 +331,12 @@ class BaseScene extends Phaser.Scene {
   makeQuizAnswerCard(x, y, option, index, onClick, iconKey = "") {
     const cardKeys = ["m2-answer_card_green", "m2-answer_card_blue", "m2-answer_card_pink"];
     const iconKeys = ["ui-icon_home", "ui-icon_blackboard", "ui-icon_flower"];
-    const cardWidth = 142;
+    const cardWidth = 132;
     const card = this.add.container(x, y);
     const bg = this.add.image(0, 0, cardKeys[index % cardKeys.length]).setDisplaySize(cardWidth, 230);
-    const icon = this.add.image(0, -52, iconKey || iconKeys[index % iconKeys.length]).setDisplaySize(76, 63);
+    const icon = this.add.image(0, -52, iconKey || iconKeys[index % iconKeys.length]).setDisplaySize(70, 58);
     const text = window.RosaritoUI.addFittedText(this, 0, 58, option, "body", {
-      maxWidth: 118,
+      maxWidth: 112,
       maxHeight: 72,
       minFontSize: 14,
       style: {
@@ -885,15 +885,24 @@ class PuzzleGameScene extends BaseScene {
     const slotSpacing = trayLayout.slotSpacing;
     const slotStartX = trayLayout.x + trayLayout.slotMargin;
     const slotYAbs = trayLayout.y + slotY;
+    const trayPanel = this.add.image(trayLayout.x + trayLayout.width / 2, trayLayout.y + trayLayout.height / 2, "ui-panel_task_floral")
+      .setDisplaySize(trayLayout.width + 22, trayLayout.height + 22)
+      .setDepth(3)
+      .setAlpha(0.82);
+    this.add.image(trayLayout.x + 28, trayLayout.y + 22, "ui-icon_sparkles").setDisplaySize(28, 28).setDepth(5).setAlpha(0.7);
+    this.add.image(trayLayout.x + trayLayout.width - 36, trayLayout.y + trayLayout.height - 24, "ui-flower_cluster_bottom")
+      .setDisplaySize(72, 42)
+      .setDepth(5)
+      .setAlpha(0.78);
+    this.add.image(trayLayout.x + 24, trayLayout.y + trayLayout.height - 22, "m2-leaves")
+      .setDisplaySize(42, 30)
+      .setDepth(5)
+      .setAngle(-8)
+      .setAlpha(0.7);
+
     const tray = this.add.graphics().setDepth(4);
-    tray.fillStyle(0xffeed0, 0.94);
-    tray.fillRoundedRect(trayLayout.x, trayLayout.y, trayLayout.width, trayLayout.height, 20);
-    tray.lineStyle(3, 0xd4a76d, 0.84);
-    tray.strokeRoundedRect(trayLayout.x, trayLayout.y, trayLayout.width, trayLayout.height, 20);
-    tray.lineStyle(2, 0xe7c18d, 0.6);
-    tray.strokeRoundedRect(trayLayout.x + 12, trayLayout.y + 12, trayLayout.width - 24, trayLayout.height - 24, 14);
-    this.add.image(trayLayout.x + 30, trayLayout.y + 16, "ui-icon_sparkles").setDisplaySize(34, 34).setDepth(5).setAlpha(0.8);
-    this.add.image(trayLayout.x + trayLayout.width - 90, trayLayout.y + trayLayout.height - 26, "ui-flower_cluster_bottom").setDisplaySize(84, 48).setDepth(5);
+    tray.lineStyle(2, 0xd8b17a, 0.86);
+    tray.strokeRoundedRect(trayLayout.x + 15, trayLayout.y + 10, trayLayout.width - 30, trayLayout.height - 24, 18);
     this.traySlots = shuffle([
       { x: slotStartX, y: slotYAbs },
       { x: slotStartX + slotSpacing, y: slotYAbs },
@@ -901,6 +910,18 @@ class PuzzleGameScene extends BaseScene {
       { x: slotStartX + slotSpacing * 3, y: slotYAbs },
     ]);
     this.traySlots = this.traySlots.slice(0, slotCount);
+    this.traySlots.forEach((slot) => {
+      const slotBg = this.add.graphics().setDepth(4);
+      slotBg.fillStyle(0xfff6de, 0.28);
+      slotBg.fillRoundedRect(slot.x - 44, slot.y - 45, 88, 90, 18);
+      slotBg.lineStyle(2, 0xd6ad78, 0.55);
+      slotBg.strokeRoundedRect(slot.x - 43, slot.y - 44, 86, 88, 14);
+      const slotGlow = this.add.image(slot.x, slot.y, "ui-icon_sparkles")
+        .setDisplaySize(18, 18)
+        .setAlpha(0.22)
+        .setDepth(4);
+      slotGlow.setTint(0xf2cf9e);
+    });
     this.trayScale = board.scale * 0.4;
   }
 
