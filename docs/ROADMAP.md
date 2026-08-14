@@ -472,3 +472,6 @@ Estado:
   - Roadmap: Etapa 1 y 2 avanzan en estabilidad de layout base.
   - Se mantiene como siguiente trabajo priorizado completar la migración de cualquier estilo visual restante hardcodeado en escenas secundarias para reducir divergencias de tamaños.
 
+  - Se centralizo tambien la posicion/configuracion base del boton "Siguiente" en `LAYOUT.base.nextButton` y `makeNextButton` en `src/main.js` para evitar otro valor hardcodeado.
+
+

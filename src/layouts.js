@@ -22,6 +22,7 @@ const LAYOUT = {
   base: {
     audioButton: { x: 56, y: 690, key: "ui-button_audio", width: 82, height: 82, depth: 10 },
     grass: { x: 52, y: 86, key: "ui-grass_large", scale: 0.64, alpha: 0.92, depth: 3 },
+    nextButton: { x: 1098, y: 675, width: 250, labelX: -163, labelY: 13, enabled: true },
     title: {
       x: 112,
       y: 70,

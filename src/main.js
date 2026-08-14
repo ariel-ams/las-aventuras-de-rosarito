@@ -291,10 +291,12 @@ class BaseScene extends Phaser.Scene {
   }
 
   makeNextButton(label, nextScene) {
-    return window.RosaritoUI.addNextButton(this, 1098, 675, label, () => this.scene.start(nextScene), {
-      enabled: true,
-      labelX: -163,
-      labelY: 13,
+    const button = LAYOUT.base.nextButton || {};
+    return window.RosaritoUI.addNextButton(this, button.x || 1098, button.y || 675, label, () => this.scene.start(nextScene), {
+      enabled: button.enabled !== false,
+      labelX: button.labelX || -163,
+      labelY: button.labelY || 13,
+      width: button.width || 250,
     });
   }
 
