@@ -276,3 +276,73 @@ Decision vigente:
   - `tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v10`
 - Ajuste de siguiente etapa sugerido:
   - Extraer coordenadas del bloque de pregunta a `SCENE_LAYOUTS.quiz` y terminar limpieza de constantes visuales para Etapa 3.
+
+## ActualizaciÃ³n del ciclo (2026-08-14, v11)
+
+- Cambios aplicados:
+  - Completamos migraciÃ³n de la pantalla de `QuizGameScene` para usar `SCENE_LAYOUTS.quiz` en elementos del bloque superior y del panel de pregunta:
+    - tÃ­tulo (`quiz.title`, `quiz.titleDivider`, `quiz.titleFlowers`),
+    - globo narrativo (`quiz.narrative`),
+    - indicador de mouse (`quiz.mouseHint`),
+    - headers de la columna derecha (`headerQuestion`, `headerInstruction`) y
+    - panel de pregunta (`questionPanel` con posiciÃ³n y medidas).
+  - `showQuestion()` ahora consume una configuraciÃ³n de layout para ancho/alto, offsets y fuentes del `addQuizQuestionPanel`, reduciendo valores incrustados.
+  - `src/layouts.js` se completÃ³ con campos faltantes en `quiz.questionPanel` (`panelWidth`, `panelHeight`, `panelDepth`, `panelKey`, `flowerKey`, `flowerSize`, `badgeXOffset`, `badgeY`) para evitar literales sueltos.
+
+- Validaciones ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `BASE_URL=http://127.0.0.1:5317/index.html node tools/puzzle-cdp-test.mjs` *(falla intermitente en este entorno: `Puzzle scene did not initialize`)*
+  - `BASE_URL=http://127.0.0.1:5317/index.html node tools/objects-cdp-test.mjs` *(falla intermitente en este entorno: `Objects scene did not initialize`)*
+  - `powershell -File tools/capture-screens.ps1 -RunName "roadmap-cycle-continue-v11"`
+
+- Observaciones de esta tanda:
+  - Las capturas se volvieron a generar para comparaciÃ³n visual:
+    - `test-artifacts/roadmap-cycle-continue-v11/cover.png`
+    - `.../quiz.png`
+    - `.../puzzle.png`
+    - `.../objects.png`
+    - `.../final.png`
+    - `.../mobile-landscape.png`
+    - `.../mobile-portrait.png`
+
+- PrÃ³ximo paso sugerido:
+  - Replicar el mismo tratamiento a los valores visuales de `CoverScene` y `PuzzleGameScene` para terminar la limpieza de constantes repetidas.
+  - Cerrar esta parte de Etapa 3 dejando checklist de UI y revisar una vez mÃ¡s la consistencia entre pantallas.
+
+## ActualizaciÃ³n del ciclo (2026-08-14, v12)
+
+- Cambios implementados:
+  - Se cerrÃ³ la migraciÃ³n de `QuizGameScene` para eliminar constantes puntuales restantes del bloque de escena:
+    - `Rosarito` principal (`rosarito`, `shadow`, `leftPanel`),
+    - `titleHeart`,
+    - decoraciones de encabezado derecho (`questionDecor`).
+  - Se migrÃ³ parte de `PuzzleGameScene` a layout:
+    - decorativo de fondo de info (`puzzle.infoDecor`),
+    - panel de `Juego` (`infoPanel`) con estilos reutilizables para textos y tÃ­tulo de referencia.
+  - En `objects` ya estaban aplicados los ajustes; esta ronda no reitera cambios funcionales en esa escena.
+
+- Validaciones ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node tools/puzzle-cdp-test.mjs` *(fallo por escenario no inicializando en este entorno)*
+  - `node tools/objects-cdp-test.mjs` *(fallo por escenario no inicializando en este entorno)*
+  - `powershell -File tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v12`
+
+- ObservaciÃ³n de evidencia visual:
+  - Capturas generadas en:
+    - `test-artifacts/roadmap-cycle-continue-v12/cover.png`
+    - `test-artifacts/roadmap-cycle-continue-v12/quiz.png`
+    - `test-artifacts/roadmap-cycle-continue-v12/puzzle.png`
+    - `test-artifacts/roadmap-cycle-continue-v12/objects.png`
+    - `test-artifacts/roadmap-cycle-continue-v12/final.png`
+    - `test-artifacts/roadmap-cycle-continue-v12/mobile-landscape.png`
+    - `test-artifacts/roadmap-cycle-continue-v12/mobile-portrait.png`
+
+- Nota para siguiente ciclo:
+  - Mantener esta etapa de consistencia para `CoverScene` y revisar el bloque de texto de `FinalScene` (acento mojibake y escalado de subtÃ­tulos) en la prÃ³xima pasada.
