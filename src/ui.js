@@ -159,6 +159,95 @@ function addSectionHeader(scene, x, y, text, options = {}) {
   return { plate, label, heart: heartIcon };
 }
 
+function addQuizQuestionPanel(scene, x, y, questionText, options = {}) {
+  const {
+    totalQuestions = 3,
+    questionIndex = 1,
+    panelWidth = 470,
+    panelHeight = 78,
+    panelDepth = 5,
+    panelKey = "m2-question_panel",
+    flowerKey = "ui-icon_flower",
+    flowerSize = 74,
+    badgeXOffset = -234,
+    badgeY = -8,
+    counterXOffset = 216,
+    counterYOffset = -24,
+    counterWidth = 78,
+    counterHeight = 48,
+    questionMaxWidth = 350,
+    questionMaxHeight = 68,
+    questionMinFontSize = 17,
+    questionFontSize = "22px",
+    questionLongFontSize = "20px",
+    progressFontSize = "22px",
+    maxQuestionLength = 52,
+    progressTextColor = "#fff8e9",
+  } = options;
+
+  const panel = scene.add.image(x, y, panelKey).setDisplaySize(panelWidth, panelHeight).setDepth(panelDepth);
+
+  const badge = scene.add.image(x + badgeXOffset, y + badgeY, flowerKey).setDisplaySize(flowerSize, flowerSize)
+    .setDepth(panelDepth + 1);
+  const badgeText = addFittedText(scene, badge.x, badge.y + (questionIndex >= 10 ? 8 : 4), String(questionIndex), "button", {
+    maxWidth: 72,
+    maxHeight: 34,
+    minFontSize: 18,
+    depth: panelDepth + 2,
+    style: {
+      fontSize: questionIndex >= 10 ? "32px" : "34px",
+      fontStyle: "bold",
+      color: "#fff8e9",
+      stroke: "#6a3d8f",
+      strokeThickness: 3,
+      align: "center",
+    },
+  }).setOrigin(0.5);
+
+  const questionCard = scene.add.graphics().setDepth(panelDepth + 1);
+  questionCard.fillStyle(0x77559a, 0.94);
+  questionCard.fillRoundedRect(x + counterXOffset - counterWidth / 2, y + badgeY - 2, counterWidth, counterHeight, 20);
+  questionCard.lineStyle(3, 0xf3d36d, 0.95);
+  questionCard.strokeRoundedRect(x + counterXOffset - counterWidth / 2, y + badgeY - 2, counterWidth, counterHeight, 20);
+
+  const counterText = addFittedText(scene, x + counterXOffset, y + badgeY + counterHeight / 2 + 3, `${questionIndex}/${totalQuestions}`, "body", {
+    maxWidth: counterWidth - 8,
+    maxHeight: 34,
+    minFontSize: 16,
+    depth: panelDepth + 2,
+    style: {
+      fontSize: progressFontSize,
+      fontStyle: "bold",
+      color: progressTextColor,
+    align: "center",
+    },
+  }).setOrigin(0.5);
+
+  const questionLabel = addFittedText(scene, x + 34, y, questionText, "question", {
+    maxWidth: questionMaxWidth,
+    maxHeight: questionMaxHeight,
+    minFontSize: questionMinFontSize,
+    depth: panelDepth + 2,
+    style: {
+      fontSize: questionText.length > maxQuestionLength ? questionLongFontSize : questionFontSize,
+      color: "#3e2b22",
+      align: "center",
+      wordWrap: { width: questionMaxWidth + 2 },
+      lineSpacing: 3,
+    },
+  });
+
+  return {
+    panel,
+    badge,
+    badgeText,
+    counterText,
+    questionLabel,
+    progressText: counterText,
+    decorativeCounterBg: questionCard,
+  };
+}
+
 function addChecklistFrame(scene, x, y, title, options = {}) {
   const {
     panelWidth = 300,
@@ -431,6 +520,7 @@ window.RosaritoUI = {
   addNarrativeBubble,
   addMouseHint,
   addSectionHeader,
+  addQuizQuestionPanel,
   addChecklistFrame,
   addScreenTitle,
   addNextButton,

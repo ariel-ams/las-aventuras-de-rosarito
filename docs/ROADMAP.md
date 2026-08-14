@@ -399,3 +399,27 @@ Estado:
 - Mobile portrait muestra aviso claro para girar el telefono.
 
 
+## ActualizaciÛn de ciclo (2026-08-14, v8)
+
+- Se corrigiÛ encoding visible en mensajes de texto de `src/main.js` y se mantienen textos legibles en portada, preguntas, rompecabezas, objetos y pantalla final.
+- Se validÛ sintaxis de los mÛdulos principales (`main`, `ui`, `data`, `layouts`) y scripts de test.
+- En este entorno los tests interactivos siguen siendo intermitentes (Edge headless): `puzzle-cdp-test.mjs` y `objects-cdp-test.mjs` reportan escena no inicializada.
+- Capturas ejecutadas para revisiÛn: `tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v8`.
+- PrÛximo paso: continuar con unificaciÛn visual de componentes (encabezados, globos, estados de botones) y validar textos en cada nuevo paquete de pantallas antes de cerrar iteraciÛn.
+
+## Actualizaci√≥n de ciclo (2026-08-14, v10)
+
+- Implementaci√≥n de la siguiente iteraci√≥n del objetivo de consistencia:
+  - Se agreg√≥ `RosaritoUI.addQuizQuestionPanel` para unificar el bloque de pregunta del minijuego (panel, badge de n√∫mero y progreso), reduciendo construcci√≥n visual local en escena.
+  - `QuizGameScene.showQuestion` ahora usa ese helper y conserva ajuste din√°mico de fuentes.
+  - `src/questions.json` qued√≥ normalizado a UTF-8 nativo (sin BOM) para evitar ruidos en lectura y diff.
+  - Se mantuvieron ajustes visuales de separaci√≥n de tarjetas y tama√±o de texto.
+- Validaciones ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node tools/puzzle-cdp-test.mjs` *(intermitente en este entorno: `Puzzle scene did not initialize`)*
+  - `node tools/objects-cdp-test.mjs` *(intermitente en este entorno: `Objects scene did not initialize`)*
+  - `tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v10`
+- Estado del roadmap:
+  - Avance aplicado en Etapa 3: componente de pregunta estandarizado.
+  - Siguiente paso: extraer coordenadas del bloque de pregunta a `SCENE_LAYOUTS.quiz` para completar la consolidaci√≥n.

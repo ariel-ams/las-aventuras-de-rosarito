@@ -22,7 +22,7 @@
     },
     {
       "id": "casa_natal",
-      "question": "¿Dónde se encuentra la casa natal de Rosarito?",
+      "question": "¿Dónde se encuentra la casa natal de Rosario?",
       "options": [
         { "label": "Carrizal", "correct": false, "iconKey": "ui-icon_home" },
         { "label": "Malanzán", "correct": false, "iconKey": "ui-icon_blackboard" },

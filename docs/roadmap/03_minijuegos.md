@@ -232,3 +232,47 @@ Decision vigente:
   - Capturas: `tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v7`
 - Próximo paso sugerido:
   - Continuar con la unificación de encabezados/globos/estados entre pantallas para dejar la etapa con consistencia completa de UI.
+## Actualización del ciclo (2026-08-14, v8)
+
+- Cambios implementados:
+  - Corregimos textos con codificación rota que seguían en pantallas de juego (`src/main.js`), incluyendo:
+    - texto narrativo de preguntas,
+    - mensaje de "Agrega imágenes..." en rompecabezas,
+    - mensaje de instrucciones para objetos,
+    - feedback de objetos encontrados,
+    - mensaje de cierre en escena final.
+  - Se mantuvo la mecánica base:
+    - mezcla de opciones en preguntas,
+    - un rompecabezas por juego,
+    - hit areas amplias en objetos sin halo permanente,
+    - estado bloqueado del botón Siguiente con fondo/lock.
+- Pruebas ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check src/layouts.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `BASE_URL=http://127.0.0.1:5330/index.html node tools/puzzle-cdp-test.mjs` *(intermitente: `Puzzle scene did not initialize` en este entorno)*
+  - `BASE_URL=http://127.0.0.1:5330/index.html node tools/objects-cdp-test.mjs` *(intermitente: `Objects scene did not initialize` en este entorno)*
+  - `tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v8`
+- Observación:
+  - En esta ejecución, las capturas se generaron pero con tamaño reducido; conviene validación manual adicional en navegador para confirmar contención visual.
+- Próximo paso sugerido:
+  - Completar la unificación visual de encabezados y globos entre escenas y cerrar la iteración de consistencia UI.
+## ActualizaciÃ³n del ciclo (2026-08-14, v10)
+
+- Minijuego 1 (Preguntas):
+  - Se unificó el bloque de pregunta con el helper `RosaritoUI.addQuizQuestionPanel` (panel, nÃºmero y contador).
+  - El panel mantiene el ajuste de texto automÃ¡tico y evita cÃ³digo especÃ­fico repetido en `showQuestion`.
+- Estado:
+  - Se dio seguimiento a la consistencia visual entre encabezados y paneles.
+  - Se conservaron los cambios de separaciÃ³n de tarjetas y la semÃ¡ntica de pregunta.
+- Test del ciclo:
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node tools/puzzle-cdp-test.mjs` *(intermitente: `Puzzle scene did not initialize` en entorno local con Edge headless)*
+  - `node tools/objects-cdp-test.mjs` *(intermitente: `Objects scene did not initialize` en entorno local con Edge headless)*
+  - `tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v10`
+- Ajuste de siguiente etapa sugerido:
+  - Extraer coordenadas del bloque de pregunta a `SCENE_LAYOUTS.quiz` y terminar limpieza de constantes visuales para Etapa 3.

@@ -290,6 +290,8 @@ class BaseScene extends Phaser.Scene {
 
   makeCoverMissionCard(x, y, number, label, iconKey, onClick = null) {
     const card = this.add.container(x, y);
+    const cardWidth = 118;
+    const cardHeight = 224;
     const bg = this.add.image(0, 8, "ui-card_arch_filled").setDisplaySize(138, 164);
     const badge = this.add.image(-50, -70, "ui-icon_flower").setDisplaySize(52, 52);
     const num = this.add.text(-50, -72, String(number), {
@@ -308,7 +310,7 @@ class BaseScene extends Phaser.Scene {
       wordWrap: { width: 112 },
       lineSpacing: 0,
     }).setOrigin(0.5);
-    title.setY(42);
+    title.setY(40);
     card.add([bg, badge, num, icon, title]);
     card.setSize(138, 170).setInteractive({ useHandCursor: true });
     card.on("pointerover", () => {
@@ -331,25 +333,26 @@ class BaseScene extends Phaser.Scene {
   makeQuizAnswerCard(x, y, option, index, onClick, iconKey = "") {
     const cardKeys = ["m2-answer_card_green", "m2-answer_card_blue", "m2-answer_card_pink"];
     const iconKeys = ["ui-icon_home", "ui-icon_blackboard", "ui-icon_flower"];
-    const cardWidth = 124;
+    const cardWidth = 118;
+    const cardHeight = 224;
     const card = this.add.container(x, y);
-    const bg = this.add.image(0, 0, cardKeys[index % cardKeys.length]).setDisplaySize(cardWidth, 230);
+    const bg = this.add.image(0, 0, cardKeys[index % cardKeys.length]).setDisplaySize(cardWidth, cardHeight);
     const icon = this.add.image(0, -52, iconKey || iconKeys[index % iconKeys.length]).setDisplaySize(70, 58);
     const text = window.RosaritoUI.addFittedText(this, 0, 58, option, "body", {
-      maxWidth: 104,
-      maxHeight: 72,
-      minFontSize: 14,
+      maxWidth: 96,
+      maxHeight: 70,
+      minFontSize: 13,
       style: {
-        fontSize: option.length > 18 ? "17px" : "19px",
+        fontSize: option.length > 18 ? "16px" : "17px",
         align: "center",
-        wordWrap: { width: 108 },
+        wordWrap: { width: 104 },
         lineSpacing: 4,
       },
     });
     const heart = this.add.image(0, 110, "m2-heart").setDisplaySize(30, 28);
     card.add([bg, icon, text, heart]);
     card.setDepth(8);
-    card.setSize(cardWidth, 230).setInteractive({ useHandCursor: true });
+    card.setSize(cardWidth, cardHeight).setInteractive({ useHandCursor: true });
     card.on("pointerover", () => {
       card.setScale(1.04);
       playTone(this, "hover");
@@ -624,20 +627,23 @@ class QuizGameScene extends BaseScene {
     });
 
     this.drawStarCounter(SCENE_LAYOUTS.quiz.starCounter.x, SCENE_LAYOUTS.quiz.starCounter.y, gameState.achievements.filter(Boolean).length);
-    this.add.image(864, 92, "m2-header_responde").setDisplaySize(380, 74).setDepth(5);
-    this.add.image(884, 188, "m2-instruction_banner").setDisplaySize(430, 62).setDepth(4);
-    window.RosaritoUI.addFittedText(this, 884, 186, "Haz clic en la respuesta correcta.", "body", {
-      maxWidth: 300,
-      maxHeight: 58,
-      minFontSize: 16,
+    window.RosaritoUI.addSectionHeader(this, 884, 92, "Responde y aprende", {
+      width: 390,
+      height: 70,
+      fontSize: "28px",
+      color: "#6a3d8f",
+      heart: false,
       depth: 5,
-      style: {
-        fontSize: "22px",
-        color: "#3e2b22",
-        align: "center",
-      },
-    }).setOrigin(0.5);
-    this.add.image(884, 225, "m2-heart").setDisplaySize(30, 28).setDepth(5);
+    });
+    window.RosaritoUI.addSectionHeader(this, 884, 188, "Haz clic en la respuesta correcta.", {
+      width: 430,
+      height: 62,
+      fontSize: "21px",
+      color: "#3e2b22",
+      maxWidth: 350,
+      heart: false,
+      depth: 4,
+    });
     this.add.image(1142, 140, "m2-leaves").setDisplaySize(70, 48).setDepth(3).setAngle(16);
     this.add.image(1100, 646, "m2-plant_lavender").setDisplaySize(46, 96).setDepth(3);
     this.add.image(1150, 642, "m2-plant_pink").setDisplaySize(56, 98).setDepth(3);
@@ -646,48 +652,22 @@ class QuizGameScene extends BaseScene {
 
   showQuestion() {
     const q = gameState.quizSet[gameState.quizIndex];
-    this.add.image(884, 310, "m2-question_panel").setDisplaySize(470, 78).setDepth(5);
-    this.add.image(650, 310, "ui-icon_flower").setDisplaySize(74, 74).setDepth(6);
-    window.RosaritoUI.addFittedText(this, 650, 302, String(gameState.quizIndex + 1), "button", {
-      maxWidth: 72,
-      maxHeight: 34,
-      minFontSize: 18,
-      depth: 7,
-      style: {
-        fontSize: "34px",
-        fontStyle: "bold",
-        color: "#fff8e9",
-        stroke: "#6a3d8f",
-        strokeThickness: 3,
-      },
-    }).setOrigin(0.5);
-    this.add.graphics()
-      .fillStyle(0x77559a, 0.94)
-      .fillRoundedRect(1064, 260, 78, 48, 20)
-      .lineStyle(3, 0xf3d36d, 0.95)
-      .strokeRoundedRect(1064, 260, 78, 48, 20)
-      .setDepth(6);
-    window.RosaritoUI.addFittedText(this, 1103, 284, `${gameState.quizIndex + 1}/3`, "body", {
-      maxWidth: 78,
-      maxHeight: 34,
-      minFontSize: 16,
-      depth: 7,
-      style: {
-        fontSize: "22px",
-        fontStyle: "bold",
-        color: "#fff8e9",
-      },
-    }).setOrigin(0.5);
-    window.RosaritoUI.addFittedText(this, 888, 310, q.question, "question", {
-      maxWidth: 350,
-      maxHeight: 64,
-      minFontSize: 19,
-      depth: 7,
-      style: {
-        fontSize: q.question.length > 42 ? "23px" : "25px",
-        wordWrap: { width: 350 },
-      },
+    const questionPanel = window.RosaritoUI.addQuizQuestionPanel(this, 884, 310, q.question, {
+      questionIndex: gameState.quizIndex + 1,
+      totalQuestions: gameState.quizSet.length,
+      progressFontSize: "22px",
+      questionFontSize: "22px",
+      questionLongFontSize: "20px",
+      maxQuestionLength: 52,
+      questionMaxWidth: 352,
+      questionMaxHeight: 68,
+      questionMinFontSize: 17,
+      counterXOffset: 222,
+      counterYOffset: -3,
+      counterWidth: 78,
+      counterHeight: 48,
     });
+    questionPanel.counterText.setColor("#fff8e9");
     this.add.image(884, 350, "m2-heart").setDisplaySize(30, 28).setDepth(7);
     q.options.forEach((option, i) => {
       this.makeQuizAnswerCard(SCENE_LAYOUTS.quiz.answerStart.x + i * SCENE_LAYOUTS.quiz.answerGap, SCENE_LAYOUTS.quiz.answerStart.y, option, i, (card) => {
@@ -775,7 +755,7 @@ class PuzzleGameScene extends BaseScene {
       ],
     });
 
-    window.RosaritoUI.addNarrativeBubble(this, 408, 340, "Vamos a armar la imagen de Rosario Vera Peñaloza!", {
+    window.RosaritoUI.addNarrativeBubble(this, 408, 340, "¡Vamos a armar la imagen de Rosario Vera Peñaloza!", {
       width: 300,
       height: 132,
       depth: 7,
@@ -1535,3 +1515,5 @@ window.addEventListener("load", () => {
   }
   window.game = new Phaser.Game(config);
 });
+
+
