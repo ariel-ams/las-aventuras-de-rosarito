@@ -14,6 +14,7 @@ Hacer que cada minijuego se sienta como una pagina ilustrada del mismo libro, co
 - Al completar las 3 preguntas avanza al rompecabezas.
 - Captura actual: `test-artifacts/roadmap-review/quiz.png`.
 - No se observan textos cortados en la pregunta ni en las respuestas de la captura actual.
+- Mejora aplicada: tarjetas de respuesta más compactas y con más separación (`cardWidth` y `answerGap` ajustados).
 
 ### Mejoras propuestas
 
@@ -23,6 +24,8 @@ Hacer que cada minijuego se sienta como una pagina ilustrada del mismo libro, co
 - Revisar textos con tildes y encoding limpio.
 - Mantener preguntas en una linea o dos como maximo, usando `addFittedText`.
 - Campo `iconKey` por opcion agregado al JSON; queda pendiente reemplazar iconos genericos por ilustraciones finales cuando existan.
+- Mejora aplicada en esta iteración: tarjetas menos anchas y distancia horizontal mayor para reducir sensación de “pegadas”.
+- Mejora aplicada en esta iteración: textos de preguntas/etiquetas corregidos a UTF-8 para eliminar caracteres mojibake.
 
 ### Criterios de aceptacion
 
@@ -73,6 +76,8 @@ Hacer que cada minijuego se sienta como una pagina ilustrada del mismo libro, co
 - `node --check tools/puzzle-cdp-test.mjs`
 - `node tools/puzzle-cdp-test.mjs`
 - Captura: `test-artifacts/puzzle-fix-stage3/puzzle.png`
+- Captura adicional de esta ronda: `test-artifacts/roadmap-cycle-continue-v5/quiz.png` (verifica ajuste de anchos/espacios en juego de preguntas).
+- Validación textual de esta ronda: corrección de strings visibles a UTF-8 en `src/main.js` y `src/questions.json` para evitar lecturas confusas.
 
 Resultado del test:
 
@@ -140,6 +145,7 @@ Notas:
 - `node tools/objects-cdp-test.mjs`
 - `node tools/puzzle-cdp-test.mjs`
 - Capturas con `tools/capture-screens.ps1 -RunName ui-consistency-objects-hit`
+- Capturas con `tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v5`
 
 Resultado del test de objetos:
 
@@ -212,3 +218,17 @@ Decision vigente:
 - Medio en puzzle por drag/drop.
 - Bajo en quiz si solo se modifican datos y textos.
 - Medio en objetos si se cambian coordenadas o hit areas.
+
+## Actualización del ciclo (2026-08-14, v7)
+
+- Cambios implementados:
+  - Reforcé el estado visual del botón **Siguiente** bloqueado en `src/ui.js` (`addNextButton`) con backdrop/halo y lock explícito para mejorar la claridad entre decorado y control.
+  - Ajusté distancia de respuestas de “Preguntas” (`SCENE_LAYOUTS.quiz.answerGap`).
+  - Mantengo feedback visual breve de piezas (`glow` + corazón) y objetos (`sparkle` + corazón) al completar acciones correctas.
+- Test ejecutados:
+  - `node --check src/main.js`, `src/ui.js`, `src/data.js`, `src/layouts.js`
+  - `node tools/puzzle-cdp-test.mjs` (intermitente: `Puzzle scene did not initialize` en este entorno)
+  - `node tools/objects-cdp-test.mjs` (intermitente: `Objects scene did not initialize` en este entorno)
+  - Capturas: `tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v7`
+- Próximo paso sugerido:
+  - Continuar con la unificación de encabezados/globos/estados entre pantallas para dejar la etapa con consistencia completa de UI.

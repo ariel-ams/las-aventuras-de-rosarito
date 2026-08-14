@@ -41,7 +41,7 @@ const SCENE_LAYOUTS = {
   quiz: {
     starCounter: { x: 1130, y: 82 },
     answerStart: { x: 735, y: 526 },
-    answerGap: 165,
+    answerGap: 176,
   },
   puzzle: {
     starCounter: { x: 1130, y: 84 },

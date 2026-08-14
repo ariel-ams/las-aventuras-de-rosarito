@@ -331,18 +331,18 @@ class BaseScene extends Phaser.Scene {
   makeQuizAnswerCard(x, y, option, index, onClick, iconKey = "") {
     const cardKeys = ["m2-answer_card_green", "m2-answer_card_blue", "m2-answer_card_pink"];
     const iconKeys = ["ui-icon_home", "ui-icon_blackboard", "ui-icon_flower"];
-    const cardWidth = 132;
+    const cardWidth = 124;
     const card = this.add.container(x, y);
     const bg = this.add.image(0, 0, cardKeys[index % cardKeys.length]).setDisplaySize(cardWidth, 230);
     const icon = this.add.image(0, -52, iconKey || iconKeys[index % iconKeys.length]).setDisplaySize(70, 58);
     const text = window.RosaritoUI.addFittedText(this, 0, 58, option, "body", {
-      maxWidth: 112,
+      maxWidth: 104,
       maxHeight: 72,
       minFontSize: 14,
       style: {
         fontSize: option.length > 18 ? "17px" : "19px",
         align: "center",
-        wordWrap: { width: 118 },
+        wordWrap: { width: 108 },
         lineSpacing: 4,
       },
     });
@@ -982,6 +982,18 @@ class PuzzleGameScene extends BaseScene {
         duration: 220,
         ease: "Back.easeOut",
       });
+
+      const slotGlow = this.add.graphics().setDepth(14)
+        .fillStyle(0xf4d8a5, 0.42)
+        .fillCircle(data.targetX, data.targetY, board.size / 10 + 6);
+      this.tweens.add({
+        targets: slotGlow,
+        alpha: 0,
+        scale: 1.4,
+        duration: 430,
+        ease: "Cubic.easeOut",
+        onComplete: () => slotGlow.destroy(),
+      });
       const sparkle = this.add.image(data.targetX, data.targetY, "ui-icon_sparkles")
         .setDisplaySize(34, 34)
         .setDepth(31)
@@ -1006,6 +1018,20 @@ class PuzzleGameScene extends BaseScene {
         duration: 360,
         ease: "Cubic.easeOut",
         onComplete: () => boardPulse.destroy(),
+      });
+      const lockedBadge = this.add.image(data.targetX, data.targetY, "m2-heart")
+        .setDisplaySize(26, 24)
+        .setDepth(32)
+        .setAlpha(0.9)
+        .setTint(0x5ea57f);
+      this.tweens.add({
+        targets: lockedBadge,
+        alpha: 0,
+        y: data.targetY - 8,
+        scale: 1.2,
+        duration: 360,
+        ease: "Cubic.easeOut",
+        onComplete: () => lockedBadge.destroy(),
       });
       this.done += 1;
       playTone(this, "success");
@@ -1293,11 +1319,33 @@ class ObjectsGameScene extends BaseScene {
       item.row.setAlpha(0.82);
     }
     this.tweens.add({ targets: visual, scale: 1.16, alpha: 0.54, yoyo: true, duration: 180, onComplete: () => visual.setAlpha(0.56) });
-    const objectFeedback = this.add.image(obj.x + obj.width / 2, obj.y - obj.height / 2, "ui-icon_sparkles")
+    const objectFeedback = this.add.image(obj.x, obj.y - Math.min(14, obj.height * 0.2), "ui-icon_sparkles")
       .setDisplaySize(42, 42)
       .setDepth(25)
       .setAlpha(0.9);
     this.tweens.add({ targets: objectFeedback, alpha: 0, y: obj.y - obj.height / 2 - 8, scale: 1.12, duration: 360, ease: "Cubic.easeOut" });
+    const foundBadge = this.add.image(obj.x, obj.y, "m2-heart")
+      .setDisplaySize(24, 22)
+      .setDepth(26)
+      .setAlpha(0)
+      .setTint(0x5ea57f);
+    this.tweens.add({
+      targets: foundBadge,
+      alpha: 1,
+      y: obj.y - 8,
+      scale: 1.15,
+      duration: 220,
+      ease: "Sine.easeOut",
+      yoyo: true,
+      onComplete: () => {
+        this.tweens.add({
+          targets: foundBadge,
+          alpha: 0,
+          duration: 220,
+          onComplete: () => foundBadge.destroy(),
+        });
+      },
+    });
     if (this.found >= this.activeObjects.length) {
       this.completeHiddenObjects();
     }
@@ -1487,4 +1535,3 @@ window.addEventListener("load", () => {
   }
   window.game = new Phaser.Game(config);
 });
-

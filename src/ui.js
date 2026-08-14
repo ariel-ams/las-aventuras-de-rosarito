@@ -245,14 +245,16 @@ function addNextButton(scene, x, y, label, onClick, options = {}) {
     .setDisplaySize(24, 24)
     .setTint(0x9a5a9f)
     .setAlpha(0.95);
+  const disabledBackdrop = scene.add.graphics().setVisible(false);
   const disabledRing = scene.add.graphics().setVisible(false);
   const lockIcon = scene.add.image(labelX, 20, "ui-icon_exclaim")
     .setDisplaySize(26, 26)
     .setTint(0x85527a)
     .setAlpha(0.9);
-  button.add([arrow, text, status, statusHint, lockIcon, disabledRing]);
+  button.add([arrow, text, status, statusHint, disabledBackdrop, lockIcon, disabledRing]);
   button.lockIcon = lockIcon;
   button.disabledRing = disabledRing;
+  button.disabledBackdrop = disabledBackdrop;
   button.setSize(hitArea.width, hitArea.height).setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
   let statusPulse = null;
 
@@ -286,13 +288,18 @@ function addNextButton(scene, x, y, label, onClick, options = {}) {
         duration: 650,
         repeat: -1,
       });
-      lockIcon.setVisible(true).setAlpha(0.58).setScale(0.95);
+      lockIcon.setVisible(true).setAlpha(0.64).setScale(0.95);
+      disabledBackdrop.setVisible(true).setAlpha(0.28);
+      disabledBackdrop.clear();
+      disabledBackdrop.fillStyle(0x2a1828, 0.42);
+      disabledBackdrop.fillRoundedRect(-154, -58, 256, 112, 28);
       disabledRing.setVisible(true).setAlpha(0.34);
       disabledRing.clear();
       disabledRing.fillStyle(0x8f5a7c, 0.15).fillRoundedRect(-146, -48, 240, 96, 24);
       disabledRing.lineStyle(2.5, 0xdca16f, 0.48).strokeRoundedRect(-146, -48, 240, 96, 24);
     } else {
       lockIcon.setVisible(false);
+      disabledBackdrop.setVisible(false);
       disabledRing.setVisible(false);
       statusHint.setAlpha(0);
     }
