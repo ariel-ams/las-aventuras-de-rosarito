@@ -1,4 +1,4 @@
-# Roadmap visual y tecnico - Rosarito
+﻿# Roadmap visual y tecnico - Rosarito
 
 ## Estado actual despues de la ultima prueba
 
@@ -19,7 +19,7 @@ Capturas revisadas:
 - Tanda despues de preguntas JSON y ajuste de hit areas: `test-artifacts/quiz-json-hitarea-pass/`
 - Tanda despues de iconos por respuesta en quiz: `test-artifacts/quiz-icons-pass/`
 - Tanda reciente de seguimiento: `test-artifacts/roadmap-followup/`
-- Tanda reciente de seguimiento de esta iteraciÃ³n: `test-artifacts/roadmap-followup-3/`
+- Tanda reciente de seguimiento de esta iteraciÃƒÂ³n: `test-artifacts/roadmap-followup-3/`
 - Tanda nueva del ciclo actual: `test-artifacts/roadmap-cycle-continue/`
 - Tanda nueva del ciclo actual (v2): `test-artifacts/roadmap-cycle-continue-v2/`
 - Tanda nueva del ciclo actual (v3): `test-artifacts/roadmap-cycle-continue-v3/`
@@ -33,8 +33,8 @@ Cambios ya aplicados en esta ronda:
 - El area de clic de objetos ahora esta separada del sprite visual mediante zonas invisibles, lo que mejora la deteccion y evita depender de transparencias del PNG.
 - La lista de objetos ya no dibuja doble circulo de confirmacion: el circulo vacio viene del sprite y el codigo solo agrega el check.
 - Lista de objetos y feedback de piezas: el check se controla desde `item.check` (data `checked`) y el feedback visual usa `ui-icon_sparkles` en vez de estrella.
-- Zona de interacciÃ³n ampliada: Ã¡reas de objetos en objetos y hit zones con padding mÃ­nimo de 58 px para facilitar click.
-- Ajustes de texto y encoding visibles: se corrigieron cadenas con caracteres mojibake en portada, quiz, objetos y pantalla final (misiÃ³n, mision, Ã¡lbum, niÃ±a, enseÃ±ar, niÃ±os, completÃ³).
+- Zona de interacciÃƒÂ³n ampliada: ÃƒÂ¡reas de objetos en objetos y hit zones con padding mÃƒÂ­nimo de 58 px para facilitar click.
+- Ajustes de texto y encoding visibles: se corrigieron cadenas con caracteres mojibake en portada, quiz, objetos y pantalla final (misiÃƒÂ³n, mision, ÃƒÂ¡lbum, niÃƒÂ±a, enseÃƒÂ±ar, niÃƒÂ±os, completÃƒÂ³).
 - Se creo la knowledge base del proyecto en `docs/KNOWLEDGE_BASE.md`.
 - La portada ya usa parte del sistema comun de texto y layout.
 - El rompecabezas fue corregido y validado con `tools/puzzle-cdp-test.mjs`.
@@ -43,16 +43,16 @@ Cambios ya aplicados en esta ronda:
 - El globo inferior de objetos se reposiciono y usa `addFittedText`.
 - La pantalla final recibio un primer pulido visual tipo recompensa/album.
 - Las preguntas visibles del quiz ahora viven en `src/questions.json`.
-- Se ajust� la limpieza de textos de fallback en `src/data.js` para evitar inconsistencias visuales de tildes y mantener uniformidad de mensajes.
+- Se ajustó la limpieza de textos de fallback en `src/data.js` para evitar inconsistencias visuales de tildes y mantener uniformidad de mensajes.
 - El smoke test de objetos detecto solapamiento entre zonas invisibles; las zonas mas pequenas ahora quedan por encima para mejorar el click.
 - Las respuestas del quiz ahora pueden declarar `iconKey`; el icono se mantiene asociado a la respuesta despues de mezclar opciones.
 - Las tarjetas de respuesta del quiz usan `addFittedText` para reducir riesgo de texto cortado.
-- Se completo la pista opcional en objetos usando `ui-icon_sparkles` y estados internos por objeto (`found`) para evitar detecciones errÃ³neas.
-- Los hit areas de objetos usan padding mÃ­nimo de 58 px para facilitar el toque de niÃ±os.
-- El botÃ³n "Siguiente" muestra estado bloqueado mÃ¡s claro con hint, texto y animaciÃ³n de feedback.
-- `src/questions.json` quedÃ³ normalizado a UTF-8 y con tildes limpias en texto visible.
-- `src/main.js` conserva `addNextButton` y no depende de transiciones de pÃ¡gina para avanzar.
-- `.gitignore` se actualizÃ³ para ignorar `assets/audio/voice/` y `remove_background.py`.
+- Se completo la pista opcional en objetos usando `ui-icon_sparkles` y estados internos por objeto (`found`) para evitar detecciones errÃƒÂ³neas.
+- Los hit areas de objetos usan padding mÃƒÂ­nimo de 58 px para facilitar el toque de niÃƒÂ±os.
+- El botÃƒÂ³n "Siguiente" muestra estado bloqueado mÃƒÂ¡s claro con hint, texto y animaciÃƒÂ³n de feedback.
+- `src/questions.json` quedÃƒÂ³ normalizado a UTF-8 y con tildes limpias en texto visible.
+- `src/main.js` conserva `addNextButton` y no depende de transiciones de pÃƒÂ¡gina para avanzar.
+- `.gitignore` se actualizÃƒÂ³ para ignorar `assets/audio/voice/` y `remove_background.py`.
 
 Pruebas ejecutadas:
 
@@ -64,8 +64,8 @@ Pruebas ejecutadas:
 - `node --check tools/objects-cdp-test.mjs`
 - `BASE_URL=http://127.0.0.1:5173/index.html node tools/puzzle-cdp-test.mjs` *(en este entorno sigue sin inicializar la escena)*
 - `BASE_URL=http://127.0.0.1:5173/index.html node tools/objects-cdp-test.mjs` *(en este entorno sigue sin inicializar la escena)*
-- `node tools/puzzle-cdp-test.mjs` *(requiere servidor local + puede no inicializar escena en algunos entornos Edge headless; se mejorÃ³ espera/reintento y flags de diagnÃ³stico)*
-- `node tools/objects-cdp-test.mjs` *(requiere servidor local + puede no inicializar escena en algunos entornos Edge headless; se mejorÃ³ espera/reintento y flags de diagnÃ³stico)*
+- `node tools/puzzle-cdp-test.mjs` *(requiere servidor local + puede no inicializar escena en algunos entornos Edge headless; se mejorÃƒÂ³ espera/reintento y flags de diagnÃƒÂ³stico)*
+- `node tools/objects-cdp-test.mjs` *(requiere servidor local + puede no inicializar escena en algunos entornos Edge headless; se mejorÃƒÂ³ espera/reintento y flags de diagnÃƒÂ³stico)*
 - `tools/capture-screens.ps1 -RunName roadmap-review`
 - `tools/capture-screens.ps1 -RunName roadmap-next-pass-final`
 - `tools/capture-screens.ps1 -RunName ui-consistency-objects-hit`
@@ -103,8 +103,8 @@ Resultado funcional:
 - La ronda actual revalido objetos con zonas solapadas: las zonas pequenas quedan arriba para que el click caiga en el objeto esperado.
 - La ronda actual agrego `iconKey` por opcion del quiz y auto-fit en textos de tarjetas de respuesta.
 - Se paso la bandeja del rompecabezas a `SCENE_LAYOUTS.puzzle.tray` y se agrego feedback visual extra al encajar piezas.
-- `addNextButton` ahora muestra estado bloqueado mÃ¡s claro: hint visible y un icono indicador de interacciÃ³n.
-- Se terminaron correcciones de textos visibles con caracteres de UTF-8 quebrados para evitar lectura con caracteres extraÃ±os.
+- `addNextButton` ahora muestra estado bloqueado mÃƒÂ¡s claro: hint visible y un icono indicador de interacciÃƒÂ³n.
+- Se terminaron correcciones de textos visibles con caracteres de UTF-8 quebrados para evitar lectura con caracteres extraÃƒÂ±os.
 
 ## Comparacion con la referencia
 
@@ -349,7 +349,7 @@ Estado:
 
 - En progreso y parcialmente aplicado.
 - `addFittedText` ya existe y se usa en portada/preguntas.
-- Pendiente migrar los textos problemÃ¡ticos de puzzle y objetos.
+- Pendiente migrar los textos problemÃƒÂ¡ticos de puzzle y objetos.
 
 ### Iteracion 2 - Pantalla inicial
 
@@ -399,21 +399,21 @@ Estado:
 - Mobile portrait muestra aviso claro para girar el telefono.
 
 
-## Actualizaci�n de ciclo (2026-08-14, v8)
+## Actualización de ciclo (2026-08-14, v8)
 
-- Se corrigi� encoding visible en mensajes de texto de `src/main.js` y se mantienen textos legibles en portada, preguntas, rompecabezas, objetos y pantalla final.
-- Se valid� sintaxis de los m�dulos principales (`main`, `ui`, `data`, `layouts`) y scripts de test.
+- Se corrigió encoding visible en mensajes de texto de `src/main.js` y se mantienen textos legibles en portada, preguntas, rompecabezas, objetos y pantalla final.
+- Se validó sintaxis de los módulos principales (`main`, `ui`, `data`, `layouts`) y scripts de test.
 - En este entorno los tests interactivos siguen siendo intermitentes (Edge headless): `puzzle-cdp-test.mjs` y `objects-cdp-test.mjs` reportan escena no inicializada.
-- Capturas ejecutadas para revisi�n: `tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v8`.
-- Pr�ximo paso: continuar con unificaci�n visual de componentes (encabezados, globos, estados de botones) y validar textos en cada nuevo paquete de pantallas antes de cerrar iteraci�n.
+- Capturas ejecutadas para revisión: `tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v8`.
+- Próximo paso: continuar con unificación visual de componentes (encabezados, globos, estados de botones) y validar textos en cada nuevo paquete de pantallas antes de cerrar iteración.
 
-## Actualización de ciclo (2026-08-14, v10)
+## ActualizaciÃ³n de ciclo (2026-08-14, v10)
 
-- Implementación de la siguiente iteración del objetivo de consistencia:
-  - Se agregó `RosaritoUI.addQuizQuestionPanel` para unificar el bloque de pregunta del minijuego (panel, badge de número y progreso), reduciendo construcción visual local en escena.
-  - `QuizGameScene.showQuestion` ahora usa ese helper y conserva ajuste dinámico de fuentes.
-  - `src/questions.json` quedó normalizado a UTF-8 nativo (sin BOM) para evitar ruidos en lectura y diff.
-  - Se mantuvieron ajustes visuales de separación de tarjetas y tamaño de texto.
+- ImplementaciÃ³n de la siguiente iteraciÃ³n del objetivo de consistencia:
+  - Se agregÃ³ `RosaritoUI.addQuizQuestionPanel` para unificar el bloque de pregunta del minijuego (panel, badge de nÃºmero y progreso), reduciendo construcciÃ³n visual local en escena.
+  - `QuizGameScene.showQuestion` ahora usa ese helper y conserva ajuste dinÃ¡mico de fuentes.
+  - `src/questions.json` quedÃ³ normalizado a UTF-8 nativo (sin BOM) para evitar ruidos en lectura y diff.
+  - Se mantuvieron ajustes visuales de separaciÃ³n de tarjetas y tamaÃ±o de texto.
 - Validaciones ejecutadas:
   - `node --check src/main.js`
   - `node --check src/ui.js`
@@ -422,13 +422,13 @@ Estado:
   - `tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v10`
 - Estado del roadmap:
   - Avance aplicado en Etapa 3: componente de pregunta estandarizado.
-  - Siguiente paso: extraer coordenadas del bloque de pregunta a `SCENE_LAYOUTS.quiz` para completar la consolidación.
+  - Siguiente paso: extraer coordenadas del bloque de pregunta a `SCENE_LAYOUTS.quiz` para completar la consolidaciÃ³n.
 ## Actualizacion de ciclo (2026-08-14, v16)
 
 - Cambio aplicado:
   - `makeQuizAnswerCard` ahora usa `SCENE_LAYOUTS.quiz.answerCard` para evitar valores embebidos:
     - claves de sprite por tipo,
-    - tamaños y posiciones de fondo/icono/texto,
+    - tamaÃ±os y posiciones de fondo/icono/texto,
     - texto largo/corto, y
     - escala hover + corazon.
   - Se mantiene compatibilidad con iconos por opcion (`iconKey`) y fallback.
@@ -446,18 +446,18 @@ Estado:
   - Etapa 3: mejora aplicada en consistencia de tarjetas de quiz.
   - Pendiente: validar visualmente en navegador interactivo con captura a mayor resolucion para cerrar ajustes de espaciado.
   - Siguiente paso sugerido: migrar restante de valores visuales hardcodeados en componentes secundarios y consolidar tests manuales de layout.
-## Actualizaci�n de ciclo (2026-08-14, v17)
-- Consolidaci�n aplicada:
-  - Se agreg� `LAYOUT.base` en `src/layouts.js` para unificar los par�metros de elementos comunes del encabezado global:
-    - bot�n de audio
+## Actualización de ciclo (2026-08-14, v17)
+- Consolidación aplicada:
+  - Se agregó `LAYOUT.base` en `src/layouts.js` para unificar los parámetros de elementos comunes del encabezado global:
+    - botón de audio
     - marco de hierba
-    - tipograf�a y restricciones de t�tulo/subt�tulo base
-  - `BaseScene.createBook` ahora consume `LAYOUT.base` en lugar de literales en c�digo:
+    - tipografía y restricciones de título/subtítulo base
+  - `BaseScene.createBook` ahora consume `LAYOUT.base` en lugar de literales en código:
     - `audioButton`
     - `grass`
     - `title`
     - `subtitle`
-  - El bot�n de audio, la marca de texto y el layout base mantienen ahora la misma fuente de verdad entre escenas.
+  - El botón de audio, la marca de texto y el layout base mantienen ahora la misma fuente de verdad entre escenas.
 - Pruebas ejecutadas:
   - `node --check src/main.js`
   - `node --check src/layouts.js`
@@ -470,26 +470,26 @@ Estado:
   - `BASE_URL=http://127.0.0.1:5345/index.html node tools/objects-cdp-test.mjs` (no inicializa escena en Edge headless intermitente; problema persistente reportado)
 - Avance de estado:
   - Roadmap: Etapa 1 y 2 avanzan en estabilidad de layout base.
-  - Se mantiene como siguiente trabajo priorizado completar la migraci�n de cualquier estilo visual restante hardcodeado en escenas secundarias para reducir divergencias de tama�os.
+  - Se mantiene como siguiente trabajo priorizado completar la migración de cualquier estilo visual restante hardcodeado en escenas secundarias para reducir divergencias de tamaños.
 
   - Se centralizo tambien la posicion/configuracion base del boton "Siguiente" en `LAYOUT.base.nextButton` y `makeNextButton` en `src/main.js` para evitar otro valor hardcodeado.
 
 
-## Actualizaci�n de ciclo (2026-08-14, v18)
+## Actualización de ciclo (2026-08-14, v18)
 
 - Cambios implementados en esta ronda:
-  - `SCENE_LAYOUTS.dones` se extendi� con configuraci�n compartida para:
-    - `choiceCard` (fondos, tama�os, texto base, padding, escala hover)
-    - `componentCard` (fondo por opci�n, icono, label, escala hover, zona interactiva)
-  - `SCENE_LAYOUTS.puzzle.infoPanel.labelPanel` se agreg� para estandarizar el panel de t�tulo de referencia del rompecabezas.
+  - `SCENE_LAYOUTS.dones` se extendió con configuración compartida para:
+    - `choiceCard` (fondos, tamaños, texto base, padding, escala hover)
+    - `componentCard` (fondo por opción, icono, label, escala hover, zona interactiva)
+  - `SCENE_LAYOUTS.puzzle.infoPanel.labelPanel` se agregó para estandarizar el panel de título de referencia del rompecabezas.
   - `makeChoiceCard` en `src/main.js` consume ahora `SCENE_LAYOUTS.dones.choiceCard` en lugar de literales sueltos.
   - `makeComponentOption` en `src/main.js` consume `SCENE_LAYOUTS.dones.componentCard` para reducir acoplamiento entre escena y medidas hardcodeadas.
-  - `drawPuzzleBoard` usa `SCENE_LAYOUTS.puzzle.infoPanel.labelPanel` para posicionamiento y tipograf�a del badge.
-  - `drawChecklistItem` en objetos migra estilo de texto al `TEXT_STYLES.body` + configuraci�n por layout (`itemLayout.labelStyle`), evitando fuentes hardcodeadas.
-  - `makeCoverMissionCard` tambi�n migr� estilos de texto de titulo/nivel a estilos compartidos de UI.
+  - `drawPuzzleBoard` usa `SCENE_LAYOUTS.puzzle.infoPanel.labelPanel` para posicionamiento y tipografía del badge.
+  - `drawChecklistItem` en objetos migra estilo de texto al `TEXT_STYLES.body` + configuración por layout (`itemLayout.labelStyle`), evitando fuentes hardcodeadas.
+  - `makeCoverMissionCard` también migró estilos de texto de titulo/nivel a estilos compartidos de UI.
 - Estado funcional de consistencia:
-  - Se reforz� la intenci�n de �unificado por escena� para mantener medidas y tipograf�as coherentes entre pantallas.
-  - No se alter� mec�nica de juego; solo consistencia visual y mantenimiento.
+  - Se reforzó la intención de “unificado por escena” para mantener medidas y tipografías coherentes entre pantallas.
+  - No se alteró mecánica de juego; solo consistencia visual y mantenimiento.
 - Pruebas ejecutadas:
   - `node --check src/main.js`
   - `node --check src/layouts.js`
@@ -507,8 +507,70 @@ Estado:
     - `.../final.png`
     - `.../mobile-landscape.png`
     - `.../mobile-portrait.png`
-- Criterios de cierre para la siguiente iteraci�n:
+- Criterios de cierre para la siguiente iteración:
   - Terminar de migrar cualquier texto/medida hardcodeada en `FinalScene` y `CoverScene` a `SCENE_LAYOUTS`.
   - Reemplazar progresivamente texturas de botones/panels con versiones sin texto embebido para reducir trabajo de mantenimiento.
-  - Continuar con validaci�n visual manual de alta calidad (captura desde navegador no headless) para confirmar jerarqu�a de texto y recortes.
+  - Continuar con validación visual manual de alta calidad (captura desde navegador no headless) para confirmar jerarquía de texto y recortes.
 
+
+
+## Roadmap update (2026-08-14, v19 follow-up)
+- Puzzle board UI polish was extended with layout-driven drag feedback for puzzle pieces.
+- boardStyle now includes snapDistance, dragHint and slotHint in SCENE_LAYOUTS.puzzle.
+- Added dynamic slot hint while dragging (ring + soft sparkle) and moved snap threshold to layout config.
+- Syntax checks executed for src/main.js and src/layouts.js.
+- Captures run with tools/capture-screens.ps1 against http://127.0.0.1:5322/index.html under run name roadmap-cycle-continue-v19.
+- CDP checks for puzzle/objects remained intermittent in this environment (scene did not initialize in Edge headless); keep manual browser verification on this cycle.
+- Next action: review visual spacing in real browser and finish consistency audit for cover/puzzle panel proportions.
+
+## Actualización de ciclo (2026-08-14, v20)
+- Corrección funcional:
+  - Se corrigió la migración de fila de checklist en objetos (drawChecklistItem) para conservar referencias de label y check al usar addChecklistRow.
+  - Se formalizó objects.searchScene.hitDefaults en src/layouts.js para dejar el padding base y escala de hit area en configuración (sin magic numbers en escena).
+- Consistencia:
+  - Mantiene el flujo de interacción del minijuego de objetos con hit-area amplia y feedback visual sin halo.
+  - Quedan listas las próximas tareas de consistencia visual pendiente de inspección manual (portada/puzzle).
+- Pruebas ejecutadas:
+  - node --check src/main.js
+  - node --check src/layouts.js
+  - node --check src/ui.js
+  - node --check src/data.js
+  - node --check tools/puzzle-cdp-test.mjs (intermitente en Edge headless: escena de Puzzle puede no inicializar)
+  - node --check tools/objects-cdp-test.mjs (intermitente en Edge headless: escena de Objetos puede no inicializar)
+  - powershell -File tools/capture-screens.ps1 -BaseUrl 'http://127.0.0.1:5356/index.html' -RunName 'roadmap-cycle-continue-v20'
+
+
+## Actualización de ciclo (2026-08-14, v21)
+- Consistencia y mantenimiento aplicado:
+  - `CoverScene` pasó a usar misiones dinámicas desde `SCENE_LAYOUTS.cover.missions`.
+  - El botón de inicio de portada ahora usa `SCENE_LAYOUTS.cover.startButtonLabel`.
+  - Los feedbacks de `Quiz`, `Puzzle` y `Objetos` se unificaron bajo `SCENE_LAYOUTS.*.feedback`.
+  - `PuzzleGameScene` centraliza umbral de snap y efectos de drag en `SCENE_LAYOUTS.puzzle.boardStyle`.
+  - Se incorporó el contador final dinámico `starCounter` con formato `{value}/{max}` desde `SCENE_LAYOUTS.final.star.counter`.
+  - Se formalizó `addChecklistRow` en `src/ui.js` para reutilizar filas de checklist y evitar duplicación entre pantallas.
+  - `objects.searchScene.hitDefaults` quedó en layout para ajustar hit-area sin números mágicos.
+- Detalle técnico:
+  - `SCENE_LAYOUTS.dones` y escenas secundarias siguen consumiendo estilos compartidos (cards, paneles, feedbacks).
+  - Se removieron textos de fallback embebidos en lógica principal (`Quiz`, `Puzzle`, `Objetos`) y se usa configuración por escena.
+  - Se ajustó `FinalScene` para componer el contador a partir de logros actuales y `max` configurado por layout.
+- Estado funcional:
+  - Sin cambios funcionales de gameplay.
+  - Mantiene compatibilidad con la selección aleatoria de respuestas/objetos y secuencia de avance por escenas.
+- Pruebas ejecutadas en esta vuelta:
+  - node --check src/main.js
+  - node --check src/layouts.js
+  - node --check src/ui.js
+  - node --check src/data.js
+  - `puzzle-cdp` con `BASE_URL=http://127.0.0.1:5369/index.html` (no inicializa escena en Edge headless intermitente)
+  - `objects-cdp` con `BASE_URL=http://127.0.0.1:5369/index.html` (no inicializa escena en Edge headless intermitente)
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl 'http://127.0.0.1:5369/index.html' -RunName 'roadmap-cycle-continue-v21'`
+- Entregables de esta ronda:
+  - Capturas actualizadas en `test-artifacts/roadmap-cycle-continue-v21`.
+  - Archivos modificados:
+    - `docs/ROADMAP.md`
+    - `src/layouts.js`
+    - `src/main.js`
+    - `src/ui.js`
+- Próximos pasos sugeridos:
+  - Revisar en navegador no-headless el recorte de contenedores de botones/preguntas tras esta actualización.
+  - Completar la migración visual completa de `CoverScene` y `FinalScene` para eliminar posibles textos con caracteres de codificación y consolidar progresivamente paneles de progreso.

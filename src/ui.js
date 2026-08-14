@@ -274,6 +274,61 @@ function addChecklistFrame(scene, x, y, title, options = {}) {
   return { panel, header, label };
 }
 
+function addChecklistRow(scene, x, y, text, options = {}) {
+  const {
+    rowKey = "hidden-ui-list_row",
+    rowWidth = 266,
+    rowHeight = 50,
+    rowAlpha = 0.48,
+    iconKey,
+    iconX = -104,
+    iconY = 0,
+    iconWidth = 38,
+    iconHeight = 38,
+    labelX = -55,
+    labelY = 0,
+    labelMaxWidth = 148,
+    labelMaxHeight = 42,
+    labelMinFont = 12,
+    labelStyle = {},
+    checkX = 112,
+    checkY = 0,
+    checkSize = 30,
+    checkTint = 0x4f8553,
+    depth = 8,
+    bodyStyle = {},
+    titleStyle = {},
+  } = options;
+
+  const row = scene.add.container(x, y).setDepth(depth);
+  row.add(scene.add.image(0, 0, rowKey)
+    .setDisplaySize(rowWidth, rowHeight)
+    .setAlpha(rowAlpha));
+  if (iconKey) {
+    row.add(scene.add.image(iconX, iconY, iconKey).setDisplaySize(iconWidth, iconHeight));
+  }
+  const label = addFittedText(scene, labelX, labelY, text, "body", {
+    maxWidth: labelMaxWidth,
+    maxHeight: labelMaxHeight,
+    minFontSize: labelMinFont,
+    style: {
+      ...bodyStyle,
+      ...titleStyle,
+      align: labelX ? "left" : "center",
+      wordWrap: { width: labelMaxWidth },
+    },
+  }).setOrigin(0, 0.5);
+  const check = scene.add.image(checkX, checkY, "ui-icon_check")
+    .setDisplaySize(checkSize, checkSize)
+    .setAlpha(0)
+    .setTint(checkTint)
+    .setOrigin(0.5);
+  row.add([label, check]);
+  check.text = "";
+  check.setData("checked", false);
+  return { row, label, check };
+}
+
 function addScreenTitle(scene, lines, options = {}) {
   const {
     depth = 5,
@@ -522,6 +577,7 @@ window.RosaritoUI = {
   addSectionHeader,
   addQuizQuestionPanel,
   addChecklistFrame,
+  addChecklistRow,
   addScreenTitle,
   addNextButton,
   addPrimaryButton,

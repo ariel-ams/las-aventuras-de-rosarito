@@ -576,13 +576,19 @@ class CoverScene extends BaseScene {
       resetRun();
       this.scene.start(sceneKey);
     };
-    const cards = [
-      ["Infancia", "ui-icon_question", "QuizGame"],
-      ["Puzzle", "ui-icon_puzzle", "PuzzleGame"],
-      ["Objetos", "ui-icon_ink", "ObjectsGame"],
-    ];
-    cards.forEach(([label, icon, sceneKey], i) => {
-      this.makeCoverMissionCard(coverLayout.missionCards.x + i * coverLayout.missionCards.gap, coverLayout.missionCards.y, i + 1, label, icon, () => startTestScene(sceneKey)).setDepth(6);
+    const missionCards = Array.isArray(coverLayout.missions) ? coverLayout.missions : [];
+    missionCards.forEach((mission, i) => {
+      const missionLabel = coverLayout.missionCard?.titlePrefix
+        ? `${coverLayout.missionCard.titlePrefix} ${mission.label}`.trim()
+        : mission.label;
+      this.makeCoverMissionCard(
+        coverLayout.missionCards.x + i * coverLayout.missionCards.gap,
+        coverLayout.missionCards.y,
+        mission.order || i + 1,
+        missionLabel,
+        mission.icon,
+        () => startTestScene(mission.scene),
+      ).setDepth(6);
     });
     this.add.image(coverLayout.goalPanel.x, coverLayout.goalPanel.y, coverLayout.goalPanel.key)
       .setDisplaySize(coverLayout.goalPanel.width, coverLayout.goalPanel.height)
@@ -608,7 +614,7 @@ class CoverScene extends BaseScene {
       style: coverLayout.missionSummary.description.style,
     });
 
-    const start = this.makeButton(coverLayout.startButton.x, coverLayout.startButton.y, "Comenzar", () => {
+    const start = this.makeButton(coverLayout.startButton.x, coverLayout.startButton.y, coverLayout.startButtonLabel || "Comenzar", () => {
       resetRun();
       this.scene.start("QuizGame");
     }, coverLayout.startButton.width);
@@ -730,6 +736,7 @@ class QuizGameScene extends BaseScene {
   }
 
   showQuestion() {
+    const quizFeedback = SCENE_LAYOUTS.quiz.feedback || {};
     const q = gameState.quizSet[gameState.quizIndex];
     const panelLayout = SCENE_LAYOUTS.quiz.questionPanel;
     const questionPanelDepth = panelLayout.panelDepth || 5;
@@ -763,7 +770,7 @@ class QuizGameScene extends BaseScene {
         if (i === q.correct) {
           card.disableInteractive();
           card.add(this.add.image(58, -104, "ui-icon_check").setDisplaySize(42, 42));
-          this.feedback("Respuesta correcta!", true);
+          this.feedback(quizFeedback.correct || "Respuesta correcta", true);
           gameState.quizIndex += 1;
           if (gameState.quizIndex >= gameState.quizSet.length) {
             gameState.achievements[0] = true;
@@ -773,7 +780,7 @@ class QuizGameScene extends BaseScene {
             this.time.delayedCall(650, () => this.scene.restart());
           }
         } else {
-          this.feedback("Probemos otra vez", false);
+          this.feedback(quizFeedback.incorrect || "Probemos otra vez", false);
         }
       }, q.optionIconKeys?.[i]);
     });
@@ -810,6 +817,7 @@ class PuzzleGameScene extends BaseScene {
     this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
       if (!gameObject.getData("locked")) {
         gameObject.setPosition(dragX, dragY);
+        this.updateSlotHint(gameObject);
       }
     });
     this.input.on("dragend", (pointer, gameObject) => this.finishPieceDrag(gameObject, board));
@@ -914,41 +922,53 @@ class PuzzleGameScene extends BaseScene {
       .setAngle(boardLayout.leaf.angle)
       .setDepth(boardLayout.leaf.depth);
 
-    const board = { ...SCENE_LAYOUTS.puzzle.board };
+    const board = { ...puzzleLayout.board };
+    const boardStyle = puzzleLayout.boardStyle || {};
     board.scale = board.size / 512;
-    const frame = this.add.graphics().setDepth(4);
-    frame.fillStyle(0xb992d6, 0.78);
-    frame.fillRoundedRect(board.x - board.size / 2 - 14, board.y - board.size / 2 - 14, board.size + 28, board.size + 28, 22);
-    frame.lineStyle(4, 0x7c529a, 0.95);
-    frame.strokeRoundedRect(board.x - board.size / 2 - 14, board.y - board.size / 2 - 14, board.size + 28, board.size + 28, 22);
-    frame.lineStyle(2, 0xf0d1ff, 0.76);
-    frame.strokeRoundedRect(board.x - board.size / 2 - 5, board.y - board.size / 2 - 5, board.size + 10, board.size + 10, 16);
-    this.add.rectangle(board.x, board.y, board.size, board.size, 0xf7e5c4, 0.62).setDepth(4);
-    this.add.image(board.x, board.y, puzzle.previewKey).setDisplaySize(board.size, board.size).setAlpha(0.22).setDepth(5);
+    const half = board.size / 2;
+    const frame = this.add.graphics().setDepth(boardStyle.frameDepth || 4);
+    frame.fillStyle(boardStyle.sizeColor || 0xb992d6, boardStyle.sizeAlpha ?? 0.78);
+    frame.fillRoundedRect(board.x - half - (boardStyle.cornerPadding || 14), board.y - half - (boardStyle.cornerPadding || 14), board.size + ((boardStyle.cornerPadding || 14) * 2), board.size + ((boardStyle.cornerPadding || 14) * 2), boardStyle.boardRadius || 22);
+    frame.lineStyle(
+      boardStyle.frameThickness || 4,
+      boardStyle.frameColor || 0x7c529a,
+      boardStyle.frameAlpha ?? 0.95
+    );
+    frame.strokeRoundedRect(board.x - half - (boardStyle.cornerPadding || 14), board.y - half - (boardStyle.cornerPadding || 14), board.size + ((boardStyle.cornerPadding || 14) * 2), board.size + ((boardStyle.cornerPadding || 14) * 2), boardStyle.boardStrokeRadius || 22);
+    frame.lineStyle(
+      boardStyle.innerThickness || 2,
+      boardStyle.innerColor || 0xf0d1ff,
+      boardStyle.innerAlpha ?? 0.76
+    );
+    frame.strokeRoundedRect(board.x - half - ((boardStyle.innerCornerPadding || 5)), board.y - half - ((boardStyle.innerCornerPadding || 5)), board.size + ((boardStyle.innerCornerPadding || 5) * 2), board.size + ((boardStyle.innerCornerPadding || 5) * 2), boardStyle.innerRadius || 16);
+    this.add.rectangle(board.x, board.y, board.size, board.size, boardStyle.fillColor || 0xf7e5c4, boardStyle.fillAlpha ?? 0.62).setDepth(boardStyle.fillDepth || 4);
+    this.add.image(board.x, board.y, puzzle.previewKey).setDisplaySize(board.size, board.size).setAlpha(boardStyle.previewAlpha ?? 0.22).setDepth(boardStyle.previewDepth || 5);
     this.drawPuzzleSlotLines(board);
     return board;
   }
 
   drawPuzzleSlotLines(board) {
+    const slotStyle = SCENE_LAYOUTS.puzzle.boardStyle?.slotLine || {};
+    const slotOverlay = SCENE_LAYOUTS.puzzle.boardStyle?.slotLineOverlay || {};
     const g = this.add.graphics().setDepth(6);
     const left = board.x - board.size / 2;
     const top = board.y - board.size / 2;
     const midX = board.x;
     const midY = board.y;
-    g.lineStyle(3, 0xc99d68, 0.72);
+    g.lineStyle(slotStyle.thickness || 3, slotStyle.color || 0xc99d68, slotStyle.alpha ?? 0.72);
     g.beginPath();
     g.moveTo(midX, top);
-    g.lineTo(midX, board.y - 54);
-    g.strokeCircle(midX + 26, board.y - 28, 25);
-    g.moveTo(midX, board.y - 2);
+    g.lineTo(midX, board.y - (slotStyle.topStopOffset || 54));
+    g.strokeCircle(midX + (slotStyle.leftArcOffsetX || 26), board.y - (slotStyle.leftArcOffsetY || 28), slotStyle.radiusSmall || 25);
+    g.moveTo(midX, board.y - (slotStyle.middleStopOffset || 2));
     g.lineTo(midX, top + board.size);
     g.moveTo(left, midY);
-    g.lineTo(board.x - 62, midY);
-    g.strokeCircle(board.x - 35, midY - 23, 24);
-    g.moveTo(board.x - 8, midY);
+    g.lineTo(board.x - (slotStyle.leftStopOffset || 62), midY);
+    g.strokeCircle(board.x - (slotStyle.rightArcOffsetX || 35), midY - (slotStyle.rightArcOffsetY || 23), slotStyle.radiusLarge || 24);
+    g.moveTo(board.x - (slotStyle.rightStopOffset || 8), midY);
     g.lineTo(left + board.size, midY);
     g.strokePath();
-    g.lineStyle(2, 0xffffff, 0.48);
+    g.lineStyle(slotOverlay.thickness || 2, slotOverlay.color || 0xffffff, slotOverlay.alpha ?? 0.48);
     g.strokeRoundedRect(left, top, board.size, board.size, 14);
   }
 
@@ -959,24 +979,49 @@ class PuzzleGameScene extends BaseScene {
     const slotSpacing = trayLayout.slotSpacing;
     const slotStartX = trayLayout.x + trayLayout.slotMargin;
     const slotYAbs = trayLayout.y + slotY;
-    const trayPanel = this.add.image(trayLayout.x + trayLayout.width / 2, trayLayout.y + trayLayout.height / 2, "ui-panel_task_floral")
-      .setDisplaySize(trayLayout.width + 22, trayLayout.height + 22)
-      .setDepth(3)
-      .setAlpha(0.82);
-    this.add.image(trayLayout.x + 28, trayLayout.y + 22, "ui-icon_sparkles").setDisplaySize(28, 28).setDepth(5).setAlpha(0.7);
-    this.add.image(trayLayout.x + trayLayout.width - 36, trayLayout.y + trayLayout.height - 24, "ui-flower_cluster_bottom")
-      .setDisplaySize(72, 42)
-      .setDepth(5)
-      .setAlpha(0.78);
-    this.add.image(trayLayout.x + 24, trayLayout.y + trayLayout.height - 22, "m2-leaves")
-      .setDisplaySize(42, 30)
-      .setDepth(5)
-      .setAngle(-8)
-      .setAlpha(0.7);
+    const trayPanel = this.add.image(trayLayout.x + trayLayout.width / 2, trayLayout.y + trayLayout.height / 2, trayLayout.panel?.key || "ui-panel_task_floral")
+      .setDisplaySize(trayLayout.width + (trayLayout.panel?.padding || 22), trayLayout.height + (trayLayout.panel?.padding || 22))
+      .setDepth(trayLayout.panel?.depth || 3)
+      .setAlpha(trayLayout.panel?.alpha || 0.82);
+    const decor = trayLayout.decor || {};
+    if (decor.topLeftSparkle) {
+      const deco = decor.topLeftSparkle;
+      this.add.image(
+        trayLayout.x + (deco.xOffset || 0),
+        trayLayout.y + (deco.yOffset || 0),
+        deco.key || "ui-icon_sparkles"
+      ).setDisplaySize(deco.width, deco.height).setDepth(deco.depth || 5).setAlpha(deco.alpha ?? 0.7);
+    }
+    if (decor.bottomRightFlower) {
+      const deco = decor.bottomRightFlower;
+      this.add.image(
+        trayLayout.x + (deco.xOffset || 0),
+        trayLayout.y + (deco.yOffset || 0),
+        deco.key || "ui-flower_cluster_bottom"
+      ).setDisplaySize(deco.width, deco.height).setDepth(deco.depth || 5).setAlpha(deco.alpha ?? 0.78);
+    }
+    if (decor.bottomLeftLeaves) {
+      const deco = decor.bottomLeftLeaves;
+      this.add.image(
+        trayLayout.x + (deco.xOffset || 0),
+        trayLayout.y + (deco.yOffset || 0),
+        deco.key || "m2-leaves"
+      ).setDisplaySize(deco.width, deco.height)
+        .setDepth(deco.depth || 5)
+        .setAngle(deco.angle || 0)
+        .setAlpha(deco.alpha ?? 0.7);
+    }
 
     const tray = this.add.graphics().setDepth(4);
-    tray.lineStyle(2, 0xd8b17a, 0.86);
-    tray.strokeRoundedRect(trayLayout.x + 15, trayLayout.y + 10, trayLayout.width - 30, trayLayout.height - 24, 18);
+    const border = trayLayout.border || {};
+    tray.lineStyle(border.thickness || 2, border.color || 0xd8b17a, border.alpha ?? 0.86);
+    tray.strokeRoundedRect(
+      trayLayout.x + (border.xPadding || 15),
+      trayLayout.y + (border.yPadding || 10),
+      trayLayout.width - (border.widthInset || 30),
+      trayLayout.height - (border.heightInset || 24),
+      border.radius || 18,
+    );
     this.traySlots = shuffle([
       { x: slotStartX, y: slotYAbs },
       { x: slotStartX + slotSpacing, y: slotYAbs },
@@ -985,16 +1030,34 @@ class PuzzleGameScene extends BaseScene {
     ]);
     this.traySlots = this.traySlots.slice(0, slotCount);
     this.traySlots.forEach((slot) => {
+      const slotVisual = trayLayout.slotBg || {};
       const slotBg = this.add.graphics().setDepth(4);
-      slotBg.fillStyle(0xfff6de, 0.28);
-      slotBg.fillRoundedRect(slot.x - 44, slot.y - 45, 88, 90, 18);
-      slotBg.lineStyle(2, 0xd6ad78, 0.55);
-      slotBg.strokeRoundedRect(slot.x - 43, slot.y - 44, 86, 88, 14);
-      const slotGlow = this.add.image(slot.x, slot.y, "ui-icon_sparkles")
-        .setDisplaySize(18, 18)
-        .setAlpha(0.22)
+      slotBg.fillStyle(slotVisual.fillColor || 0xfff6de, slotVisual.fillAlpha ?? 0.28);
+      slotBg.fillRoundedRect(
+        slot.x - ((slotVisual.width || 88) / 2),
+        slot.y - ((slotVisual.height || 90) / 2),
+        slotVisual.width || 88,
+        slotVisual.height || 90,
+        slotVisual.radius || 18
+      );
+      slotBg.lineStyle(
+        slotVisual.borderThickness || 2,
+        slotVisual.borderColor || 0xd6ad78,
+        slotVisual.borderAlpha ?? 0.55
+      );
+      slotBg.strokeRoundedRect(
+        slot.x - ((slotVisual.width || 88) / 2) + 1,
+        slot.y - ((slotVisual.height || 90) / 2) + 1,
+        slotVisual.width ? slotVisual.width - 2 : 86,
+        slotVisual.height ? slotVisual.height - 2 : 88,
+        slotVisual.borderRadius || 14
+      );
+      const glow = slotVisual.glow || {};
+      const slotGlow = this.add.image(slot.x, slot.y, glow.key || "ui-icon_sparkles")
+        .setDisplaySize(glow.size || 18, glow.size || 18)
+        .setAlpha(glow.alpha ?? 0.22)
         .setDepth(4);
-      slotGlow.setTint(0xf2cf9e);
+      slotGlow.setTint(glow.tint || 0xf2cf9e);
     });
     this.trayScale = board.scale * 0.4;
   }
@@ -1039,13 +1102,74 @@ class PuzzleGameScene extends BaseScene {
     piece.setDepth(30);
     this.tweens.killTweensOf(piece);
     this.tweens.add({ targets: piece, scale: board.scale * 1.04, duration: 120 });
+    this.clearSlotHint();
+  }
+
+  updateSlotHint(piece) {
+    const boardStyle = SCENE_LAYOUTS.puzzle.boardStyle || {};
+    const dragHint = boardStyle.dragHint || {};
+    if (!this.traySlots?.length) return;
+
+    let nearest;
+    let nearestDistance = Number.POSITIVE_INFINITY;
+    this.traySlots.forEach((slot) => {
+      const distance = Phaser.Math.Distance.Between(piece.x, piece.y, slot.x, slot.y);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearest = slot;
+      }
+    });
+
+    const shouldHint = nearestDistance <= (boardStyle.dragHint?.activeDistance || 120);
+    if (!shouldHint || !nearest) {
+      this.clearSlotHint();
+      return;
+    }
+
+    const activeSlot = this._activeSlotHint;
+    const slotHint = boardStyle.slotHint || {};
+    if (!activeSlot || activeSlot.x !== nearest.x || activeSlot.y !== nearest.y) {
+      this.clearSlotHint();
+      const ring = this.add.graphics().setDepth(dragHint.depth || 16);
+      ring.lineStyle(slotHint.thickness || 2, slotHint.color || 0x6f3a90, slotHint.alpha ?? 0.2);
+      ring.strokeCircle(nearest.x, nearest.y, slotHint.radius || 28);
+      const icon = this.add.image(nearest.x, nearest.y, dragHint.key || "ui-icon_sparkles")
+        .setDisplaySize(dragHint.size || 28, dragHint.size || 28)
+        .setAlpha(dragHint.alpha || 0.4)
+        .setDepth((dragHint.depth || 16) + 1);
+      if (dragHint.tint) icon.setTint(dragHint.tint);
+      this._activeSlotHint = { x: nearest.x, y: nearest.y, ring, icon };
+      this.tweens.add({
+        targets: icon,
+        alpha: 0,
+        y: nearest.y - 6,
+        duration: 420,
+        ease: "Sine.easeInOut",
+        yoyo: true,
+        repeat: -1,
+      });
+    }
+  }
+
+  clearSlotHint() {
+    if (!this._activeSlotHint) return;
+    if (this._activeSlotHint.ring) {
+      this._activeSlotHint.ring.destroy();
+    }
+    if (this._activeSlotHint.icon) {
+      this._activeSlotHint.icon.destroy();
+    }
+    this._activeSlotHint = null;
   }
 
   finishPieceDrag(piece, board) {
     if (piece.getData("locked")) return;
+    this.clearSlotHint();
     const data = piece.getData("piece");
+    const boardStyle = SCENE_LAYOUTS.puzzle.boardStyle || {};
+    const snapDistance = boardStyle.snapDistance || 78;
     const distance = Phaser.Math.Distance.Between(piece.x, piece.y, data.targetX, data.targetY);
-    if (distance < 78) {
+    if (distance < snapDistance) {
       piece.setData("locked", true);
       piece.disableInteractive();
       this.tweens.add({
@@ -1069,41 +1193,41 @@ class PuzzleGameScene extends BaseScene {
         onComplete: () => slotGlow.destroy(),
       });
       const sparkle = this.add.image(data.targetX, data.targetY, "ui-icon_sparkles")
-        .setDisplaySize(34, 34)
+        .setDisplaySize((boardStyle.sparkle?.size || 34), (boardStyle.sparkle?.size || 34))
         .setDepth(31)
         .setAlpha(0.92);
       this.tweens.add({
         targets: sparkle,
         alpha: 0,
-        y: data.targetY - 14,
+        y: data.targetY - (boardStyle.sparkle?.rise || 14),
         scale: 1.18,
-        duration: 360,
+        duration: boardStyle.sparkle?.fadeDuration || 360,
         ease: "Cubic.easeOut",
         onComplete: () => sparkle.destroy(),
       });
       const boardPulse = this.add.image(board.x, board.y, "ui-icon_sparkles")
         .setDepth(6)
-        .setDisplaySize(28, 28)
+        .setDisplaySize((boardStyle.boardPulse?.size || 28), (boardStyle.boardPulse?.size || 28))
         .setAlpha(0.65);
       this.tweens.add({
         targets: boardPulse,
-        scale: 3.6,
+        scale: boardStyle.boardPulse?.scale || 3.6,
         alpha: 0,
         duration: 360,
         ease: "Cubic.easeOut",
         onComplete: () => boardPulse.destroy(),
       });
       const lockedBadge = this.add.image(data.targetX, data.targetY, "m2-heart")
-        .setDisplaySize(26, 24)
+        .setDisplaySize(boardStyle.lockBadge?.size || 26, boardStyle.lockBadge?.sizeLarge || 24)
         .setDepth(32)
         .setAlpha(0.9)
-        .setTint(0x5ea57f);
+        .setTint(boardStyle.lockBadge?.tint || 0x5ea57f);
       this.tweens.add({
         targets: lockedBadge,
         alpha: 0,
-        y: data.targetY - 8,
+        y: data.targetY - (boardStyle.lockBadge?.offsetY || 8),
         scale: 1.2,
-        duration: 360,
+        duration: boardStyle.boardPulse?.duration || 360,
         ease: "Cubic.easeOut",
         onComplete: () => lockedBadge.destroy(),
       });
@@ -1111,7 +1235,9 @@ class PuzzleGameScene extends BaseScene {
       playTone(this, "success");
       if (this.done === 4) this.completePuzzle();
     } else {
-      this.feedback("Casi! Mira la guia y prueba otra vez.", false);
+      const puzzleLayout = SCENE_LAYOUTS.puzzle;
+      const puzzleFeedback = puzzleLayout.feedback || {};
+      this.feedback(puzzleFeedback.incorrect || "Casi! Mira la guía y prueba otra vez.", false);
       this.tweens.add({
         targets: piece,
         x: data.trayX,
@@ -1124,11 +1250,13 @@ class PuzzleGameScene extends BaseScene {
   }
 
   createLockedNextButton() {
+    const puzzleLayout = SCENE_LAYOUTS.puzzle;
+    const puzzleFeedback = puzzleLayout.feedback || {};
     this.nextButton = window.RosaritoUI.addNextButton(
       this,
-      SCENE_LAYOUTS.puzzle.nextButton.x,
-      SCENE_LAYOUTS.puzzle.nextButton.y,
-      "Siguiente",
+      puzzleLayout.nextButton.x,
+      puzzleLayout.nextButton.y,
+      puzzleLayout.nextButton.label || "Siguiente",
       () => {
         gameState.puzzleIndex += 1;
         if (gameState.puzzleIndex >= gameState.puzzleSet.length) {
@@ -1146,7 +1274,9 @@ class PuzzleGameScene extends BaseScene {
   }
 
   completePuzzle() {
-    this.feedback("Imagen completa!", true);
+    const puzzleLayout = SCENE_LAYOUTS.puzzle;
+    const puzzleFeedback = puzzleLayout.feedback || {};
+    this.feedback(puzzleFeedback.correct || "Imagen completa", true);
     gameState.achievements[1] = true;
     this.celebrateRosarito();
     this.enableNextButton();
@@ -1285,29 +1415,29 @@ class ObjectsGameScene extends BaseScene {
   drawChecklistItem(obj, index) {
     const checklistLayout = SCENE_LAYOUTS.objects.checklist;
     const itemLayout = checklistLayout.item || {};
-    const typography = window.RosaritoUI.TEXT_STYLES || {};
-    const bodyStyle = typography.body || {};
     const y = (itemLayout.startY || 456) + index * (itemLayout.spacing || 48);
-    const row = this.add.container(checklistLayout.x, y).setDepth(8);
-    row.add(this.add.image(0, 0, "hidden-ui-list_row").setDisplaySize(itemLayout.width || 266, itemLayout.height || 50).setAlpha(0.48));
-    row.add(this.add.image(itemLayout.iconX || -104, itemLayout.labelY || 0, obj.iconKey).setDisplaySize(itemLayout.iconW || 38, itemLayout.iconH || 38));
-    const label = window.RosaritoUI.addFittedText(this, itemLayout.labelX || -55, itemLayout.labelY || 0, obj.label, "body", {
-      maxWidth: itemLayout.labelMaxWidth || 148,
-      maxHeight: itemLayout.labelMaxHeight || 42,
-      minFontSize: itemLayout.labelMinFont || 12,
-      style: {
-        ...bodyStyle,
-        ...itemLayout.labelStyle,
-      },
-    }).setOrigin(0, 0.5);
-    const check = this.add.image(itemLayout.checkX || 112, itemLayout.labelY || 0, "ui-icon_check")
-      .setDisplaySize(itemLayout.checkSize || 30, itemLayout.checkSize || 30)
-      .setAlpha(0)
-      .setTint(itemLayout.checkTint || 0x4f8553)
-      .setOrigin(0.5);
-    check.text = "";
-    check.setData("checked", false);
-    row.add([label, check]);
+    const typography = window.RosaritoUI.TEXT_STYLES || {};
+    const { row, label, check } = window.RosaritoUI.addChecklistRow(this, checklistLayout.x, y, obj.label, {
+      ...itemLayout,
+      bodyStyle: typography.body || {},
+      titleStyle: itemLayout.labelStyle || {},
+      rowKey: "hidden-ui-list_row",
+      rowWidth: itemLayout.width || 266,
+      rowHeight: itemLayout.height || 50,
+      iconKey: obj.iconKey,
+      iconX: itemLayout.iconX,
+      iconY: itemLayout.labelY || 0,
+      iconWidth: itemLayout.iconW || 38,
+      iconHeight: itemLayout.iconH || 38,
+      labelX: itemLayout.labelX || -55,
+      labelY: itemLayout.labelY || 0,
+      labelMaxWidth: itemLayout.labelMaxWidth || 148,
+      labelMaxHeight: itemLayout.labelMaxHeight || 42,
+      labelMinFont: itemLayout.labelMinFont || 12,
+      checkX: itemLayout.checkX || 112,
+      checkSize: itemLayout.checkSize || 30,
+      checkTint: itemLayout.checkTint || 0x4f8553,
+    });
     this.checkItems.set(obj.id, { row, label, check });
   }
 
@@ -1317,17 +1447,18 @@ class ObjectsGameScene extends BaseScene {
     const objectY = Number.isFinite(obj.yRatio) ? bounds.y - bounds.height / 2 + bounds.height * obj.yRatio : obj.y;
     const objectWidth = Number.isFinite(obj.widthRatio) ? bounds.width * obj.widthRatio : obj.width;
     const objectHeight = Number.isFinite(obj.heightRatio) ? bounds.height * obj.heightRatio : obj.height;
+    const searchScene = SCENE_LAYOUTS.objects.searchScene || {};
+    const searchDefaults = searchScene.hitDefaults || {};
+    const baseHitPadding = Number(searchDefaults.basePadding || 58);
     const target = this.add.container(objectX, objectY).setDepth(12);
     const sprite = this.add.image(0, 0, obj.spriteKey).setDisplaySize(objectWidth, objectHeight);
     target.add(sprite);
-    const hitPadding = Math.max(obj.hitPadding || 0, 58);
+    const hitPadding = Math.max(
+      Number(obj.hitPadding || 0),
+      baseHitPadding,
+      Math.round(Math.max(objectWidth, objectHeight) * Number(searchDefaults.sizeScale || 0.10)),
+    );
     target.setSize(objectWidth + hitPadding * 2, objectHeight + hitPadding * 2);
-    target.setInteractive(new Phaser.Geom.Rectangle(
-      -target.width / 2,
-      -target.height / 2,
-      target.width,
-      target.height,
-    ), Phaser.Geom.Rectangle.Contains);
     target.setData("object", { ...obj, x: objectX, y: objectY, width: objectWidth, height: objectHeight });
     target.setData("found", false);
     target.on("pointerover", () => {
@@ -1345,9 +1476,12 @@ class ObjectsGameScene extends BaseScene {
       requestImmersiveMode();
       this.findHiddenObject(target);
     });
-    target.disableInteractive();
 
-    const generousHitPadding = Math.max(obj.hitPadding || 0, 58);
+    const generousHitPadding = Math.max(
+      Number(obj.hitPadding || 0),
+      baseHitPadding,
+      Math.round(Math.max(objectWidth, objectHeight) * Number(searchDefaults.sizeScale || 0.10)),
+    );
     const hitZone = this.add.zone(
       objectX,
       objectY,
@@ -1490,11 +1624,12 @@ class ObjectsGameScene extends BaseScene {
   }
 
   createObjectsNextButton() {
+    const objectsLayout = SCENE_LAYOUTS.objects;
     this.nextButton = window.RosaritoUI.addNextButton(
       this,
-      SCENE_LAYOUTS.objects.nextButton.x,
-      SCENE_LAYOUTS.objects.nextButton.y,
-      "Siguiente",
+      objectsLayout.nextButton.x,
+      objectsLayout.nextButton.y,
+      objectsLayout.nextButtonLabel || "Siguiente",
       () => this.scene.start("Final"),
       { enabled: false },
     );
@@ -1505,10 +1640,12 @@ class ObjectsGameScene extends BaseScene {
   }
 
   completeHiddenObjects() {
+    const objectsLayout = SCENE_LAYOUTS.objects;
+    const objectFeedback = objectsLayout.feedback || {};
     this.stopObjectHintLoop();
     gameState.achievements[2] = true;
     this.celebrateRosarito();
-    this.feedback("Encontraste todos los objetos!", true);
+    this.feedback(objectFeedback.complete || "Encontraste todos los objetos.", true);
     this.tweens.add({ targets: this.successPanel, alpha: 1, y: 610, duration: 280, ease: "Back.easeOut" });
     this.enableObjectsNextButton();
   }
@@ -1565,7 +1702,10 @@ class FinalScene extends BaseScene {
     this.add.image(finalLayout.star.x, finalLayout.star.y, finalLayout.star.key)
       .setDisplaySize(finalLayout.star.width, finalLayout.star.height)
       .setDepth(finalLayout.star.depth);
-    window.RosaritoUI.addFittedText(this, finalLayout.star.counter.x, finalLayout.star.counter.y, finalLayout.star.counter.text, "title", {
+    const starCountLayout = finalLayout.star.counter || {};
+    const totalStars = Number(starCountLayout.max || gameState.achievements.length || 3);
+    const starCountValue = `${gameState.achievements.filter(Boolean).length}/${totalStars}`;
+    window.RosaritoUI.addFittedText(this, finalLayout.star.counter.x, finalLayout.star.counter.y, starCountValue, "title", {
       maxWidth: finalLayout.star.counter.maxWidth,
       maxHeight: finalLayout.star.counter.maxHeight,
       minFontSize: finalLayout.star.counter.minFontSize,
