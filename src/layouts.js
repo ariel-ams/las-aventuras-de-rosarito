@@ -1047,6 +1047,23 @@ const SCENE_LAYOUTS = {
         },
       },
     },
+    achievementStrip: {
+      enabled: true,
+      items: [
+        { key: "ui-icon_question", x: 690, y: 538, size: 42, depth: 6 },
+        { key: "ui-icon_puzzle", x: 776, y: 538, size: 42, depth: 6 },
+        { key: "ui-icon_ink", x: 862, y: 538, size: 42, depth: 6 },
+      ],
+      activeTint: 0x8e5295,
+      inactiveTint: 0x9c8c99,
+      activeAlpha: 1,
+      inactiveAlpha: 0.35,
+      checkKey: "ui-icon_check",
+      checkSize: 22,
+      checkTint: 0x4f8553,
+      checkOffsetX: 14,
+      checkOffsetY: -16,
+    },
     text: {
       title: "Objetivos cumplidos",
       body: "Las tres estrellas están encendidas. Rosarito ya completó sus recuerdos, su rompecabezas y sus objetos de enseñanza.",
@@ -1057,6 +1074,7 @@ const SCENE_LAYOUTS = {
       width: 270,
       label: "Jugar de nuevo",
       targetScene: "Cover",
+      depth: 10,
     },
   },
 };

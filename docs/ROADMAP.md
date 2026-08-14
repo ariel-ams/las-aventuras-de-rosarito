@@ -603,3 +603,31 @@ Estado:
     - migrar configuraciones equivalentes de cover/final a `SCENE_LAYOUTS`,
     - completar el cierre visual del bloque de objetivo del final,
     - revisar en navegador interactivo los bordes de preguntas/panels tras el ajuste de progreso.
+
+## Actualización de ciclo (2026-08-14, v23)
+
+- Cambios implementados:
+  - Se completó una capa de finalización visual en `SCENE_LAYOUTS.final` para representar progreso objetivo:
+    - nuevo bloque `achievementStrip` con 3 íconos (pregunta, rompecabezas, objetos),
+    - estado activo/inactivo con tintes y opacidad por configuración,
+    - check visual por objetivo completado (sprite `ui-icon_check`).
+  - `FinalScene` ahora pinta esa franja de logros justo antes del panel de estrellas:
+    - no altera la secuencia de juego,
+    - permite feedback visual inmediato de progreso de logros sin depender de escena nueva,
+    - respeta `finalLayout`.
+  - Se ajustó profundidad del botón de reinicio para que lea `finalLayout.restart.depth` si está definido (evita hardcodeo de valor fijo).
+- Pruebas ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `BASE_URL=http://127.0.0.1:5322/index.html node tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v23-final`
+  - `BASE_URL=http://127.0.0.1:5322/index.html node tools/puzzle-cdp-test.mjs` *(sigue intermitente en este entorno: `Puzzle scene did not initialize`)*
+  - `BASE_URL=http://127.0.0.1:5322/index.html node tools/objects-cdp-test.mjs` *(sigue intermitente en este entorno: `Objects scene did not initialize`)*
+- Estado visual/funcional actual:
+  - El flujo de juego y progresión no cambió.
+  - Final ahora muestra mejor trazabilidad de logros (3 íconos de objetivos) con estado visual por completado.
+  - Los archivos de captura quedaron en `test-artifacts/roadmap-cycle-continue-v23-final`.
+- Siguientes pasos sugeridos:
+  - Reforzar la etapa de consistencia de contenedores en `FinalScene` y `CoverScene` (bordes/paneles) para mantener el mismo patrón que el resto del juego.
+  - Resolver la inestabilidad del CDP para validar automatizadamente interacción fina de click/drag en este entorno.

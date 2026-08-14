@@ -113,3 +113,25 @@
 - Siguiente bloque propuesto:
   - Unificar encabezados/globos y paneles de checklist en base de componentes reutilizables.
   - Revisar en navegador interactivo (no headless) si hubo recortes o superposiciones tras la migración de estilos.
+
+## Seguimiento de iteración (2026-08-14, v23)
+
+- Implementado:
+  - `SCENE_LAYOUTS.final.achievementStrip` con estado visual por objetivo.
+  - `FinalScene` renderiza 3 íconos de logro con tintes/alpha activo/inactivo + check.
+  - Se respetó configuración de profundidad para botón de reinicio desde layout.
+
+- Ejecutado:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `BASE_URL=http://127.0.0.1:5322/index.html node tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v23-final`
+  - `BASE_URL=http://127.0.0.1:5322/index.html node tools/puzzle-cdp-test.mjs` *(intermitente en Edge headless)*
+  - `BASE_URL=http://127.0.0.1:5322/index.html node tools/objects-cdp-test.mjs` *(intermitente en Edge headless)*
+
+- Siguiente objetivo:
+  - Continuar con la etapa de consistencia global:
+    - revisar `CoverScene`/`FinalScene` para que texto y bordes compartan misma biblioteca visual,
+    - eliminar cualquier número/fallback estático no centralizado,
+    - validar en captura interactiva que no haya recortes de contenido.
