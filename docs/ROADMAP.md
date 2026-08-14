@@ -27,6 +27,9 @@ Capturas revisadas:
 - Tanda nueva del ciclo actual (v25): `test-artifacts/roadmap-cycle-continue-v25/`
 - Tanda nueva del ciclo actual (v36): `test-artifacts/roadmap-cycle-continue-v36/`
 - Tanda nueva del ciclo actual (v38): `test-artifacts/roadmap-cycle-continue-v38/`
+- Tanda nueva del ciclo actual (v39): `test-artifacts/roadmap-cycle-continue-v39/`
+- Tanda nueva del ciclo actual (v40): `test-artifacts/roadmap-cycle-continue-v40/`
+- Tanda nueva del ciclo actual (v41): `test-artifacts/roadmap-cycle-continue-v41/`
 
 Cambios ya aplicados en esta ronda:
 
@@ -121,6 +124,7 @@ Resultado funcional:
 - Se terminaron correcciones de textos visibles con caracteres de UTF-8 quebrados para evitar lectura con caracteres extraÃƒÂ±os.
 - `src/layouts.js` subió los labels de las tarjetas iniciales para mejorar separación visual.
 - `src/ui.js` separó el estado de progreso completado del estado actual en la barra de estrellas para evitar indicadores ambiguos.
+- `makeCoverMissionCard` ahora usa `addFittedText` para el número en tarjeta de misión y quedó totalmente parametrizable desde `SCENE_LAYOUTS.cover.missionCard.numberText`.
 
 Progreso de este ciclo (v38):
 
@@ -137,13 +141,91 @@ Progreso de este ciclo (v38):
   - `BASE_URL=http://127.0.0.1:5603/index.html node tools/puzzle-cdp-test.mjs` (continúa sin inicializar en Edge headless en este entorno)
   - `BASE_URL=http://127.0.0.1:5603/index.html node tools/objects-cdp-test.mjs` (continúa sin inicializar en Edge headless en este entorno)
 
-Próxima iteración sugerida (v39):
+Actualización de ciclo (2026-08-14, v39):
 
-- Cerrar pendientes de unificación visual de pantalla:
-  - portada, quiz, puzzle y objetos con el mismo sistema de contenedores de texto/paneles;
-  - revisar visualmente `v38` en navegador visible para confirmar texto dentro de contenedor y jerarquía.
-- Avanzar con consistencia de `CoverScene` y `FinalScene` usando componentes de layout compartidos para evitar nuevos hardcodeos.
-- Mantener el objetivo de CDP, priorizando un marker de debug más explícito si persiste la inestabilidad de la escena en headless.
+- Cambios aplicados:
+  - `CoverScene.makeCoverMissionCard` usa `addFittedText` para dibujar el número de misión de la tarjeta de actividad usando parámetros de layout (`SCENE_LAYOUTS.cover.missionCard.numberText`).
+  - `SCENE_LAYOUTS.cover.missionCard.numberText` quedó con límites de autoajuste y depth explícitos.
+- Pruebas ejecutadas en esta iteración:
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node --check src/layouts.js`
+  - `node --check src/data.js`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5322/index.html" -RunName "roadmap-cycle-continue-v39"`
+  - `BASE_URL=http://127.0.0.1:5322/index.html node tools/puzzle-cdp-test.mjs` (continúa con `Puzzle scene did not initialize` en este entorno headless)
+  - `BASE_URL=http://127.0.0.1:5322/index.html node tools/objects-cdp-test.mjs` (continúa con `Scene manager not ready for objects test` en este entorno headless)
+- Evidencia:
+  - `test-artifacts/roadmap-cycle-continue-v39/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v39/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v39/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v39/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v39/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v39/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v39/mobile-portrait.png`
+
+Actualización de ciclo (2026-08-14, v40):
+
+- Cambios aplicados:
+  - Se reforzó el script de pruebas de objetos y rompecabezas para capturar logs de consola (`Runtime.consoleAPICalled`) y reportar contexto ampliado cuando no inicia escena.
+  - `tools/puzzle-cdp-test.mjs` y `tools/objects-cdp-test.mjs` ahora validan explícitamente la presencia de `window.Phaser` y la inicialización de `Phaser` antes de ejecutar el flujo.
+  - `tools/capture-screens.ps1` mejoró flags de ejecución headless para capturas más consistentes (`--no-first-run`, `--disable-background-timer-throttling`, `--run-all-compositor-stages-before-draw`, mayor `--virtual-time-budget`).
+  - `CoverScene` ya usa helper de encabezado unificado (`addSectionHeader`) en el bloque de misión, removiendo trazas de composición manual del globo.
+  - `SCENE_LAYOUTS.cover.missionCards.y` y `makeCoverMissionCard.numberLayout` se ajustaron para mejor jerarquía y evitar solapes de texto.
+- Pruebas ejecutadas en esta iteración:
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node --check src/layouts.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5700/index.html" -RunName "roadmap-cycle-continue-v40"`
+  - `BASE_URL=http://127.0.0.1:5700/index.html node tools/puzzle-cdp-test.mjs` (requiere entorno con Phaser accesible por CDN; en este entorno `window.Phaser` no está disponible en CDP, falla en bootstrap)
+  - `BASE_URL=http://127.0.0.1:5700/index.html node tools/objects-cdp-test.mjs` (requiere entorno con Phaser accesible por CDN; en este entorno `window.Phaser` no está disponible en CDP)
+- Evidencia:
+  - `test-artifacts/roadmap-cycle-continue-v40/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v40/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v40/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v40/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v40/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v40/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v40/mobile-portrait.png`
+- Resultado de esta ronda:
+  - Los cambios visuales y de estructura quedaron aplicados sin cambios funcionales en gameplay.
+  - El entorno headless siguió sin inicializar escenas de Phaser porque el script depende de `https://cdn.jsdelivr.net/...` para cargar Phaser y en este entorno esa librería no se resuelve para los procesos CDP. La capa visual y la app en navegador visible siguen siendo validadas mediante captura.
+
+Actualización de ciclo (2026-08-14, v41):
+
+- Cambios aplicados:
+  - `FinalScene` consolidó paneles de título y cuerpo usando `RosaritoUI.addNarrativeBubble` para alinear el patrón de composición con el resto de pantallas narrativas.
+  - `FinalScene` ya no depende de texto formateado duro para contador de estrellas: ahora usa plantilla desde layout (`SCENE_LAYOUTS.final.star.counter.template`) con variables `{value}` y `{max}`.
+  - Se ajustó la semántica de la escena final para que respete únicamente configuración de `SCENE_LAYOUTS.final`, manteniendo la coherencia de layout.
+- Verificación ejecutada en esta iteración:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5900/index.html" -RunName "roadmap-cycle-continue-v41"` 
+  - `BASE_URL=http://127.0.0.1:5900/index.html node tools/puzzle-cdp-test.mjs` (time out de evaluación en este entorno CDP)
+  - `BASE_URL=http://127.0.0.1:5900/index.html node tools/objects-cdp-test.mjs` (no inicializa escena en este entorno CDP)
+- Evidencia:
+  - `test-artifacts/roadmap-cycle-continue-v41/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v41/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v41/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v41/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v41/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v41/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v41/mobile-portrait.png`
+- Pendiente:
+  - `BASE_URL=http://127.0.0.1:5700/index.html node tools/puzzle-cdp-test.mjs` todavía depende de CDN y puede fallar en este entorno si `window.Phaser` no está presente en CDP.
+  - `BASE_URL=http://127.0.0.1:5700/index.html node tools/objects-cdp-test.mjs` con la misma limitación.
+  - Se requiere una pasada visual dedicada de `FinalScene` con navegador visible para comprobar que el texto de cierre no queda recortado.
+
+Próxima iteración sugerida (v42):
+
+- Cerrar el bloque de consistencia UI con una revisión final de contenedores (`FinalScene`, cierre y tarjetas de confirmación de objetos).
+- Preparar estrategia de bootstrap offline para `tools/*-cdp-test.mjs` (bundle local o ejecución en entorno con Phaser disponible) y dejar test headless estable.
 
 ## Comparacion con la referencia
 

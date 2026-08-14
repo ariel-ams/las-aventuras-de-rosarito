@@ -40,6 +40,7 @@ foreach ($shot in $shots) {
   $separator = if ($BaseUrl.Contains("?")) { "&" } else { "?" }
   $url = "${BaseUrl}${separator}$($shot.query)"
   $path = Join-Path $targetDir $shot.name
-  & $EdgePath --headless=new --disable-gpu --use-gl=swiftshader --disable-software-rasterizer --no-sandbox --hide-scrollbars --window-size=$($shot.size) --virtual-time-budget=9000 --screenshot=$path $url | Out-Null
+  & $EdgePath --headless=new --disable-gpu --use-gl=swiftshader --disable-software-rasterizer --no-sandbox --no-first-run --no-default-browser-check `
+    --disable-background-timer-throttling --run-all-compositor-stages-before-draw --hide-scrollbars --window-size=$($shot.size) --virtual-time-budget=18000 --screenshot=$path $url | Out-Null
   Write-Output $path
 }

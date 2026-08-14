@@ -11,6 +11,65 @@
   - Cobertura de código y estructura de escenas permanecen consistentes.
   - Ajustes visuales del ciclo aplicado en minijuego de preguntas y rompecabezas.
 
+## Actualización de ronda (2026-08-14, v40)
+
+- Implementado:
+  - `tools/puzzle-cdp-test.mjs` y `tools/objects-cdp-test.mjs` fueron endurecidos para capturar más contexto de inicialización (`hasPhaser`, `sceneManagerKeys`, `loadedScenes`, últimas líneas de consola de runtime).
+  - `tools/capture-screens.ps1` recibió flags de estabilidad para headless (`--no-first-run`, `--disable-background-timer-throttling`, `--run-all-compositor-stages-before-draw`, mayor `--virtual-time-budget`) y salida consistente.
+  - `CoverScene` avanzó un paso más en estandarización visual al usar `addSectionHeader` para el bloque de título de misión.
+  - Ajuste fino de layout de misión en `src/layouts.js` para evitar solapamiento y mejorar separación tipográfica.
+- Verificación:
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node --check src/layouts.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5700/index.html" -RunName "roadmap-cycle-continue-v40"`
+  - `BASE_URL=http://127.0.0.1:5700/index.html node tools/puzzle-cdp-test.mjs` (en este entorno falta `window.Phaser` en CDP por carga de CDN, bootstrap bloqueado)
+  - `BASE_URL=http://127.0.0.1:5700/index.html node tools/objects-cdp-test.mjs` (mismo limitante de `window.Phaser` en CDP)
+- Evidencia:
+  - `test-artifacts/roadmap-cycle-continue-v40/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v40/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v40/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v40/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v40/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v40/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v40/mobile-portrait.png`
+- Próximo bloque:
+  - Resolver bootstrap de Phaser en test headless offline (localizar/usar Phaser local) para recuperar interacciones automatizadas robustas.
+  - Continuar con revisión de consistencia de contenedores en `FinalScene` y textos largos en paneles.
+
+## Actualización de ronda (2026-08-14, v41)
+
+- Implementado:
+  - `FinalScene` migró paneles de título y contenido principal al helper `RosaritoUI.addNarrativeBubble` para mantener estructura común de paneles.
+  - `FinalScene` usa template desde `SCENE_LAYOUTS.final.star.counter.template` para renderizar el texto de progreso (`{value}/{max}`), evitando texto fijo en lógica.
+  - Ajuste de layout/texto en `SCENE_LAYOUTS.final` para mantener únicamente configuración de contenidos por escena.
+
+- Verificación:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5900/index.html" -RunName "roadmap-cycle-continue-v41"`
+  - `BASE_URL=http://127.0.0.1:5900/index.html node tools/puzzle-cdp-test.mjs` (timed out en evaluación de runtime en este entorno)
+  - `BASE_URL=http://127.0.0.1:5900/index.html node tools/objects-cdp-test.mjs` (scene manager no listo en este entorno)
+- Evidencia:
+  - `test-artifacts/roadmap-cycle-continue-v41/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v41/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v41/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v41/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v41/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v41/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v41/mobile-portrait.png`
+
+- Próximo bloque:
+  - Ejecutar captura dedicada de `FinalScene` para confirmar que los textos no se cortan (vía navegador visible, sin CDP headless).
+  - Resolver bootstrap de Phaser offline para `tools/puzzle-cdp-test.mjs` y `tools/objects-cdp-test.mjs`.
+
 ## Cambios aplicados en esta iteración
 
 1) `src/ui.js`

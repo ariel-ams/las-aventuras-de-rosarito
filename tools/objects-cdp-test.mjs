@@ -10,6 +10,7 @@ const runName = process.env.RUN_NAME || `objects-cdp-${Date.now()}`;
 const profileDir = path.resolve("test-artifacts", `${runName}-profile`);
 const url = `${BASE_URL}?scene=objects&qa=${runName}&cache=${Date.now()}`;
 const TARGET_SCENE = "ObjectsGame";
+const consoleLogs = [];
 
 const pending = new Map();
 
@@ -51,10 +52,14 @@ async function waitForSceneManager(ws, attempts = 140, waitMs = 200) {
   for (let i = 0; i < attempts; i += 1) {
     const state = await evaluate(ws, `(() => ({
       hasGame: Boolean(window.game),
+      isBooted: Boolean(window.game?.isBooted),
       hasSceneManager: Boolean(window.game?.scene),
       hasScenes: Boolean(window.game?.scene?.scenes?.length),
+      hasPhaser: Boolean(window.Phaser),
+      sceneManagerKeys: window.game?.scene ? Object.keys(window.game.scene.keys || {}) : [],
+      loadedScenes: window.game?.scene ? (window.game.scene.scenes || []).map((scene) => scene?.scene?.key).filter(Boolean) : [],
     }))()`);
-    if (state.hasGame && state.hasSceneManager && state.hasScenes) return state;
+    if (state.hasPhaser && state.hasGame && state.hasSceneManager && state.hasScenes) return state;
     await delay(waitMs);
   }
   return null;
@@ -222,6 +227,15 @@ async function main() {
     const ws = new WebSocket(wsUrl);
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
+      if (message.method === "Runtime.consoleAPICalled") {
+        const args = (message.params?.args || []).map((entry) => {
+          if (typeof entry.value === "string") return entry.value;
+          if (entry.description) return entry.description;
+          return JSON.stringify(entry.value);
+        }).filter(Boolean);
+        consoleLogs.push({ type: message.params.type, args, timestamp: Date.now() });
+        return;
+      }
       if (!message.id || !pending.has(message.id)) return;
       const waiter = pending.get(message.id);
       clearTimeout(waiter.timeout);
@@ -249,14 +263,16 @@ async function main() {
       const debug = await evaluate(ws, `(() => ({
         hasGame: Boolean(window.game),
         isBooted: Boolean(window.game?.isBooted),
+        hasPhaser: Boolean(window.Phaser),
         sceneManagerExists: Boolean(window.game?.scene),
+        scriptsLoaded: document.scripts?.length || 0,
         activeScene: window.game?.scene?.isActive?.(window.game?.scene?.current) || null,
         currentScene: document.body.dataset.scene || null,
         sceneKeys: window.game?.scene ? (window.game.scene.scenes || []).map((scene) => scene?.scene?.key).filter(Boolean) : [],
         sceneManagerKeys: window.game?.scene ? Object.keys(window.game.scene.keys || {}) : [],
         url: window.location.href,
       }))()`);
-      throw new Error(`Objects scene did not initialize. Debug: ${JSON.stringify(debug)}`);
+      throw new Error(`Objects scene did not initialize. Debug: ${JSON.stringify({ ...debug, console: consoleLogs.slice(-8) })}`);
     }
     if (before.zones.length !== before.activeCount) {
       throw new Error(`Expected ${before.activeCount} hit zones, found ${before.zones.length}`);

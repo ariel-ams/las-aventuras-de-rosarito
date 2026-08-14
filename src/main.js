@@ -311,7 +311,6 @@ class BaseScene extends Phaser.Scene {
     const labelLayout = cardLayout.labelText || {};
     const typography = window.RosaritoUI.TEXT_STYLES || {};
     const numberOffsetY = numberLayout.offsetY || 0;
-    const defaultNumberStyle = typography.badge || {};
     const defaultLabelStyle = typography.body || {};
 
     const bg = this.add.image(0, cardLayout.baseOffsetY || 8, cardBg.key || "ui-card_arch_filled")
@@ -319,13 +318,26 @@ class BaseScene extends Phaser.Scene {
     const badge = this.add.image(badgeLayout.x || -50, badgeLayout.y || -70, badgeLayout.key || "ui-icon_flower")
       .setDisplaySize(badgeLayout.width || 52, badgeLayout.height || 52);
     const showNumber = numberLayout.show !== false;
-    const num = showNumber ? this.add.text(numberLayout.x || -50, (numberLayout.y || -72) + numberOffsetY, String(number), {
-      ...defaultNumberStyle,
-      fontSize: numberLayout.fontSize || "22px",
-      fontStyle: numberLayout.fontStyle || "bold",
-      color: numberLayout.color || "#fff8e9",
-      align: numberLayout.align || "center",
-    }).setOrigin(numberLayout.origin || 0.5) : null;
+    const num = showNumber ? window.RosaritoUI.addFittedText(
+      this,
+      numberLayout.x || -50,
+      (numberLayout.y || -72) + numberOffsetY,
+      String(number),
+      "badge",
+      {
+        maxWidth: numberLayout.maxWidth || 58,
+        maxHeight: numberLayout.maxHeight || 42,
+        minFontSize: numberLayout.minFontSize || 12,
+        style: {
+          fontSize: numberLayout.fontSize || "22px",
+          fontStyle: numberLayout.fontStyle || "bold",
+          color: numberLayout.color || "#fff8e9",
+          align: numberLayout.align || "center",
+        },
+        origin: numberLayout.origin || 0.5,
+        depth: numberLayout.depth || 5,
+      },
+    ) : null;
     const icon = this.add.image(iconLayout.x || 0, iconLayout.y || -24, iconKey).setDisplaySize(iconLayout.width || 74, iconLayout.height || 64);
     const title = window.RosaritoUI.addFittedText(
       this,
@@ -561,16 +573,22 @@ class CoverScene extends BaseScene {
       .setDepth(coverLayout.leftDecorationBottom.depth);
 
     this.drawStarCounter(SCENE_LAYOUTS.cover.starCounter.x, SCENE_LAYOUTS.cover.starCounter.y, gameState.achievements.filter(Boolean).length);
-    this.add.image(coverLayout.missionHeader.badge.x, coverLayout.missionHeader.badge.y, coverLayout.missionHeader.badge.key)
-      .setDisplaySize(coverLayout.missionHeader.badge.width, coverLayout.missionHeader.badge.height)
-      .setDepth(coverLayout.missionHeader.badge.depth);
-    window.RosaritoUI.addFittedText(this, coverLayout.missionHeader.title.x, coverLayout.missionHeader.title.y, coverLayout.missionHeader.title.text, "title", {
-      maxWidth: coverLayout.missionHeader.title.maxWidth,
-      maxHeight: coverLayout.missionHeader.title.maxHeight,
-      minFontSize: coverLayout.missionHeader.title.minFontSize,
-      depth: coverLayout.missionHeader.title.depth,
-      style: coverLayout.missionHeader.title.style,
-    });
+    window.RosaritoUI.addSectionHeader(
+      this,
+      coverLayout.missionHeader.badge.x,
+      coverLayout.missionHeader.badge.y,
+      coverLayout.missionHeader.title.text,
+      {
+        width: coverLayout.missionHeader.badge.width,
+        height: coverLayout.missionHeader.badge.height,
+        depth: coverLayout.missionHeader.badge.depth || 5,
+        heart: false,
+        maxWidth: coverLayout.missionHeader.title.maxWidth,
+        minFontSize: coverLayout.missionHeader.title.minFontSize,
+        fontSize: coverLayout.missionHeader.title.style?.fontSize || "42px",
+        color: coverLayout.missionHeader.title.style?.color || "#6a3d8f",
+      },
+    );
     window.RosaritoUI.addLabeledPanel(this, coverLayout.missionSummary.bg, {
       ...coverLayout.missionSummary.title,
       text: coverLayout.missionSummary.title.text,
@@ -1760,29 +1778,40 @@ class FinalScene extends BaseScene {
       .setDisplaySize(finalLayout.flowers.topRight.width, finalLayout.flowers.topRight.height)
       .setDepth(finalLayout.flowers.topRight.depth);
 
-    window.RosaritoUI.addLabeledPanel(this, finalLayout.headingPanel, {
-      text: finalLayout.text.title,
-      x: finalLayout.headingPanel.text.x,
-      y: finalLayout.headingPanel.text.y,
+    window.RosaritoUI.addNarrativeBubble(this, finalLayout.headingPanel.x, finalLayout.headingPanel.y, finalLayout.text.title, {
+      key: finalLayout.headingPanel.key,
+      width: finalLayout.headingPanel.width,
+      height: finalLayout.headingPanel.height,
+      depth: finalLayout.headingPanel.depth,
       maxWidth: finalLayout.headingPanel.text.maxWidth,
       maxHeight: finalLayout.headingPanel.text.maxHeight,
       minFontSize: finalLayout.headingPanel.text.minFontSize,
-      depth: finalLayout.headingPanel.text.depth,
-      styleName: "title",
-      style: finalLayout.headingPanel.text.style,
+      textOffsetX: finalLayout.headingPanel.text.x - finalLayout.headingPanel.x,
+      textOffsetY: finalLayout.headingPanel.text.y - finalLayout.headingPanel.y,
+      fontSize: finalLayout.headingPanel.text.style?.fontSize || "34px",
+      lineSpacing: finalLayout.headingPanel.text.style?.lineSpacing || 3,
+      style: {
+        ...finalLayout.headingPanel.text.style,
+      },
     });
 
     const bodyPanelText = { ...finalLayout.bodyPanel.text, text: finalLayout.text.body };
-    window.RosaritoUI.addLabeledPanel(this, finalLayout.bodyPanel, {
-      text: bodyPanelText.text,
-      x: bodyPanelText.x,
-      y: bodyPanelText.y,
+    window.RosaritoUI.addNarrativeBubble(this, finalLayout.bodyPanel.x, finalLayout.bodyPanel.y, bodyPanelText.text, {
+      key: finalLayout.bodyPanel.key,
+      width: finalLayout.bodyPanel.width,
+      height: finalLayout.bodyPanel.height,
+      depth: finalLayout.bodyPanel.depth,
+      alpha: finalLayout.bodyPanel.alpha,
       maxWidth: bodyPanelText.maxWidth,
       maxHeight: bodyPanelText.maxHeight,
       minFontSize: bodyPanelText.minFontSize,
-      depth: bodyPanelText.depth,
-      styleName: "body",
-      style: bodyPanelText.style,
+      textOffsetX: bodyPanelText.x - finalLayout.bodyPanel.x,
+      textOffsetY: bodyPanelText.y - finalLayout.bodyPanel.y,
+      fontSize: bodyPanelText.style?.fontSize || "24px",
+      lineSpacing: bodyPanelText.style?.lineSpacing || 4,
+      style: {
+        ...bodyPanelText.style,
+      },
     });
     this.add.image(finalLayout.bodyPanel.divider.x, finalLayout.bodyPanel.divider.y, finalLayout.bodyPanel.divider.key)
       .setDisplaySize(finalLayout.bodyPanel.divider.width, finalLayout.bodyPanel.divider.height)
@@ -1793,7 +1822,11 @@ class FinalScene extends BaseScene {
 
     const starCountLayout = finalLayout.star.counter || {};
     const totalStars = Number(starCountLayout.max || gameState.achievements.length || 3);
-    const starCountValue = `${gameState.achievements.filter(Boolean).length}/${totalStars}`;
+    const completeCount = gameState.achievements.filter(Boolean).length;
+    const starCountTemplate = starCountLayout.template || "{value}/{max}";
+    const starCountValue = starCountTemplate
+      .replace("{value}", String(completeCount))
+      .replace("{max}", String(totalStars));
     const starCounterPanel = finalLayout.star.counterPanel || {};
     this.add.image(finalLayout.star.x, finalLayout.star.y, finalLayout.star.key)
       .setDisplaySize(finalLayout.star.width, finalLayout.star.height)
