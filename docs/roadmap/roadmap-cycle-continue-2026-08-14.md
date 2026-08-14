@@ -84,3 +84,32 @@
   - Mantener el ciclo con cierre de consistencia global en la siguiente pasada.
 
 
+## Actualización de ronda (2026-08-14, v18)
+
+- Cambios implementados:
+  - Centralizamos más configuración de minijuego de preguntas y rompecabezas en `src/layouts.js` para reducir literales en escenas:
+    - `SCENE_LAYOUTS.dones.choiceCard`
+    - `SCENE_LAYOUTS.dones.componentCard`
+    - `SCENE_LAYOUTS.puzzle.infoPanel.labelPanel`
+  - `src/main.js` migró `makeChoiceCard`, `makeComponentOption`, `drawPuzzleBoard` y parte de `drawChecklistItem` para consumir layouts y estilos comunes.
+- Validación ejecutada:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5356/index.html" -RunName "roadmap-cycle-continue-v18"`
+  - `BASE_URL=... node tools/puzzle-cdp-test.mjs` *(en este entorno de Edge headless persiste `Puzzle scene did not initialize`)*
+  - `BASE_URL=... node tools/objects-cdp-test.mjs` *(en este entorno de Edge headless persiste `Objects scene did not initialize`)*
+- Evidencia visual:
+  - `test-artifacts/roadmap-cycle-continue-v18/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v18/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v18/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v18/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v18/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v18/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v18/mobile-portrait.png`
+- Siguiente bloque propuesto:
+  - Unificar encabezados/globos y paneles de checklist en base de componentes reutilizables.
+  - Revisar en navegador interactivo (no headless) si hubo recortes o superposiciones tras la migración de estilos.

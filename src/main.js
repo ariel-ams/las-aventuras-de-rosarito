@@ -309,14 +309,17 @@ class BaseScene extends Phaser.Scene {
     const iconLayout = cardLayout.icon || {};
     const numberLayout = cardLayout.numberText || {};
     const labelLayout = cardLayout.labelText || {};
+    const typography = window.RosaritoUI.TEXT_STYLES || {};
     const numberOffsetY = numberLayout.offsetY || 0;
+    const defaultNumberStyle = typography.badge || {};
+    const defaultLabelStyle = typography.body || {};
 
     const bg = this.add.image(0, cardLayout.baseOffsetY || 8, cardBg.key || "ui-card_arch_filled")
       .setDisplaySize(cardBg.width || 138, cardBg.height || 164);
     const badge = this.add.image(badgeLayout.x || -50, badgeLayout.y || -70, badgeLayout.key || "ui-icon_flower")
       .setDisplaySize(badgeLayout.width || 52, badgeLayout.height || 52);
     const num = this.add.text(numberLayout.x || -50, (numberLayout.y || -72) + numberOffsetY, String(number), {
-      fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+      ...defaultNumberStyle,
       fontSize: numberLayout.fontSize || "22px",
       fontStyle: numberLayout.fontStyle || "bold",
       color: numberLayout.color || "#fff8e9",
@@ -334,7 +337,7 @@ class BaseScene extends Phaser.Scene {
         maxHeight: labelLayout.maxHeight || 52,
         minFontSize: labelLayout.minFontSize || 13,
         style: {
-          fontFamily: "Comic Sans MS, Trebuchet MS, Arial",
+          ...defaultLabelStyle,
           fontSize: labelLayout.fontSize || "15px",
           fontStyle: labelLayout.fontStyle || "bold",
           color: labelLayout.color || "#3e2b22",
@@ -411,21 +414,23 @@ class BaseScene extends Phaser.Scene {
   }
 
   makeChoiceCard(x, y, label, onClick, width = 230, color = COLORS.violet, voiceText = "") {
+    const choiceLayout = SCENE_LAYOUTS.dones && SCENE_LAYOUTS.dones.choiceCard ? SCENE_LAYOUTS.dones.choiceCard : {};
+    const cardWidth = choiceLayout.width || width;
+    const cardHeight = choiceLayout.height || 86;
     const card = this.add.container(x, y);
-    const bg = this.add.image(0, 0, "ui-panel_task_floral").setDisplaySize(width, 86);
+    const bg = this.add.image(0, 0, choiceLayout.bgKey || "ui-panel_task_floral").setDisplaySize(cardWidth, cardHeight);
+    const textPadding = choiceLayout.padding || 22;
     const text = window.RosaritoUI.addFittedText(this, 0, 0, label, "button", {
-      maxWidth: width - 22,
+      maxWidth: cardWidth - textPadding,
       maxHeight: 58,
-      minFontSize: 12,
+      minFontSize: choiceLayout.minFontSize || 12,
       style: {
-        fontSize: "23px",
-        color: "#4a3026",
-        align: "center",
-        wordWrap: { width: width - 22 },
+        ...(choiceLayout.textStyle || {}),
+        wordWrap: choiceLayout.textStyle?.wordWrap || { width: cardWidth - textPadding },
       },
     }).setOrigin(0.5);
     card.add([bg, text]);
-    card.setSize(width, 86).setInteractive({ useHandCursor: true });
+    card.setSize(choiceLayout.interactiveWidth || cardWidth, choiceLayout.interactiveHeight || cardHeight).setInteractive({ useHandCursor: true });
     card.on("pointerdown", () => {
       playTone(this, "click");
       requestImmersiveMode();
@@ -433,7 +438,7 @@ class BaseScene extends Phaser.Scene {
       onClick();
     });
     card.on("pointerover", () => {
-      card.setScale(1.03);
+      card.setScale(choiceLayout.hoverScale || 1.03);
       playTone(this, "hover");
     });
     card.on("pointerout", () => card.setScale(1));
@@ -441,27 +446,31 @@ class BaseScene extends Phaser.Scene {
   }
 
   makeComponentOption(x, y, option, onClick, voiceText = "") {
+    const componentLayout = SCENE_LAYOUTS.dones && SCENE_LAYOUTS.dones.componentCard ? SCENE_LAYOUTS.dones.componentCard : {};
     const labelText = typeof option === "string" ? option : option.label;
-    const cardKey = option.cardKey || "m1-minigame1_update2_04";
-    const labelSize = labelText.length > 30 ? "17px" : labelText.length > 20 ? "19px" : "22px";
+    const labelCfg = componentLayout.label || {};
+    const cardKey = option.cardKey || componentLayout.bgKey || "m1-minigame1_update2_04";
+    const breakpoints = labelCfg.breakpoints || [30, 20];
+    const labelSize = labelText.length > breakpoints[0] ? labelCfg.fontSizeLong || "17px" : labelText.length > breakpoints[1] ? labelCfg.fontSizeMedium || "19px" : labelCfg.fontSizeShort || "22px";
     const card = this.add.container(x, y).setDepth(8);
-    const bg = this.add.image(0, 0, cardKey).setDisplaySize(230, 110);
-    const icon = this.add.image(18, -26, componentIconKey(labelText)).setDisplaySize(44, 44);
-    const label = window.RosaritoUI.addFittedText(this, 18, 27, labelText, "body", {
-      maxWidth: 160,
-      maxHeight: 44,
-      minFontSize: 12,
+    const bg = this.add.image(0, 0, cardKey).setDisplaySize(componentLayout.width || 230, componentLayout.height || 110);
+    const icon = this.add.image(componentLayout.iconX || 18, componentLayout.iconY || -26, componentIconKey(labelText))
+      .setDisplaySize(componentLayout.iconWidth || 44, componentLayout.iconHeight || 44);
+    const label = window.RosaritoUI.addFittedText(this, labelCfg.x || 18, labelCfg.y || 27, labelText, "body", {
+      maxWidth: labelCfg.maxWidth || 160,
+      maxHeight: labelCfg.maxHeight || 44,
+      minFontSize: labelCfg.minFontSize || 12,
       style: {
         fontSize: labelSize,
         fontStyle: "bold",
-        color: "#3e2b22",
-        align: "center",
-        wordWrap: { width: 160 },
+        color: labelCfg.color || "#3e2b22",
+        align: labelCfg.align || "center",
+        wordWrap: { width: labelCfg.wordWrap?.width || 160 },
         lineSpacing: 0,
       },
     }).setOrigin(0.5);
     card.add([bg, icon, label]);
-    card.setSize(230, 110).setInteractive({ useHandCursor: true });
+    card.setSize(componentLayout.interactiveWidth || componentLayout.width || 230, componentLayout.interactiveHeight || componentLayout.height || 110).setInteractive({ useHandCursor: true });
     card.on("pointerdown", () => {
       playTone(this, "click");
       requestImmersiveMode();
@@ -469,7 +478,7 @@ class BaseScene extends Phaser.Scene {
       onClick(card);
     });
     card.on("pointerover", () => {
-      card.setScale(1.04);
+      card.setScale(componentLayout.hoverScale || 1.04);
       playTone(this, "hover");
     });
     card.on("pointerout", () => card.setScale(1));
@@ -861,13 +870,14 @@ class PuzzleGameScene extends BaseScene {
       .setDepth(5)
       .setAlpha(0.96);
     this.add.image(info.previewX, info.previewY, this.puzzle.previewKey).setDisplaySize(info.previewWidth, info.previewHeight).setDepth(6).setAlpha(0.92);
-    this.add.image(info.labelX, info.labelY - 50, "ui-label_long_cream").setDisplaySize(150, 46).setTint(0x8c63a8).setDepth(6);
-    window.RosaritoUI.addFittedText(this, info.labelX - 10, info.labelY - 50, info.title, "body", {
-      maxWidth: 132,
-      maxHeight: 36,
-      minFontSize: 12,
-      depth: 7,
-      style: info.titleStyle || {
+    const titlePanel = info.labelPanel || {};
+    this.add.image((titlePanel.x || info.labelX) - 10, (titlePanel.y || (info.labelY - 50)), "ui-label_long_cream").setDisplaySize(titlePanel.width || 150, titlePanel.height || 46).setTint(titlePanel.tint || 0x8c63a8).setDepth(titlePanel.depth || 6);
+    window.RosaritoUI.addFittedText(this, titlePanel.x || info.labelX - 10, titlePanel.y || (info.labelY - 50), titlePanel.title || info.title, "body", {
+      maxWidth: titlePanel.textMaxWidth || 132,
+      maxHeight: titlePanel.textMaxHeight || 36,
+      minFontSize: titlePanel.textMinFontSize || 12,
+      depth: (titlePanel.textDepth || 7),
+      style: titlePanel.textStyle || info.titleStyle || {
         fontSize: "16px",
         fontStyle: "bold",
         color: "#fff8e9",
@@ -877,7 +887,7 @@ class PuzzleGameScene extends BaseScene {
       maxWidth: info.titleMaxWidth,
       maxHeight: info.titleMaxHeight,
       minFontSize: 12,
-      depth: 7,
+      depth: titlePanel.textDepth || 7,
       style: Object.assign({ wordWrap: { width: info.titleMaxWidth } }, info.puzzleTextStyle || {}),
     });
     const decor = puzzleLayout.infoDecor?.flower;
@@ -1275,6 +1285,8 @@ class ObjectsGameScene extends BaseScene {
   drawChecklistItem(obj, index) {
     const checklistLayout = SCENE_LAYOUTS.objects.checklist;
     const itemLayout = checklistLayout.item || {};
+    const typography = window.RosaritoUI.TEXT_STYLES || {};
+    const bodyStyle = typography.body || {};
     const y = (itemLayout.startY || 456) + index * (itemLayout.spacing || 48);
     const row = this.add.container(checklistLayout.x, y).setDepth(8);
     row.add(this.add.image(0, 0, "hidden-ui-list_row").setDisplaySize(itemLayout.width || 266, itemLayout.height || 50).setAlpha(0.48));
@@ -1283,11 +1295,9 @@ class ObjectsGameScene extends BaseScene {
       maxWidth: itemLayout.labelMaxWidth || 148,
       maxHeight: itemLayout.labelMaxHeight || 42,
       minFontSize: itemLayout.labelMinFont || 12,
-      style: itemLayout.labelStyle || {
-        fontSize: "18px",
-        color: "#3e2b22",
-        wordWrap: { width: 148 },
-        align: "left",
+      style: {
+        ...bodyStyle,
+        ...itemLayout.labelStyle,
       },
     }).setOrigin(0, 0.5);
     const check = this.add.image(itemLayout.checkX || 112, itemLayout.labelY || 0, "ui-icon_check")

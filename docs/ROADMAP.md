@@ -475,3 +475,40 @@ Estado:
   - Se centralizo tambien la posicion/configuracion base del boton "Siguiente" en `LAYOUT.base.nextButton` y `makeNextButton` en `src/main.js` para evitar otro valor hardcodeado.
 
 
+## Actualización de ciclo (2026-08-14, v18)
+
+- Cambios implementados en esta ronda:
+  - `SCENE_LAYOUTS.dones` se extendió con configuración compartida para:
+    - `choiceCard` (fondos, tamaños, texto base, padding, escala hover)
+    - `componentCard` (fondo por opción, icono, label, escala hover, zona interactiva)
+  - `SCENE_LAYOUTS.puzzle.infoPanel.labelPanel` se agregó para estandarizar el panel de título de referencia del rompecabezas.
+  - `makeChoiceCard` en `src/main.js` consume ahora `SCENE_LAYOUTS.dones.choiceCard` en lugar de literales sueltos.
+  - `makeComponentOption` en `src/main.js` consume `SCENE_LAYOUTS.dones.componentCard` para reducir acoplamiento entre escena y medidas hardcodeadas.
+  - `drawPuzzleBoard` usa `SCENE_LAYOUTS.puzzle.infoPanel.labelPanel` para posicionamiento y tipografía del badge.
+  - `drawChecklistItem` en objetos migra estilo de texto al `TEXT_STYLES.body` + configuración por layout (`itemLayout.labelStyle`), evitando fuentes hardcodeadas.
+  - `makeCoverMissionCard` también migró estilos de texto de titulo/nivel a estilos compartidos de UI.
+- Estado funcional de consistencia:
+  - Se reforzó la intención de “unificado por escena” para mantener medidas y tipografías coherentes entre pantallas.
+  - No se alteró mecánica de juego; solo consistencia visual y mantenimiento.
+- Pruebas ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5356/index.html" -RunName "roadmap-cycle-continue-v18"`
+  - `node tools/puzzle-cdp-test.mjs` (`Puzzle scene did not initialize` en Edge headless intermitente)
+  - `node tools/objects-cdp-test.mjs` (`Objects scene did not initialize` en Edge headless intermitente)
+- Resultado de esta tanda:
+  - Las capturas se generaron y quedaron registradas en:
+    - `test-artifacts/roadmap-cycle-continue-v18/cover.png`
+    - `.../quiz.png`
+    - `.../puzzle.png`
+    - `.../objects.png`
+    - `.../final.png`
+    - `.../mobile-landscape.png`
+    - `.../mobile-portrait.png`
+- Criterios de cierre para la siguiente iteración:
+  - Terminar de migrar cualquier texto/medida hardcodeada en `FinalScene` y `CoverScene` a `SCENE_LAYOUTS`.
+  - Reemplazar progresivamente texturas de botones/panels con versiones sin texto embebido para reducir trabajo de mantenimiento.
+  - Continuar con validación visual manual de alta calidad (captura desde navegador no headless) para confirmar jerarquía de texto y recortes.
+

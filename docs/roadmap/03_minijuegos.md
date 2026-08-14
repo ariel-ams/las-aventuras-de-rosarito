@@ -399,3 +399,17 @@ Decision vigente:
   - Los tests de CDP siguen no inicializando escenas en este entorno headless.
 - Siguiente tarea prioritaria:
   - Revisar en navegador interactivo la captura de `quiz` para confirmar el ajuste de espacios y seguir migrando componentes hardcodeados en minijuegos secundarios.
+## Actualización del ciclo (2026-08-14, v18)
+
+- Ajuste implementado:
+  - Se consolidó la configuración visual de partes de `DonesGameScene` y `PuzzleGameScene` en `SCENE_LAYOUTS` para evitar desviaciones de UI entre builds:
+    - tarjetas de elección del don
+    - tarjetas de componentes con icono y label
+    - panel de referencia del rompecabezas
+  - Se dejó `checklist` de objetos con estilo de texto centralizado (`labelStyle` + `TEXT_STYLES.body`) para mantener consistencia de tipografía.
+- Validación en este bloque:
+  - Revisiones sintácticas y capturas con `roadmap-cycle-continue-v18`.
+  - CDP sigue sin inicializar escenas consistentemente en Edge headless (`Puzzle scene did not initialize`, `Objects scene did not initialize`).
+- Estado práctico:
+  - No se modificó mecánica de juego.
+  - Se redujeron literales visuales y se ganó estabilidad de mantenimiento para la siguiente iteración de unificación de UI.
