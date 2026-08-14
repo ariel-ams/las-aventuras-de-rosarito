@@ -225,39 +225,49 @@ class BootScene extends Phaser.Scene {
 class BaseScene extends Phaser.Scene {
   createBook(title, subtitle = "", options = {}) {
     const { progress = true } = options;
+    const baseLayout = LAYOUT.base || {};
     document.body.dataset.scene = this.scene.key;
     this.cameras.main.setBackgroundColor("#557b72");
     this.add.image(LAYOUT.book.x, LAYOUT.book.y, "book-bg").setDisplaySize(LAYOUT.book.width, LAYOUT.book.height);
-    this.add.image(52, 690, "ui-grass_large").setScale(0.64).setAlpha(0.92);
-    this.add.image(56, 86, "ui-button_audio").setDisplaySize(82, 82).setInteractive({ useHandCursor: true })
+    const grass = baseLayout.grass || {};
+    const audioButton = baseLayout.audioButton || {};
+    const titleLayout = baseLayout.title || {};
+    const subtitleLayout = baseLayout.subtitle || {};
+    if (grass.key) {
+      this.add.image(grass.x, grass.y, grass.key).setScale(grass.scale || 1).setAlpha(grass.alpha || 1).setDepth(grass.depth || 2);
+    }
+    this.add.image(audioButton.x, audioButton.y, audioButton.key || "ui-button_audio")
+      .setDisplaySize(audioButton.width || 82, audioButton.height || 82)
+      .setInteractive({ useHandCursor: true })
+      .setDepth(audioButton.depth || 10)
       .on("pointerover", () => playTone(this, "hover"))
       .on("pointerdown", () => {
         playTone(this, "click");
         if (this.currentVoiceKey) playAudioKey(this, `voice.${this.currentVoiceKey}`);
       });
     if (title) {
-      window.RosaritoUI.addFittedText(this, 112, 70, title, "title", {
-        maxWidth: 450,
-        maxHeight: 56,
-        minFontSize: 26,
+      window.RosaritoUI.addFittedText(this, titleLayout.x, titleLayout.y, title, "title", {
+        maxWidth: titleLayout.maxWidth,
+        maxHeight: titleLayout.maxHeight,
+        minFontSize: titleLayout.minFontSize || 26,
         style: {
-          fontSize: "34px",
-          color: "#3e2b22",
-          stroke: "#f6e2ba",
-          strokeThickness: 3,
+          fontSize: titleLayout.fontSize || "34px",
+          color: titleLayout.color || "#3e2b22",
+          stroke: titleLayout.stroke || "#f6e2ba",
+          strokeThickness: titleLayout.strokeThickness || 3,
         },
       }).setOrigin(0, 0.5);
     }
     if (subtitle) {
-      window.RosaritoUI.addFittedText(this, 112, 128, subtitle, "body", {
-        maxWidth: 430,
-        maxHeight: 64,
-        minFontSize: 16,
+      window.RosaritoUI.addFittedText(this, subtitleLayout.x, subtitleLayout.y, subtitle, "body", {
+        maxWidth: subtitleLayout.maxWidth,
+        maxHeight: subtitleLayout.maxHeight,
+        minFontSize: subtitleLayout.minFontSize || 16,
         style: {
-          fontSize: "22px",
-          color: "#5d4437",
-          lineSpacing: 8,
-          wordWrap: { width: 430 },
+          fontSize: subtitleLayout.fontSize || "22px",
+          color: subtitleLayout.color || "#5d4437",
+          lineSpacing: subtitleLayout.lineSpacing || 8,
+          wordWrap: { width: subtitleLayout.wordWrap || 430 },
         },
       }).setOrigin(0, 0.5);
     }

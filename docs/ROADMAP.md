@@ -446,3 +446,29 @@ Estado:
   - Etapa 3: mejora aplicada en consistencia de tarjetas de quiz.
   - Pendiente: validar visualmente en navegador interactivo con captura a mayor resolucion para cerrar ajustes de espaciado.
   - Siguiente paso sugerido: migrar restante de valores visuales hardcodeados en componentes secundarios y consolidar tests manuales de layout.
+## Actualización de ciclo (2026-08-14, v17)
+- Consolidación aplicada:
+  - Se agregó `LAYOUT.base` en `src/layouts.js` para unificar los parámetros de elementos comunes del encabezado global:
+    - botón de audio
+    - marco de hierba
+    - tipografía y restricciones de título/subtítulo base
+  - `BaseScene.createBook` ahora consume `LAYOUT.base` en lugar de literales en código:
+    - `audioButton`
+    - `grass`
+    - `title`
+    - `subtitle`
+  - El botón de audio, la marca de texto y el layout base mantienen ahora la misma fuente de verdad entre escenas.
+- Pruebas ejecutadas:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5345/index.html" -RunName "roadmap-cycle-continue-v17"`
+  - `BASE_URL=http://127.0.0.1:5345/index.html node tools/puzzle-cdp-test.mjs` (no inicializa escena en Edge headless intermitente; problema persistente reportado)
+  - `BASE_URL=http://127.0.0.1:5345/index.html node tools/objects-cdp-test.mjs` (no inicializa escena en Edge headless intermitente; problema persistente reportado)
+- Avance de estado:
+  - Roadmap: Etapa 1 y 2 avanzan en estabilidad de layout base.
+  - Se mantiene como siguiente trabajo priorizado completar la migración de cualquier estilo visual restante hardcodeado en escenas secundarias para reducir divergencias de tamaños.
+

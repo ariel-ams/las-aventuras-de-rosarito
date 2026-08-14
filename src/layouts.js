@@ -19,6 +19,32 @@ const LAYOUT = {
   book: { x: WIDTH / 2, y: HEIGHT / 2, width: WIDTH, height: HEIGHT },
   pageTurn: { x: WIDTH / 2 + 20, y: 378, scale: 2.04, frameDelay: 105 },
   rosarito: { x: 1010, y: 458, scale: 0.38 },
+  base: {
+    audioButton: { x: 56, y: 690, key: "ui-button_audio", width: 82, height: 82, depth: 10 },
+    grass: { x: 52, y: 86, key: "ui-grass_large", scale: 0.64, alpha: 0.92, depth: 3 },
+    title: {
+      x: 112,
+      y: 70,
+      maxWidth: 450,
+      maxHeight: 56,
+      minFontSize: 26,
+      fontSize: "34px",
+      color: "#3e2b22",
+      stroke: "#f6e2ba",
+      strokeThickness: 3,
+    },
+    subtitle: {
+      x: 112,
+      y: 128,
+      maxWidth: 430,
+      maxHeight: 64,
+      minFontSize: 16,
+      fontSize: "22px",
+      color: "#5d4437",
+      lineSpacing: 8,
+      wordWrap: 430,
+    },
+  },
 };
 
 const PAGE_AREAS = {
