@@ -639,3 +639,28 @@ Estado:
 - Siguientes pasos sugeridos:
   - Reforzar la etapa de consistencia de contenedores en `FinalScene` y `CoverScene` (bordes/paneles) para mantener el mismo patrón que el resto del juego.
   - Resolver la inestabilidad del CDP para validar automatizadamente interacción fina de click/drag en este entorno.
+
+## Actualización de ciclo (2026-08-14, v24)
+
+- Ajustes aplicados:
+  - `CoverScene` ahora usa el bloque `narrativeHeart` definido en `SCENE_LAYOUTS.cover` para renderizar el corazón junto al globo narrativo de portada.
+  - La configuración de texto de portada y final se revisó en el layout para mantener textos limpios y sin mojibake visibles.
+- Pruebas realizadas:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5400/index.html" -RunName "roadmap-cycle-continue-v27"`
+  - `BASE_URL=http://127.0.0.1:5401/index.html node tools/puzzle-cdp-test.mjs` *(intermitente en este entorno: `Puzzle scene did not initialize`)*
+  - `BASE_URL=http://127.0.0.1:5401/index.html node tools/objects-cdp-test.mjs` *(intermitente en este entorno: `Objects scene did not initialize`)*
+- Evidencia:
+  - `test-artifacts/roadmap-cycle-continue-v27/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v27/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v27/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v27/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v27/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v27/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v27/mobile-portrait.png`
+- Estado del roadmap:
+  - Cierre parcial de la etapa 1 de consistencia visual para `CoverScene` (containeres de narrativa y botón de misión).
+  - `FinalScene` sigue como próxima prioridad para el ajuste fino de jerarquía de texto y espaciado de paneles sin cambiar lógica de juego.

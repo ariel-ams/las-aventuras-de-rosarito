@@ -528,6 +528,15 @@ class CoverScene extends BaseScene {
       fontSize: coverLayout.narrative.options.fontSize,
       minFontSize: coverLayout.narrative.options.minFontSize,
     });
+    if (coverLayout.narrativeHeart) {
+      this.add.image(
+        coverLayout.narrativeHeart.x,
+        coverLayout.narrativeHeart.y,
+        coverLayout.narrativeHeart.key
+      )
+        .setDisplaySize(coverLayout.narrativeHeart.width, coverLayout.narrativeHeart.height)
+        .setDepth(coverLayout.narrativeHeart.depth);
+    }
 
     window.RosaritoUI.addMouseHint(this, coverLayout.mouseHint.x, coverLayout.mouseHint.y, coverLayout.mouseHint.text, {
       key: coverLayout.mouseHint.options.key,
