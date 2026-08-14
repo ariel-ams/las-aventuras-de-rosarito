@@ -543,6 +543,7 @@ const SCENE_LAYOUTS = {
       labelPanel: {
         x: 356,
         y: 606,
+        key: "ui-label_long_cream",
         width: 150,
         height: 46,
         tint: 0x8c63a8,
@@ -1003,6 +1004,15 @@ const SCENE_LAYOUTS = {
       width: 236,
       height: 236,
       depth: 5,
+      counterPanel: {
+        x: 794,
+        y: 354,
+        key: "score_star_panel",
+        width: 122,
+        height: 78,
+        depth: 4,
+        alpha: 0.98,
+      },
       counter: {
         x: 794,
         y: 354,

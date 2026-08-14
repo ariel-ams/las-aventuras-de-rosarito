@@ -571,15 +571,10 @@ class CoverScene extends BaseScene {
       depth: coverLayout.missionHeader.title.depth,
       style: coverLayout.missionHeader.title.style,
     });
-    this.add.image(coverLayout.missionSummary.bg.x, coverLayout.missionSummary.bg.y, coverLayout.missionSummary.bg.key)
-      .setDisplaySize(coverLayout.missionSummary.bg.width, coverLayout.missionSummary.bg.height)
-      .setAlpha(coverLayout.missionSummary.bg.alpha)
-      .setDepth(coverLayout.missionSummary.bg.depth);
-    window.RosaritoUI.addFittedText(this, coverLayout.missionSummary.title.x, coverLayout.missionSummary.title.y, coverLayout.missionSummary.title.text, "body", {
-      maxWidth: coverLayout.missionSummary.title.maxWidth,
-      maxHeight: coverLayout.missionSummary.title.maxHeight,
-      minFontSize: coverLayout.missionSummary.title.minFontSize,
-      depth: coverLayout.missionSummary.title.depth,
+    window.RosaritoUI.addLabeledPanel(this, coverLayout.missionSummary.bg, {
+      ...coverLayout.missionSummary.title,
+      text: coverLayout.missionSummary.title.text,
+      styleName: "body",
       style: coverLayout.missionSummary.title.style,
     });
     this.add.image(coverLayout.missionSummary.icon.x, coverLayout.missionSummary.icon.y, coverLayout.missionSummary.icon.key)
@@ -899,18 +894,32 @@ class PuzzleGameScene extends BaseScene {
       .setAlpha(0.96);
     this.add.image(info.previewX, info.previewY, this.puzzle.previewKey).setDisplaySize(info.previewWidth, info.previewHeight).setDepth(6).setAlpha(0.92);
     const titlePanel = info.labelPanel || {};
-    this.add.image((titlePanel.x || info.labelX) - 10, (titlePanel.y || (info.labelY - 50)), "ui-label_long_cream").setDisplaySize(titlePanel.width || 150, titlePanel.height || 46).setTint(titlePanel.tint || 0x8c63a8).setDepth(titlePanel.depth || 6);
-    window.RosaritoUI.addFittedText(this, titlePanel.x || info.labelX - 10, titlePanel.y || (info.labelY - 50), titlePanel.title || info.title, "body", {
+    const titlePanelX = (titlePanel.x || info.labelX) - 10;
+    const titlePanelY = (titlePanel.y || (info.labelY - 50));
+    window.RosaritoUI.addLabeledPanel(this, {
+      x: titlePanelX,
+      y: titlePanelY,
+      key: titlePanel.key || "ui-label_long_cream",
+      width: titlePanel.width || 150,
+      height: titlePanel.height || 46,
+      depth: titlePanel.depth || 6,
+      alpha: titlePanel.alpha || 1,
+      ...titlePanel,
+    }, {
+      text: titlePanel.title || info.title || "",
+      x: titlePanel.textX || titlePanelX,
+      y: titlePanel.textY || titlePanelY,
       maxWidth: titlePanel.textMaxWidth || 132,
       maxHeight: titlePanel.textMaxHeight || 36,
       minFontSize: titlePanel.textMinFontSize || 12,
       depth: (titlePanel.textDepth || 7),
+      styleName: titlePanel.textStyleName || "body",
       style: titlePanel.textStyle || info.titleStyle || {
         fontSize: "16px",
         fontStyle: "bold",
         color: "#fff8e9",
       },
-    }).setOrigin(0.5);
+    });
     window.RosaritoUI.addFittedText(this, info.titleX, info.titleY, this.puzzle.title || this.puzzle.description, "body", {
       maxWidth: info.titleMaxWidth,
       maxHeight: info.titleMaxHeight,
@@ -1703,27 +1712,29 @@ class FinalScene extends BaseScene {
       .setDisplaySize(finalLayout.flowers.topRight.width, finalLayout.flowers.topRight.height)
       .setDepth(finalLayout.flowers.topRight.depth);
 
-    this.add.image(finalLayout.headingPanel.x, finalLayout.headingPanel.y, finalLayout.headingPanel.key)
-      .setDisplaySize(finalLayout.headingPanel.width, finalLayout.headingPanel.height)
-      .setDepth(finalLayout.headingPanel.depth);
-    window.RosaritoUI.addFittedText(this, finalLayout.headingPanel.text.x, finalLayout.headingPanel.text.y, finalLayout.text.title, "title", {
+    window.RosaritoUI.addLabeledPanel(this, finalLayout.headingPanel, {
+      text: finalLayout.text.title,
+      x: finalLayout.headingPanel.text.x,
+      y: finalLayout.headingPanel.text.y,
       maxWidth: finalLayout.headingPanel.text.maxWidth,
       maxHeight: finalLayout.headingPanel.text.maxHeight,
       minFontSize: finalLayout.headingPanel.text.minFontSize,
       depth: finalLayout.headingPanel.text.depth,
+      styleName: "title",
       style: finalLayout.headingPanel.text.style,
-    }).setOrigin(0.5);
+    });
 
-    this.add.image(finalLayout.bodyPanel.x, finalLayout.bodyPanel.y, finalLayout.bodyPanel.key)
-      .setDisplaySize(finalLayout.bodyPanel.width, finalLayout.bodyPanel.height)
-      .setAlpha(finalLayout.bodyPanel.alpha ?? 0.95)
-      .setDepth(finalLayout.bodyPanel.depth);
-    window.RosaritoUI.addFittedText(this, finalLayout.bodyPanel.text.x, finalLayout.bodyPanel.text.y, finalLayout.text.body, "body", {
-      maxWidth: finalLayout.bodyPanel.text.maxWidth,
-      maxHeight: finalLayout.bodyPanel.text.maxHeight,
-      minFontSize: finalLayout.bodyPanel.text.minFontSize,
-      depth: finalLayout.bodyPanel.text.depth,
-      style: finalLayout.bodyPanel.text.style,
+    const bodyPanelText = { ...finalLayout.bodyPanel.text, text: finalLayout.text.body };
+    window.RosaritoUI.addLabeledPanel(this, finalLayout.bodyPanel, {
+      text: bodyPanelText.text,
+      x: bodyPanelText.x,
+      y: bodyPanelText.y,
+      maxWidth: bodyPanelText.maxWidth,
+      maxHeight: bodyPanelText.maxHeight,
+      minFontSize: bodyPanelText.minFontSize,
+      depth: bodyPanelText.depth,
+      styleName: "body",
+      style: bodyPanelText.style,
     });
     this.add.image(finalLayout.bodyPanel.divider.x, finalLayout.bodyPanel.divider.y, finalLayout.bodyPanel.divider.key)
       .setDisplaySize(finalLayout.bodyPanel.divider.width, finalLayout.bodyPanel.divider.height)
@@ -1755,34 +1766,50 @@ class FinalScene extends BaseScene {
       });
     }
 
-    this.add.image(finalLayout.star.x, finalLayout.star.y, finalLayout.star.key)
-      .setDisplaySize(finalLayout.star.width, finalLayout.star.height)
-      .setDepth(finalLayout.star.depth);
     const starCountLayout = finalLayout.star.counter || {};
     const totalStars = Number(starCountLayout.max || gameState.achievements.length || 3);
     const starCountValue = `${gameState.achievements.filter(Boolean).length}/${totalStars}`;
-    window.RosaritoUI.addFittedText(this, finalLayout.star.counter.x, finalLayout.star.counter.y, starCountValue, "title", {
-      maxWidth: finalLayout.star.counter.maxWidth,
-      maxHeight: finalLayout.star.counter.maxHeight,
-      minFontSize: finalLayout.star.counter.minFontSize,
-      depth: finalLayout.star.counter.depth,
-      style: finalLayout.star.counter.style,
-    }).setOrigin(0.5);
+    const starCounterPanel = finalLayout.star.counterPanel || {};
+    this.add.image(finalLayout.star.x, finalLayout.star.y, finalLayout.star.key)
+      .setDisplaySize(finalLayout.star.width, finalLayout.star.height)
+      .setDepth(finalLayout.star.depth);
+    window.RosaritoUI.addLabeledPanel(this, {
+      ...starCounterPanel,
+      key: starCounterPanel.key || "score_star_panel",
+      depth: starCounterPanel.depth || (finalLayout.star.depth || 5) - 1,
+      alpha: starCounterPanel.alpha ?? 1,
+    }, {
+      text: starCountValue,
+      x: starCountLayout.x,
+      y: starCountLayout.y,
+      maxWidth: starCountLayout.maxWidth,
+      maxHeight: starCountLayout.maxHeight,
+      minFontSize: starCountLayout.minFontSize,
+      depth: starCountLayout.depth || (finalLayout.star.depth || 5) + 1,
+      styleName: "title",
+      style: starCountLayout.style,
+    });
 
-    this.add.image(finalLayout.closing.panel.x, finalLayout.closing.panel.y, finalLayout.closing.panel.key)
-      .setDisplaySize(finalLayout.closing.panel.width, finalLayout.closing.panel.height)
-      .setDepth(finalLayout.closing.panel.depth)
-      .setAlpha(finalLayout.closing.panel.alpha);
-    this.add.image(finalLayout.closing.book.x, finalLayout.closing.book.y, finalLayout.closing.book.key)
-      .setDisplaySize(finalLayout.closing.book.width, finalLayout.closing.book.height)
-      .setDepth(finalLayout.closing.book.depth);
-    window.RosaritoUI.addFittedText(this, finalLayout.closing.title.x, finalLayout.closing.title.y, finalLayout.closing.title.text, "title", {
+    window.RosaritoUI.addLabeledPanel(this, {
+      ...finalLayout.closing.panel,
+      alpha: finalLayout.closing.panel.alpha,
+      angle: finalLayout.closing.panel.angle,
+      key: finalLayout.closing.panel.key,
+    }, {
+      text: finalLayout.closing.title.text,
+      x: finalLayout.closing.title.x,
+      y: finalLayout.closing.title.y,
       maxWidth: finalLayout.closing.title.maxWidth,
       maxHeight: finalLayout.closing.title.maxHeight,
       minFontSize: finalLayout.closing.title.minFontSize,
       depth: finalLayout.closing.title.depth,
+      styleName: "title",
       style: finalLayout.closing.title.style,
-    }).setOrigin(0.5);
+      origin: 0.5,
+    });
+    this.add.image(finalLayout.closing.book.x, finalLayout.closing.book.y, finalLayout.closing.book.key)
+      .setDisplaySize(finalLayout.closing.book.width, finalLayout.closing.book.height)
+      .setDepth(finalLayout.closing.book.depth);
     window.RosaritoUI.addFittedText(this, finalLayout.closing.message.x, finalLayout.closing.message.y, finalLayout.closing.message.text, "body", {
       maxWidth: finalLayout.closing.message.maxWidth,
       maxHeight: finalLayout.closing.message.maxHeight,

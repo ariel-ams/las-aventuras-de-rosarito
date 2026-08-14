@@ -159,6 +159,45 @@ function addSectionHeader(scene, x, y, text, options = {}) {
   return { plate, label, heart: heartIcon };
 }
 
+function addLabeledPanel(scene, panelCfg, textCfg = null, iconCfg = null) {
+  const {
+    x = 0,
+    y = 0,
+    key = "ui-speech_large_lilac",
+    width = 300,
+    height = 140,
+    depth = 5,
+    alpha = 1,
+    angle,
+  } = panelCfg || {};
+  const panel = scene.add.image(x, y, key).setDisplaySize(width, height).setDepth(depth).setAlpha(alpha);
+  if (angle) panel.setAngle(angle);
+
+  let label = null;
+  if (textCfg && typeof textCfg.text === "string" && textCfg.text.length > 0) {
+    label = addFittedText(scene, textCfg.x ?? x, textCfg.y ?? y, textCfg.text, textCfg.styleName || "body", {
+      maxWidth: textCfg.maxWidth ?? width * 0.74,
+      maxHeight: textCfg.maxHeight ?? height * 0.62,
+      minFontSize: textCfg.minFontSize ?? 16,
+      depth: textCfg.depth ?? depth + 1,
+      style: {
+        ...(textCfg.style || {}),
+      },
+    }).setOrigin(textCfg.origin ?? 0.5);
+  }
+
+  let icon = null;
+  if (iconCfg && typeof iconCfg.key === "string") {
+    icon = scene.add.image(iconCfg.x ?? x, iconCfg.y ?? y, iconCfg.key)
+      .setDisplaySize(iconCfg.width ?? 24, iconCfg.height ?? 24)
+      .setDepth(iconCfg.depth ?? depth + 1)
+      .setAlpha(iconCfg.alpha ?? 1);
+    if (iconCfg.angle) icon.setAngle(iconCfg.angle);
+  }
+
+  return { panel, label, icon };
+}
+
 function addQuizQuestionPanel(scene, x, y, questionText, options = {}) {
   const {
     totalQuestions = 3,
@@ -590,6 +629,7 @@ window.RosaritoUI = {
   addNarrativeBubble,
   addMouseHint,
   addSectionHeader,
+  addLabeledPanel,
   addQuizQuestionPanel,
   addChecklistFrame,
   addChecklistRow,

@@ -216,3 +216,69 @@
 - Estado de la etapa:
   - Cerrado el bloque de centralización de feedback y parámetros visuales más urgentes.
   - Próximo bloque recomendado: revisar consistencia de globos/paneles entre `Cover`, `Quiz`, `Puzzle`, `Objects`, `Final` y eliminar diferencias de layout restantes en UI.
+
+## Actualización de ronda (2026-08-14, v28)
+
+- Cambios aplicados:
+  - `src/main.js`:
+    - Se migró el panel de encabezado del rompecabezas (`PuzzleGameScene.infoPanel`) a `RosaritoUI.addLabeledPanel` para que use una ruta de render común y evitar diferencias entre pantallas.
+    - Se mantuvo el estilo visual ya existente del título del panel, pero ahora con configuración centralizada por `SCENE_LAYOUTS.puzzle.infoPanel.labelPanel`.
+  - `src/layouts.js`:
+    - Se agregó `key` explícita en `SCENE_LAYOUTS.puzzle.infoPanel.labelPanel`, manteniendo el panel de etiqueta alineado con el resto de componentes de biblioteca.
+
+- Validación ejecutada:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5400/index.html" -RunName "roadmap-cycle-continue-v28"`
+  - `BASE_URL=http://127.0.0.1:5400/index.html node tools/puzzle-cdp-test.mjs` (*puede seguir inestable en Edge headless para esta fase*)
+  - `BASE_URL=http://127.0.0.1:5400/index.html node tools/objects-cdp-test.mjs` (*puede seguir inestable en Edge headless para esta fase*)
+
+- Evidencia generada:
+  - `test-artifacts/roadmap-cycle-continue-v28/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v28/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v28/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v28/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v28/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v28/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v28/mobile-portrait.png`
+
+- Estado actual de la iteración:
+  - Cerrado el primer bloque de unificación del panel del título en `PuzzleGameScene`.
+  - Falta completar unificar los contenedores y textos de `FinalScene` con el mismo estándar de helper/componentes para terminar la fase de consistencia global.
+
+## Actualización de ronda (2026-08-14, v29)
+
+- Cambios aplicados:
+  - `FinalScene`:
+    - Se unificó el render del contador de estrellas usando `RosaritoUI.addLabeledPanel` con `score_star_panel`.
+    - Se añadió `SCENE_LAYOUTS.final.star.counterPanel` para controlar posición/tamaño y estilo del badge de estrellas sin hardcode.
+  - `src/layouts.js`:
+    - Nuevo bloque `SCENE_LAYOUTS.final.star.counterPanel`.
+
+- Verificación ejecutada:
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check src/layouts.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5400/index.html" -RunName "roadmap-cycle-continue-v29"`
+  - `BASE_URL=http://127.0.0.1:5400/index.html node tools/puzzle-cdp-test.mjs` *(sigue sin inicializar en este entorno headless)*
+  - `BASE_URL=http://127.0.0.1:5400/index.html node tools/objects-cdp-test.mjs` *(sigue sin inicializar en este entorno headless)*
+
+- Evidencia:
+  - `test-artifacts/roadmap-cycle-continue-v29/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v29/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v29/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v29/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v29/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v29/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v29/mobile-portrait.png`
+
+- Estado actual:
+  - Avance: `FinalScene` mejoró su consistencia con helper para el badge del contador de estrellas.
+  - Pendiente: evaluar `FinalScene` `closing.message` para decidir si migrarlo a un contenedor de texto estandarizado adicional.
