@@ -128,7 +128,7 @@ const SCENE_LAYOUTS = {
     },
     rightDecorationBottom: { x: 650, y: 666, key: "ui-flower_cluster_bottom", width: 150, height: 96, depth: 5 },
     leftDecorationBottom: { x: 90, y: 450, key: "ui-flower_cluster_left", width: 96, height: 58, angle: -18, depth: 4 },
-    startButton: { x: 1010, y: 706, width: 280 },
+    startButton: { x: 1010, y: 706, width: 280, depth: 10 },
     starCounter: { x: 1130, y: 90 },
     missionHeader: {
       badge: { x: 860, y: 112, key: "ui-speech_large_lilac", width: 300, height: 98, depth: 5 },
@@ -169,7 +169,7 @@ const SCENE_LAYOUTS = {
       description: {
         x: 848,
         y: 615,
-        text: "Completa las actividades y gana el álbum de Rosarito.",
+        text: "Completa las actividades y gana el Álbum de Rosarito.",
         maxWidth: 235,
         maxHeight: 54,
         minFontSize: 15,
@@ -971,6 +971,7 @@ const SCENE_LAYOUTS = {
       width: 420,
       height: 216,
       depth: 4,
+      alpha: 0.95,
       text: {
         x: 315,
         y: 322,
@@ -1081,6 +1082,7 @@ const SCENE_LAYOUTS = {
       checkTint: 0x4f8553,
       checkOffsetX: 14,
       checkOffsetY: -16,
+      checkAlpha: 0.92,
     },
     text: {
       title: "Objetivos cumplidos",
@@ -1099,6 +1101,4 @@ const SCENE_LAYOUTS = {
 
 window.RosaritoLayouts = { WIDTH, HEIGHT, COLORS, LAYOUT, PAGE_AREAS, SCENE_LAYOUTS };
 }());
-
-
 

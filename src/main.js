@@ -623,7 +623,7 @@ class CoverScene extends BaseScene {
       resetRun();
       this.scene.start("QuizGame");
     }, coverLayout.startButton.width);
-    start.setDepth(10);
+    start.setDepth(coverLayout.startButton.depth || 10);
     this.add.image(coverLayout.startButtonDecoration.arrow.x, coverLayout.startButtonDecoration.arrow.y, coverLayout.startButtonDecoration.arrow.key)
       .setDisplaySize(coverLayout.startButtonDecoration.arrow.width, coverLayout.startButtonDecoration.arrow.height)
       .setDepth(coverLayout.startButtonDecoration.arrow.depth);
@@ -781,7 +781,7 @@ class QuizGameScene extends BaseScene {
           const markWidth = markLayout.width || 42;
           const markHeight = markLayout.height || 42;
           card.add(this.add.image(markX, markY, markKey).setDisplaySize(markWidth, markHeight));
-          this.feedback(quizFeedback.correct || "Respuesta correcta", true);
+          this.feedback(quizFeedback.correct || "", true);
           gameState.quizIndex += 1;
           if (gameState.quizIndex >= gameState.quizSet.length) {
             gameState.achievements[0] = true;
@@ -791,7 +791,7 @@ class QuizGameScene extends BaseScene {
             this.time.delayedCall(650, () => this.scene.restart());
           }
         } else {
-          this.feedback(quizFeedback.incorrect || "Probemos otra vez", false);
+          this.feedback(quizFeedback.incorrect || "", false);
         }
       }, q.optionIconKeys?.[i]);
     });
@@ -1248,7 +1248,7 @@ class PuzzleGameScene extends BaseScene {
     } else {
       const puzzleLayout = SCENE_LAYOUTS.puzzle;
       const puzzleFeedback = puzzleLayout.feedback || {};
-      this.feedback(puzzleFeedback.incorrect || "Casi! Mira la guía y prueba otra vez.", false);
+      this.feedback(puzzleFeedback.incorrect || "", false);
       this.tweens.add({
         targets: piece,
         x: data.trayX,
@@ -1287,7 +1287,7 @@ class PuzzleGameScene extends BaseScene {
   completePuzzle() {
     const puzzleLayout = SCENE_LAYOUTS.puzzle;
     const puzzleFeedback = puzzleLayout.feedback || {};
-    this.feedback(puzzleFeedback.correct || "Imagen completa", true);
+    this.feedback(puzzleFeedback.correct || "", true);
     gameState.achievements[1] = true;
     this.celebrateRosarito();
     this.enableNextButton();
@@ -1666,7 +1666,7 @@ class ObjectsGameScene extends BaseScene {
     this.stopObjectHintLoop();
     gameState.achievements[2] = true;
     this.celebrateRosarito();
-    this.feedback(objectFeedback.complete || "Encontraste todos los objetos.", true);
+    this.feedback(objectFeedback.complete || "", true);
     this.tweens.add({ targets: this.successPanel, alpha: 1, y: 610, duration: 280, ease: "Back.easeOut" });
     this.enableObjectsNextButton();
   }
@@ -1707,7 +1707,7 @@ class FinalScene extends BaseScene {
 
     this.add.image(finalLayout.bodyPanel.x, finalLayout.bodyPanel.y, finalLayout.bodyPanel.key)
       .setDisplaySize(finalLayout.bodyPanel.width, finalLayout.bodyPanel.height)
-      .setAlpha(0.95)
+      .setAlpha(finalLayout.bodyPanel.alpha ?? 0.95)
       .setDepth(finalLayout.bodyPanel.depth);
     window.RosaritoUI.addFittedText(this, finalLayout.bodyPanel.text.x, finalLayout.bodyPanel.text.y, finalLayout.text.body, "body", {
       maxWidth: finalLayout.bodyPanel.text.maxWidth,
@@ -1740,7 +1740,7 @@ class FinalScene extends BaseScene {
               .setDisplaySize(entry.checkSize || strip.checkSize || 22, entry.checkSize || strip.checkSize || 22)
               .setTint(entry.checkTint || strip.checkTint || 0x4f8553)
               .setDepth((entry.depth || finalLayout.bodyPanel.depth || 5) + 1)
-              .setAlpha(0.92);
+              .setAlpha(entry.checkAlpha ?? strip.checkAlpha ?? 0.92);
           }
         }
       });

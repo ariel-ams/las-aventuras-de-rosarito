@@ -176,3 +176,43 @@
   - Aplicar la misma consolidación de constantes visuales faltantes en escenas secundarias (si quedan valores hardcode en objetos de overlay/completado),
   - Reforzar test de interacción de `showQuestion` (orden de respuestas aleatorio y recorte/encuadre de texto en tarjetas),
   - Ejecutar validación manual en navegador normal y volver a registrar resultados visuales confiables.
+
+## Actualización de ronda (2026-08-14, v25)
+
+- Cambios implementados:
+  - `src/layouts.js`
+    - Se agregó `depth` a `SCENE_LAYOUTS.cover.startButton`.
+    - Se corrigieron textos con mojibake en portada y pantalla final (`misión`, `Álbum`, `completó`, `enseñanza`).
+    - Se agregó `alpha` para `final.bodyPanel` y `checkAlpha` para `final.achievementStrip` dentro de layout.
+    - Se reparó la línea de layout corrupta en `final.bodyPanel` (`bodyPanel:\`r\`n` -> bloque válido).
+  - `src/main.js`
+    - Se eliminó fallback hardcodeado en mensajes de feedback para quiz/puzzle/objetos:
+      - se consumen de `SCENE_LAYOUTS.*.feedback` y se envía vacío si falta.
+    - El `startButton` de portada lee profundidad desde layout.
+    - `FinalScene` usa `finalLayout.bodyPanel.alpha` y `finalLayout.achievementStrip.checkAlpha`.
+  - `src/ui.js`
+    - `createFeedback` ahora tolera mensajes vacíos y evita pintar `undefined`.
+
+- Verificación ejecutada:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5322/index.html" -RunName "roadmap-cycle-continue-v25"`
+  - `BASE_URL=http://127.0.0.1:5322/index.html node tools/puzzle-cdp-test.mjs` (`Puzzle scene did not initialize` en este entorno headless)
+  - `BASE_URL=http://127.0.0.1:5322/index.html node tools/objects-cdp-test.mjs` (`Objects scene did not initialize` en este entorno headless)
+
+- Evidencia:
+  - `test-artifacts/roadmap-cycle-continue-v25/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v25/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v25/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v25/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v25/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v25/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v25/mobile-portrait.png`
+
+- Estado de la etapa:
+  - Cerrado el bloque de centralización de feedback y parámetros visuales más urgentes.
+  - Próximo bloque recomendado: revisar consistencia de globos/paneles entre `Cover`, `Quiz`, `Puzzle`, `Objects`, `Final` y eliminar diferencias de layout restantes en UI.

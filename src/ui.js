@@ -559,23 +559,26 @@ function drawStarCounter(scene, x = 1048, y = 96, value = 0, maxValue = 3) {
 }
 
 function createFeedback(scene, message, good = true) {
+  const safeMessage = typeof message === "string" && message.trim().length > 0 ? message : "";
   window.RosaritoAudio.playTone(scene, good ? "success" : "error");
   window.RosaritoAudio.playAudioKey(scene, good ? "voice.feedback.success" : "voice.feedback.error");
   const panel = scene.add.container(window.RosaritoLayouts.WIDTH / 2, 145).setDepth(1000);
   panel.add(scene.add.image(0, 0, good ? "ui-speech_large_lilac" : "ui-speech_large_cream").setDisplaySize(690, 126));
   panel.add(scene.add.image(-292, -2, good ? "ui-icon_check" : "ui-icon_x").setDisplaySize(54, 54));
-  panel.add(addFittedText(scene, 35, 0, message, "body", {
-    maxWidth: 565,
-    maxHeight: 72,
-    minFontSize: 18,
-    style: {
-      fontSize: "22px",
-      fontStyle: "bold",
-      color: "#3e2b22",
-      align: "center",
-      wordWrap: { width: 565 },
-    },
-  }).setOrigin(0.5));
+  if (safeMessage) {
+    panel.add(addFittedText(scene, 35, 0, safeMessage, "body", {
+      maxWidth: 565,
+      maxHeight: 72,
+      minFontSize: 18,
+      style: {
+        fontSize: "22px",
+        fontStyle: "bold",
+        color: "#3e2b22",
+        align: "center",
+        wordWrap: { width: 565 },
+      },
+    }).setOrigin(0.5));
+  }
   scene.tweens.add({ targets: panel, y: 120, alpha: 0, delay: 850, duration: 500, onComplete: () => panel.destroy() });
   return panel;
 }
