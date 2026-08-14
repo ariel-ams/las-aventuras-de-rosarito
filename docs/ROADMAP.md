@@ -30,6 +30,9 @@ Capturas revisadas:
 - Tanda nueva del ciclo actual (v39): `test-artifacts/roadmap-cycle-continue-v39/`
 - Tanda nueva del ciclo actual (v40): `test-artifacts/roadmap-cycle-continue-v40/`
 - Tanda nueva del ciclo actual (v41): `test-artifacts/roadmap-cycle-continue-v41/`
+- Tanda nueva del ciclo actual (v42): `test-artifacts/roadmap-cycle-continue-v42/`
+- Tanda nueva del ciclo actual (v43): `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/`
+- Tanda nueva del ciclo actual (v43b): `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/`
 
 Cambios ya aplicados en esta ronda:
 
@@ -226,6 +229,63 @@ Próxima iteración sugerida (v42):
 
 - Cerrar el bloque de consistencia UI con una revisión final de contenedores (`FinalScene`, cierre y tarjetas de confirmación de objetos).
 - Preparar estrategia de bootstrap offline para `tools/*-cdp-test.mjs` (bundle local o ejecución en entorno con Phaser disponible) y dejar test headless estable.
+
+Actualización de ciclo (2026-08-14, v42):
+
+- Cambios implementados:
+  - `tools/puzzle-cdp-test.mjs` y `tools/objects-cdp-test.mjs` se endurecieron para arrancar sin requerir explícitamente `window.Phaser` en la fase inicial y mejorar diagnóstico:
+    - logs de consola recientes,
+    - lista detallada de scripts cargados,
+    - estado de escenas y orden de escenas cargadas.
+  - `index.html` ahora intenta fallback local de Phaser:
+    - si no se inicializa desde CDN, intenta cargar `assets/phaser.min.js`
+    - y deja traza clara si también falla el fallback.
+- Verificación ejecutada:
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node --check src/layouts.js`
+  - `node --check src/data.js`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5900/index.html" -RunName "roadmap-cycle-continue-v42"`
+- Pendientes de esta ronda:
+  - Agregar `assets/phaser.min.js` al repo para habilitar bootstrap totalmente offline en CDP.
+  - Repetir captura final (`final.png`) en navegador visible y validar que el texto de cierre no se recorte.
+
+Actualización de ciclo (2026-08-14, v43):
+
+- Validación ejecutada:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5900/index.html" -RunName "roadmap-cycle-continue-v43-20260814-105221"`
+  - `BASE_URL=http://127.0.0.1:5910/index.html node tools/puzzle-cdp-test.mjs`
+  - `BASE_URL=http://127.0.0.1:5910/index.html node tools/objects-cdp-test.mjs`
+- Resultados:
+- `puzzle-cdp-test` sigue sin inicializar escena porque `Phaser` no se pudo cargar (`hasPhaser:false`) y el fallback local reporta ausencia de `assets/phaser.min.js`.
+  - `objects-cdp-test` quedó detenido por falta de `window.game`/scene manager en ese mismo contexto.
+- Evidencia:
+  - `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/mobile-portrait.png`
+- Evidencia adicional de re-captura de esta tanda (v43b):
+  - `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/mobile-portrait.png`
+- Próxima iteración sugerida:
+  - Incorporar físicamente `assets/phaser.min.js` para estabilizar CDP sin CDN.
+  - Repetir `tools/puzzle-cdp-test.mjs` y `tools/objects-cdp-test.mjs` con esa dependencia disponible.
 
 ## Comparacion con la referencia
 

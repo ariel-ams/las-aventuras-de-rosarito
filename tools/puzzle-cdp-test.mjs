@@ -59,7 +59,9 @@ async function waitForSceneManager(ws, attempts = 140, waitMs = 200) {
       sceneManagerKeys: window.game?.scene ? Object.keys(window.game.scene.keys || {}) : [],
       loadedScenes: window.game?.scene ? (window.game.scene.scenes || []).map((scene) => scene?.scene?.key).filter(Boolean) : [],
     }))()`);
-    if (state.hasPhaser && state.hasGame && state.hasSceneManager && state.hasScenes) return state;
+    // Phaser is not always exposed as a global in some headless environments.
+    // Keep it in diagnostics but don't block bootstrap on it.
+    if (state.hasGame && state.hasSceneManager && state.hasScenes) return state;
     await delay(waitMs);
   }
   return null;
@@ -154,6 +156,27 @@ async function waitForPuzzleScene(ws, attempts = 72, waitMs = 350) {
     await delay(waitMs);
   }
   return null;
+}
+
+async function diagnoseRuntimeState(ws) {
+  return evaluate(ws, `(() => ({
+    hasGame: Boolean(window.game),
+    isBooted: Boolean(window.game?.isBooted),
+    hasSceneManager: Boolean(window.game?.scene),
+    hasPhaser: Boolean(window.Phaser),
+    scriptsLoaded: document.scripts
+      ? Array.from(document.scripts).map((script) => ({
+          src: script.src || "inline",
+          async: script.async,
+          defer: script.defer,
+        }))
+      : [],
+    activeScene: window.game?.scene?.isActive?.(window.game?.scene?.current) || null,
+    currentScene: document.body?.dataset?.scene || null,
+    sceneKeys: window.game?.scene ? (window.game.scene.scenes || []).map((scene) => scene?.scene?.key).filter(Boolean) : [],
+    sceneManagerKeys: window.game?.scene ? Object.keys(window.game.scene.keys || {}) : [],
+    url: window.location.href,
+  }))()`);
 }
 
 async function dispatchDomDrag(ws, start, end) {
@@ -268,19 +291,9 @@ async function main() {
 
     const before = await waitForPuzzleScene(ws);
     if (!before) {
-      const debug = await evaluate(ws, `(() => ({
-        hasGame: Boolean(window.game),
-        isBooted: Boolean(window.game?.isBooted),
-        hasPhaser: Boolean(window.Phaser),
-        sceneManagerExists: Boolean(window.game?.scene),
-        scriptsLoaded: document.scripts?.length || 0,
-        activeScene: window.game?.scene?.isActive?.(window.game?.scene?.current) || null,
-        currentScene: document.body.dataset.scene || null,
-        sceneKeys: window.game?.scene ? (window.game.scene.scenes || []).map((scene) => scene?.scene?.key).filter(Boolean) : [],
-        sceneManagerKeys: window.game?.scene ? Object.keys(window.game.scene.keys || {}) : [],
-        url: window.location.href,
-      }))()`);
-      throw new Error(`Puzzle scene did not initialize. Debug: ${JSON.stringify({ ...debug, console: consoleLogs.slice(-8) })}`);
+      const debug = await diagnoseRuntimeState(ws);
+      debug.console = consoleLogs.slice(-12);
+      throw new Error(`Puzzle scene did not initialize. Debug: ${JSON.stringify(debug)}`);
     }
     if (before.missingTextures.length) {
       throw new Error(`Missing puzzle textures: ${before.missingTextures.join(", ")}`);

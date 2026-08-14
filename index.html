@@ -16,6 +16,23 @@
       <div id="game"></div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+      <script>
+      if (!window.Phaser) {
+        const fallback = document.createElement("script");
+        fallback.src = "assets/phaser.min.js";
+        fallback.async = false;
+        fallback.defer = false;
+        fallback.onload = () => {
+          if (!window.Phaser) {
+            console.error("Fallback de Phaser no se pudo inicializar desde assets/phaser.min.js");
+          }
+        };
+        fallback.onerror = () => {
+          console.error("No se pudo cargar Phaser desde CDN ni desde assets/phaser.min.js (necesario agregar copia local para CI/CDP offline)");
+        };
+        document.head.appendChild(fallback);
+      }
+    </script>
     <script src="./src/layouts.js"></script>
     <script src="./src/audio.js"></script>
     <script src="./src/data.js"></script>

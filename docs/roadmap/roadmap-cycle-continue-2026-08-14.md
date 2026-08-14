@@ -99,6 +99,66 @@
 - Revisar una vez más capturas en desktop y móvil para confirmar que el ajuste de pistas/feedback no recorte globos ni textos.
 - Finalizar el cierre de la etapa con commit/push y luego continuar con la limpieza de consistencia de cajas de texto global (unificar contenedores entre pantallas restantes).
 
+## Actualización de ronda (2026-08-14, v42)
+
+- Se implementó bootstrap mejorado para CDP:
+  - Los tests de rompecabezas y objetos ya no exigen `window.Phaser` para iniciar escena, evitando falsos negativos en entornos headless con carga asíncrona.
+  - Se agregó diagnóstico estructurado (estado de juego/escenas y scripts cargados) para acelerar troubleshooting.
+- `index.html` incorporó fallback de Phaser para CI/CDP:
+  - intenta cargar `assets/phaser.min.js` si el CDN no responde.
+  - registra errores visibles en consola si ambos caminos fallan.
+- Verificación ejecutada:
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node --check src/layouts.js`
+  - `node --check src/data.js`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5900/index.html" -RunName "roadmap-cycle-continue-v42"`
+- Estado observado:
+  - El ciclo de captura vuelve a generar evidencia completa (`cover/quiz/puzzle/objects/final/mobile-landscape/mobile-portrait`).
+  - Los tests CDP siguen sujetos a disponibilidad de Phaser en runtime; con fallback local pendiente de archivo físico, aún requieren un entorno con CDN o un archivo local de Phaser en `assets/phaser.min.js`.
+- Próximo bloque sugerido:
+  - Confirmar `assets/phaser.min.js` en repo y re-ejecutar CDP sin dependencia de CDN.
+  - Revisar visualmente en navegador visible el panel de cierre de `FinalScene` por recortes de texto en pantallas anchas.
+
+## Actualización de ronda (2026-08-14, v43)
+
+- Validación ejecutada en esta tanda:
+  - `node --check src/main.js`
+  - `node --check src/layouts.js`
+  - `node --check src/ui.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+- `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5900/index.html" -RunName "roadmap-cycle-continue-v43-20260814-105221"`
+ - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5912/index.html" -RunName "roadmap-cycle-continue-v43b-20260814-110000"`
+ - `BASE_URL=http://127.0.0.1:5910/index.html node tools/puzzle-cdp-test.mjs`
+ - `BASE_URL=http://127.0.0.1:5910/index.html node tools/objects-cdp-test.mjs`
+- `BASE_URL=http://127.0.0.1:5912/index.html node tools/puzzle-cdp-test.mjs`
+- `BASE_URL=http://127.0.0.1:5912/index.html node tools/objects-cdp-test.mjs`
+- Estado observado:
+  - `puzzle-cdp-test` no inicializa escena por `hasPhaser:false` (`No se pudo cargar Phaser desde CDN ni desde assets/phaser.min.js`).
+  - `objects-cdp-test` no avanza por falta de scene manager inicializado en ese contexto.
+- Evidencia:
+  - `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/mobile-landscape.png`
+- `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/mobile-portrait.png`
+- `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/cover.png`
+- `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/quiz.png`
+- `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/puzzle.png`
+- `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/objects.png`
+- `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/final.png`
+- `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/mobile-landscape.png`
+- `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/mobile-portrait.png`
+- Próximos pasos:
+  - Añadir físicamente `assets/phaser.min.js` y repetir CDP.
+  - Reintentar validación de `objects-cdp-test` y `puzzle-cdp-test` después de eso para cerrar ciclo de automatización.
+
 ## ActualizaciÃ³n de ronda (2026-08-14, v14)
 
 - Aplicado:
