@@ -22,6 +22,7 @@ Capturas revisadas:
 - Tanda reciente de seguimiento de esta iteraciÃ³n: `test-artifacts/roadmap-followup-3/`
 - Tanda nueva del ciclo actual: `test-artifacts/roadmap-cycle-continue/`
 - Tanda nueva del ciclo actual (v2): `test-artifacts/roadmap-cycle-continue-v2/`
+- Tanda nueva del ciclo actual (v3): `test-artifacts/roadmap-cycle-continue-v3/`
 
 Cambios ya aplicados en esta ronda:
 
@@ -42,6 +43,7 @@ Cambios ya aplicados en esta ronda:
 - El globo inferior de objetos se reposiciono y usa `addFittedText`.
 - La pantalla final recibio un primer pulido visual tipo recompensa/album.
 - Las preguntas visibles del quiz ahora viven en `src/questions.json`.
+- Se ajust� la limpieza de textos de fallback en `src/data.js` para evitar inconsistencias visuales de tildes y mantener uniformidad de mensajes.
 - El smoke test de objetos detecto solapamiento entre zonas invisibles; las zonas mas pequenas ahora quedan por encima para mejorar el click.
 - Las respuestas del quiz ahora pueden declarar `iconKey`; el icono se mantiene asociado a la respuesta despues de mezclar opciones.
 - Las tarjetas de respuesta del quiz usan `addFittedText` para reducir riesgo de texto cortado.
@@ -76,6 +78,7 @@ Pruebas ejecutadas:
 - `tools/capture-screens.ps1 -RunName roadmap-followup`
 - `tools/capture-screens.ps1 -RunName roadmap-followup-3`
 - `tools/capture-screens.ps1 -RunName roadmap-cycle-continue`
+- `tools/capture-screens.ps1 -RunName roadmap-cycle-continue-v3`
 - `BASE_URL=http://127.0.0.1:5322/index.html node tools/puzzle-cdp-test.mjs` *(en este entorno de pruebas, la escena no siempre inicializa de forma confiable en Edge headless)*
 - `BASE_URL=http://127.0.0.1:5322/index.html node tools/objects-cdp-test.mjs` *(en este entorno de pruebas, la escena no siempre inicializa de forma confiable en Edge headless)*
 - `BASE_URL=http://127.0.0.1:5330/index.html node tools/puzzle-cdp-test.mjs` *(en este entorno de pruebas, la escena no inicializa de forma consistente en Edge headless aun con reintentos y flags de arranque)*

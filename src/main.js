@@ -331,9 +331,10 @@ class BaseScene extends Phaser.Scene {
   makeQuizAnswerCard(x, y, option, index, onClick, iconKey = "") {
     const cardKeys = ["m2-answer_card_green", "m2-answer_card_blue", "m2-answer_card_pink"];
     const iconKeys = ["ui-icon_home", "ui-icon_blackboard", "ui-icon_flower"];
+    const cardWidth = 142;
     const card = this.add.container(x, y);
-    const bg = this.add.image(0, 0, cardKeys[index % cardKeys.length]).setDisplaySize(155, 230);
-    const icon = this.add.image(0, -52, iconKey || iconKeys[index % iconKeys.length]).setDisplaySize(82, 68);
+    const bg = this.add.image(0, 0, cardKeys[index % cardKeys.length]).setDisplaySize(cardWidth, 230);
+    const icon = this.add.image(0, -52, iconKey || iconKeys[index % iconKeys.length]).setDisplaySize(76, 63);
     const text = window.RosaritoUI.addFittedText(this, 0, 58, option, "body", {
       maxWidth: 118,
       maxHeight: 72,
@@ -348,7 +349,7 @@ class BaseScene extends Phaser.Scene {
     const heart = this.add.image(0, 110, "m2-heart").setDisplaySize(30, 28);
     card.add([bg, icon, text, heart]);
     card.setDepth(8);
-    card.setSize(155, 230).setInteractive({ useHandCursor: true });
+    card.setSize(cardWidth, 230).setInteractive({ useHandCursor: true });
     card.on("pointerover", () => {
       card.setScale(1.04);
       playTone(this, "hover");
@@ -570,188 +571,6 @@ class CoverScene extends BaseScene {
   }
 }
 
-class PrepGameScene extends BaseScene {
-  constructor() {
-    super("PrepGame");
-  }
-
-  create() {
-    this.createBook("", "", { progress: true });
-    this.rosaritoSprite.setPosition(1105, 615).setScale(0.2).setDepth(8).setVisible(true);
-    this.narrateScreen("prep");
-    this.selected = new Set();
-    this.drawDonesHeader();
-    this.showGift();
-  }
-
-  drawDonesHeader() {
-    this.add.image(196, 84, "m1-minigame1_update_04").setDisplaySize(230, 50).setDepth(4).setFlipX(true);
-    this.add.image(512, 84, "m1-minigame1_update_05").setDisplaySize(230, 50).setDepth(4);
-    this.add.image(358, 122, "m1-minigame1_update_03").setDisplaySize(42, 40).setDepth(5);
-    window.RosaritoUI.addFittedText(this, 354, 82, "Los dones de Rosarito", "title", {
-      maxWidth: 290,
-      maxHeight: 78,
-      minFontSize: 28,
-      depth: 6,
-      style: {
-        fontSize: "46px",
-        fontStyle: "bold",
-        color: "#6a3d8f",
-        align: "center",
-        stroke: "#f6e2ba",
-        strokeThickness: 4,
-      },
-    }).setOrigin(0.5);
-    window.RosaritoUI.addFittedText(this, 354, 165, "Observa el don y toca solo los\ncomponentes correctos.", "body", {
-      maxWidth: 290,
-      maxHeight: 62,
-      minFontSize: 19,
-      depth: 6,
-      style: {
-        fontSize: "26px",
-        align: "center",
-        lineSpacing: 4,
-      },
-    }).setOrigin(0.5);
-    this.add.image(90, 424, "m1-minigame1_update4_27").setDisplaySize(150, 130).setDepth(3);
-    this.add.image(530, 676, "m1-minigame1_update4_28").setDisplaySize(146, 112).setDepth(3);
-  }
-
-  showGift() {
-    const gift = gameState.giftSet[gameState.giftIndex];
-    this.add.image(354, 236, "m1-minigame1_update_07").setDisplaySize(350, 62).setDepth(5);
-    window.RosaritoUI.addFittedText(this, 354, 236, `Don ${gameState.giftIndex + 1} de ${gameState.giftSet.length}`, "body", {
-      maxWidth: 312,
-      maxHeight: 52,
-      minFontSize: 22,
-      depth: 6,
-      style: {
-        fontSize: "31px",
-        fontStyle: "bold",
-        color: "#3e2b22",
-      },
-    }).setOrigin(0.5);
-    this.add.image(632, 244, "ui-icon_sparkles").setDisplaySize(56, 56).setDepth(6);
-
-    this.add.image(354, 412, "m1-minigame1_update_10").setDisplaySize(520, 244).setDepth(5);
-    const giftTitleSize = gift.name.length > 28 ? "29px" : "34px";
-    const giftPromptSize = gift.prompt.length > 66 ? "21px" : "24px";
-    window.RosaritoUI.addFittedText(this, 354, 368, gift.name, "title", {
-      maxWidth: 420,
-      maxHeight: 52,
-      minFontSize: 20,
-      depth: 6,
-      style: {
-        fontSize: giftTitleSize,
-        fontStyle: "bold",
-        color: "#6a3d8f",
-        wordWrap: { width: 420 },
-        align: "center",
-        lineSpacing: 2,
-      },
-    }).setOrigin(0.5);
-    this.add.image(354, 424, "m1-minigame1_update4_03").setDisplaySize(150, 36).setDepth(6);
-    window.RosaritoUI.addFittedText(this, 354, 472, gift.prompt, "body", {
-      maxWidth: 405,
-      maxHeight: 56,
-      minFontSize: 14,
-      depth: 6,
-      style: {
-        fontSize: giftPromptSize,
-        color: "#3e2b22",
-        wordWrap: { width: 405 },
-        align: "center",
-        lineSpacing: 3,
-      },
-    }).setOrigin(0.5);
-    this.add.image(354, 590, "m1-minigame1_update_15").setDisplaySize(330, 64).setDepth(5);
-    window.RosaritoUI.addFittedText(this, 354, 590, "Imagen del don", "title", {
-      maxWidth: 260,
-      maxHeight: 46,
-      minFontSize: 18,
-      depth: 6,
-      style: {
-        fontSize: "24px",
-        fontStyle: "bold",
-        color: "#6a3d8f",
-        align: "center",
-      },
-    }).setOrigin(0.5);
-
-    this.add.image(900, 184, "m1-minigame1_update4_01").setDisplaySize(190, 28).setDepth(4);
-    this.add.image(900, 184, "m1-minigame1_update4_02").setDisplaySize(190, 28).setDepth(4).setFlipX(true);
-    window.RosaritoUI.addFittedText(this, 900, 184, "Componentes del don", "title", {
-      maxWidth: 380,
-      maxHeight: 60,
-      minFontSize: 20,
-      depth: 6,
-      style: {
-        fontSize: "34px",
-        fontStyle: "bold",
-        color: "#6a3d8f",
-        align: "center",
-        wordWrap: { width: 380 },
-      },
-    }).setOrigin(0.5);
-    this.add.image(900, 222, "m1-minigame1_update_03").setDisplaySize(34, 32).setDepth(6);
-    this.add.image(900, 400, "m1-minigame1_update2_02").setDisplaySize(560, 320).setDepth(4);
-
-    const cardKeys = ["m1-minigame1_update2_04", "m1-minigame1_update2_03", "m1-minigame1_update2_06", "m1-minigame1_update2_05"];
-    gift.options.forEach((option, i) => {
-      const x = SCENE_LAYOUTS.dones.optionStart.x + (i % 2) * SCENE_LAYOUTS.dones.optionGap.x;
-      const y = SCENE_LAYOUTS.dones.optionStart.y + Math.floor(i / 2) * SCENE_LAYOUTS.dones.optionGap.y;
-      option.cardKey = cardKeys[i % cardKeys.length];
-      this.makeComponentOption(x, y, option, (card) => this.pickGiftObject(option, gift, card), AUDIO_SCRIPT.objects[option.label]);
-    });
-    this.add.image(890, 612, "m1-minigame1_update2_07").setDisplaySize(440, 82).setDepth(5);
-    this.add.image(700, 606, "m1-minigame1_update3_02").setDisplaySize(76, 76).setDepth(6);
-    window.RosaritoUI.addFittedText(this, 910, 610, `Elige ${gift.correct.length} objetos\ncorrectos.`, "body", {
-      maxWidth: 260,
-      maxHeight: 68,
-      minFontSize: 18,
-      depth: 6,
-      style: {
-        fontSize: "26px",
-        fontStyle: "bold",
-        color: "#3e2b22",
-        wordWrap: { width: 260 },
-        align: "center",
-        lineSpacing: 2,
-      },
-    }).setOrigin(0.5);
-  }
-
-  pickGiftObject(option, gift, card) {
-    const optionId = typeof option === "string" ? option : option.id;
-    if (this.selected.has(optionId)) return;
-    if (!gift.correct.includes(optionId)) {
-      this.feedback(gift.feedbackIncorrect || "Ese objeto no va con este don", false);
-      return;
-    }
-    this.selected.add(optionId);
-    if (card) {
-      card.disableInteractive();
-      card.setAlpha(0.78);
-      card.add(this.add.image(54, -62, "ui-icon_check").setDisplaySize(42, 42));
-    }
-    this.feedback(gift.feedbackCorrect || "Muy bien!", true);
-    this.add.star(660 + this.selected.size * 42, 590, 5, 12, 24, COLORS.gold).setStrokeStyle(3, 0x8a6534);
-    if (this.selected.size === gift.correct.length) {
-      gameState.giftIndex += 1;
-      if (gameState.giftIndex >= gameState.giftSet.length) {
-        gameState.achievements[0] = true;
-        this.celebrateRosarito();
-        this.time.delayedCall(850, () => this.scene.start("QuizGame"));
-      } else {
-        this.time.delayedCall(850, () => {
-          this.selected.clear();
-          this.scene.restart();
-        });
-      }
-    }
-  }
-}
-
 class QuizGameScene extends BaseScene {
   constructor() {
     super("QuizGame");
@@ -904,7 +723,7 @@ class PuzzleGameScene extends BaseScene {
     this.done = 0;
     this.puzzle = gameState.puzzleSet[gameState.puzzleIndex] || gameState.puzzlePool[0];
     if (!this.puzzle) {
-      window.RosaritoUI.addFittedText(this, 590, 360, "Agrega im�genes en assets/puzzles/source para jugar.", "body", {
+      window.RosaritoUI.addFittedText(this, 590, 360, "Agrega imágenes en assets/puzzles/source para jugar.", "body", {
         maxWidth: 640,
         maxHeight: 100,
         minFontSize: 20,
@@ -1596,7 +1415,7 @@ class FinalScene extends BaseScene {
 
     this.add.image(778, 590, "ui-notebook_panel").setDisplaySize(360, 132).setDepth(4).setAlpha(0.98);
     this.add.image(642, 590, "ui-icon_book").setDisplaySize(84, 72).setDepth(5);
-    window.RosaritoUI.addFittedText(this, 792, 558, "�lbum de Rosarito", "title", {
+    window.RosaritoUI.addFittedText(this, 792, 558, "Álbum de Rosarito", "title", {
       maxWidth: 260,
       maxHeight: 48,
       minFontSize: 18,

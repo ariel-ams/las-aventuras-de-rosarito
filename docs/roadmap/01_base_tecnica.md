@@ -61,7 +61,7 @@ Criterio de aceptacion:
 Estado:
 
 - Hecho para los wrappers principales de datos.
-- Pendiente: evaluar si `PrepGameScene` debe conservarse como referencia historica o removerse por completo.
+- Hecho: `PrepGameScene` fue removida para evitar que la pantalla de dones siga cargando en el árbol activo del juego.
 
 ### 2. Consolidar estilos de texto
 
@@ -173,7 +173,7 @@ Observaciones:
 - [x] Migrar botones comunes a estilos compartidos con `RosaritoUI.addPrimaryButton`.
 - [x] Separar datos de preguntas a `src/questions.json` y normalizarlos con `RosaritoData.buildQuizPool`.
 - [x] Validar la migracion de preguntas con capturas `test-artifacts/quiz-json-hitarea-pass/`.
-- [ ] Decidir destino de `PrepGameScene`.
+- [x] Remover `PrepGameScene` del flujo activo (pantalla de dones) en `src/main.js`.
 
 ## Riesgos
 

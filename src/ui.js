@@ -227,6 +227,7 @@ function addNextButton(scene, x, y, label, onClick, options = {}) {
     hitArea = new Phaser.Geom.Rectangle(-168, -63, 230, 126),
   } = options;
   let isEnabled = enabled;
+  const lockTint = 0x8f4f67;
   const button = scene.add.container(x, y).setDepth(depth);
   const arrow = scene.add.image(0, 0, "ui-button_arrow_right").setDisplaySize(arrowSize, arrowSize);
   const text = scene.add.text(labelX, labelY, label, {
@@ -249,8 +250,8 @@ function addNextButton(scene, x, y, label, onClick, options = {}) {
 
   button.setEnabled = (nextEnabled = true, disabledText = disabledHint) => {
     isEnabled = nextEnabled;
-    button.setAlpha(isEnabled ? 1 : 0.46);
-    button.setScale(1);
+    button.setAlpha(isEnabled ? 1 : 0.62);
+    button.setScale(isEnabled ? 1 : 0.98);
     arrow.setTint(isEnabled ? 0xffffff : 0x9d95a8);
     text.setAlpha(isEnabled ? 1 : 0.8);
     status.setAlpha(isEnabled ? 0 : 1);
@@ -258,8 +259,8 @@ function addNextButton(scene, x, y, label, onClick, options = {}) {
     status.setText(isEnabled ? "" : disabledText);
     status.setColor(isEnabled ? "#6c6c6c" : disabledTextColor);
     statusHint.setTexture(isEnabled ? "ui-icon_tap" : "ui-icon_exclaim");
-    statusHint.setTint(isEnabled ? 0x9a5a9f : 0xc98f2d);
-    statusHint.setScale(isEnabled ? 1 : 1.1);
+    statusHint.setTint(isEnabled ? 0x9a5a9f : lockTint);
+    statusHint.setScale(isEnabled ? 1 : 1.18);
     if (button.input) button.input.enabled = isEnabled;
     if (statusPulse) {
       statusPulse.remove();

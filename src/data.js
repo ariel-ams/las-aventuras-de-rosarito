@@ -1,10 +1,10 @@
 (function () {
 const quizPool = [
-  { question: "En donde nacio Rosario Vera Peñaloza?", options: ["La Rioja", "Buenos Aires", "Mendoza"], correct: 0 },
-  { question: "Que fecha importante coincide con su cumpleaños?", options: ["Pascuas", "Navidad", "Dia de la primavera"], correct: 1 },
-  { question: "Donde se encuentra la casa natal de Rosarito?", options: ["Carrizal", "Malanzan", "Atiles"], correct: 2 },
-  { question: "Rosario era la menor de cuantas hermanas?", options: ["4", "2", "3"], correct: 0 },
-  { question: "Que lugar ayudo a valorar?", options: ["La escuela y el jardin", "El estadio", "El aeropuerto"], correct: 0 },
+  { question: "¿En dónde nació Rosario Vera Peñaloza?", options: ["La Rioja", "Buenos Aires", "Mendoza"], correct: 0 },
+  { question: "¿Qué fecha importante coincide con su cumpleaños?", options: ["Pascuas", "Navidad", "Día de la primavera"], correct: 1 },
+  { question: "¿Dónde se encuentra la casa natal de Rosarito?", options: ["Carrizal", "Malanzán", "Atiles"], correct: 2 },
+  { question: "¿Rosario era la menor de cuántas hermanas?", options: ["4", "2", "3"], correct: 0 },
+  { question: "¿Qué lugar ayudó a valorar?", options: ["La escuela y el jardín", "El aeropuerto", "El estadio"], correct: 0 },
 ];
 
 const giftPool = [
