@@ -1,4 +1,4 @@
-﻿# Roadmap visual y tecnico - Rosarito
+# Roadmap visual y tecnico - Rosarito
 
 ## Estado actual despues de la ultima prueba
 
@@ -33,6 +33,56 @@ Capturas revisadas:
 - Tanda nueva del ciclo actual (v42): `test-artifacts/roadmap-cycle-continue-v42/`
 - Tanda nueva del ciclo actual (v43): `test-artifacts/roadmap-cycle-continue-v43-20260814-105221/`
 - Tanda nueva del ciclo actual (v43b): `test-artifacts/roadmap-cycle-continue-v43b-20260814-110000/`
+- Tanda nueva del ciclo actual (v45): `test-artifacts/roadmap-cycle-continue-v45/`
+
+## Actualización de ciclo (2026-08-20, v44)
+
+- `index.html` y `src/styles.css`: se incorporó flujo completo de pantalla inmersiva en mobile con nota de orientación y botón de entrada para landscape.
+- `manifest.webmanifest`: se agregó soporte PWA con ícono del proyecto.
+- Se mejoró la capa de fallback de carga de Phaser (de CDN -> local) para tests/entornos sin red.
+- Pull request de consistencia visual: el overlay de portrait no tapa canvas en landscape y respeta el flujo normal de juego.
+- Se documentó el estado de este ciclo en el roadmap para mantener trazabilidad.
+
+### Pruebas ejecutadas en el ciclo:
+
+- `node --check src/main.js`
+- `node --check src/ui.js`
+- `node --check src/layouts.js`
+- `node --check src/data.js`
+- `node --check tools/puzzle-cdp-test.mjs`
+- `node --check tools/objects-cdp-test.mjs`
+- `powershell -File tools/capture-screens.ps1 -RunName "roadmap-cycle-continue-v44"`
+- Estado observado: mobile portrait muestra aviso y acción de entrar inmersivo; landscape mantiene el juego centrado.
+- Pendiente técnica: en este entorno de validación los CDP tests siguen dependiendo de disponibilidad de Phaser en página para inicializar escenas.
+
+### Próximos cambios recomendados:
+
+- Se completó la instrucción de instalación PWA en `README.md` y `docs/roadmap/04_audio_mobile_accesibilidad.md`.
+- Revisar si incorporamos `assets/phaser.min.js` para eliminar dependencia de CDN en entornos de prueba.
+
+### Actualización de ciclo (2026-08-20, v45)
+
+- Se agregó `README.md` con instrucciones de instalación PWA para Android/iOS.
+- Se cerró la tarea de documentación en la etapa 4 del roadmap (`04_audio_mobile_accesibilidad.md`).
+- Se mantuvo el fallback de Phaser en `index.html`; sigue faltando `assets/phaser.min.js` para evitar dependencia de CDN en `tools/*-cdp-test.mjs`.
+- Se ejecutaron los chequeos:
+  - `node --check src/main.js`
+  - `node --check src/ui.js`
+  - `node --check src/layouts.js`
+  - `node --check src/data.js`
+  - `node --check tools/puzzle-cdp-test.mjs`
+  - `node --check tools/objects-cdp-test.mjs`
+  - `powershell -File tools/capture-screens.ps1 -BaseUrl "http://127.0.0.1:5600/index.html" -RunName "roadmap-cycle-continue-v45"`
+- Evidencia:
+  - `test-artifacts/roadmap-cycle-continue-v45/cover.png`
+  - `test-artifacts/roadmap-cycle-continue-v45/quiz.png`
+  - `test-artifacts/roadmap-cycle-continue-v45/puzzle.png`
+  - `test-artifacts/roadmap-cycle-continue-v45/objects.png`
+  - `test-artifacts/roadmap-cycle-continue-v45/final.png`
+  - `test-artifacts/roadmap-cycle-continue-v45/mobile-landscape.png`
+  - `test-artifacts/roadmap-cycle-continue-v45/mobile-portrait.png`
+- Limite actual:
+  - El entorno CDP sigue sin inicializar escenas por no poder cargar Phaser (`No se pudo cargar Phaser desde CDN ni desde assets/phaser.min.js`).
 
 Cambios ya aplicados en esta ronda:
 

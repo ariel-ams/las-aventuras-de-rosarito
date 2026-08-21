@@ -22,6 +22,27 @@ Luego abrir:
 http://localhost:5173
 ```
 
+## Instalar como app (PWA) en celular / tablet
+
+El juego ya incluye `manifest.webmanifest`, iconos y metadatos para instalarse como aplicación.
+
+### Android (Chrome/Edge)
+
+1. Abrí la URL desde Chrome o Edge.
+2. En el menú del navegador, elegí **Agregar a pantalla de inicio**.
+3. Confirmá para cerrar las barras del navegador y entrar en modo más inmersivo.
+4. Al abrir desde el acceso creado, el juego arranca en modo de pantalla completa.
+
+### iOS (Safari)
+
+1. Abrí la URL en Safari.
+2. Tocá el botón de compartir y elegí **Agregar a pantalla de inicio**.
+3. Abrí el juego desde el icono nuevo para jugar en modo app.
+
+### Nota
+
+El juego muestra una pantalla de sugerencia en **vertical** y un botón de ingreso rápido, que intenta entrar a pantalla completa/landscape desde el tap.
+
 ## Contenido del prototipo
 
 - Portada con resumen de las cuatro actividades y accesos directos de prueba.

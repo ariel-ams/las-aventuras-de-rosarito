@@ -55,6 +55,7 @@ Hacer que el juego sea comodo para ninos que todavia no leen fluidamente y para 
 
 - Crear `manifest.webmanifest`.
 - Agregar iconos de app.
+- En esta iteración se agregó `manifest.webmanifest` con iconos del juego para ruta de instalación.
 - Documentar instalacion como PWA en tablets.
 - Preparar modo kiosk si se usa en una muestra o aula.
 
@@ -111,3 +112,10 @@ Pruebas automatizadas/semiautomatizadas:
 
 - `tools/capture-screens.ps1 -RunName <nombre>`
 - `node tools/puzzle-cdp-test.mjs`
+
+### Actualización de ciclo (2026-08-20)
+
+- Mobile portrait muestra mensaje de orientación y botón de entrada inmersiva.
+- Manifest y metatags móviles ya están integrados para PWA-ready.
+- Se agregó documentación de instalación PWA en `README.md` (Android e iOS).
+- Limitación técnica activa: ocultar barra de navegación sigue fuera del control web normal; la recomendación operativa sigue siendo instalar la app en modo pantalla completa.

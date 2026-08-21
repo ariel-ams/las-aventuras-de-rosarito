@@ -6,14 +6,20 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#6a3d8f" />
     <meta name="screen-orientation" content="landscape" />
     <title>Rosarito y sus pizarras magicas</title>
     <link rel="icon" href="data:," />
+    <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
     <main id="game-shell" aria-label="Prototipo de juego Rosarito">
       <div id="game"></div>
+      <div id="mobile-orientation-note" aria-live="polite" aria-hidden="true">
+        <p>Girá el celular y tocá para abrir en pantalla completa.</p>
+        <button id="immersive-enter-button" type="button">Abrir juego</button>
+      </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
       <script>
@@ -38,5 +44,66 @@
     <script src="./src/data.js"></script>
     <script src="./src/ui.js"></script>
     <script src="./src/main.js"></script>
+    <script>
+      (function setupMobileImmersiveHint() {
+        const note = document.getElementById("mobile-orientation-note");
+        const button = document.getElementById("immersive-enter-button");
+
+        if (!note || !button) return;
+
+        const requestImmersive = () => {
+          const runRequest = () => {
+            if (window.requestImmersiveMode) {
+              window.requestImmersiveMode();
+            } else {
+              const root = document.documentElement;
+              if (!document.fullscreenElement && root.requestFullscreen) {
+                root.requestFullscreen({ navigationUI: "hide" }).catch(() => {});
+              }
+              if (screen.orientation?.lock) {
+                screen.orientation.lock("landscape").catch(() => {});
+              }
+            }
+          };
+
+          runRequest();
+        };
+
+        const isPortrait = () => window.matchMedia("(orientation: portrait), (max-width: 900px)").matches;
+        const isStandalone = () => [
+          window.matchMedia("(display-mode: fullscreen)").matches,
+          window.matchMedia("(display-mode: standalone)").matches,
+        ].some(Boolean);
+
+        const refreshHint = () => {
+          const shouldShow = isPortrait() && !isStandalone();
+          note.dataset.visible = shouldShow ? "true" : "false";
+          note.classList.toggle("is-visible", shouldShow);
+          note.setAttribute("aria-hidden", shouldShow ? "false" : "true");
+        };
+
+        button.addEventListener("click", (event) => {
+          event.preventDefault();
+          requestImmersive();
+          if (isPortrait()) {
+            requestImmersive();
+          }
+          note.classList.remove("is-visible");
+          note.setAttribute("aria-hidden", "true");
+          setTimeout(refreshHint, 700);
+        }, { passive: false });
+
+        window.addEventListener("orientationchange", refreshHint);
+        window.addEventListener("resize", refreshHint);
+        window.addEventListener("load", refreshHint);
+
+        window.addEventListener("pointerdown", () => {
+          requestImmersive();
+          refreshHint();
+        }, { passive: true });
+
+        refreshHint();
+      })();
+    </script>
   </body>
 </html>

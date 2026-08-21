@@ -1,0 +1,25 @@
+{
+  "name": "Rosarito: juego de memoria y recuerdos",
+  "short_name": "Rosarito",
+  "description": "Juego interactivo de Rosario Vera Peñaloza para niños.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#557b72",
+  "theme_color": "#6a3d8f",
+  "icons": [
+    {
+      "src": "assets/ui/selected/icon_star.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/ui/selected/preview_selected.png",
+      "sizes": "900x900",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
